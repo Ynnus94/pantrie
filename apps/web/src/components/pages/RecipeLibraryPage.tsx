@@ -7,6 +7,7 @@ import { Book, Search, Plus, Clock, Utensils, Star } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
+import { RecipeImportCard } from '../RecipeImportCard'
 
 interface Recipe {
   id: string
@@ -29,21 +30,55 @@ export function RecipeLibraryPage() {
     recipe.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  const handleRecipeImported = (recipe: any) => {
+    // Add the imported recipe to the list
+    const newRecipe = {
+      id: Date.now().toString(),
+      name: recipe.title || 'Untitled Recipe',
+      description: recipe.description || '',
+      cuisine: recipe.tags?.[0] || 'Other',
+      cookTime: recipe.totalTime || recipe.cookTime || 0,
+      ingredients: recipe.ingredients || [],
+      instructions: recipe.instructions || [],
+      rating: undefined
+    }
+    setRecipes([...recipes, newRecipe])
+  }
+
   return (
     <div className="p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-[#16250F] mb-2">Recipe Library</h1>
-          <p className="text-[#16250F]/70">
-            Save and organize your favorite recipes
-          </p>
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-bold text-[#16250F] mb-2">Recipes</h1>
+        <p className="text-lg text-[#16250F]/70 font-serif">
+          Import recipes from any website or add your own
+        </p>
+      </div>
+
+      {/* Import Card - Primary Action */}
+      <RecipeImportCard 
+        onManualEntry={() => setShowAddDialog(true)}
+        onRecipeImported={handleRecipeImported}
+      />
+
+      {/* Recipe Grid */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold text-[#16250F]">
+            Your Recipes ({recipes.length})
+          </h2>
+          {recipes.length > 0 && (
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="border-[#16250F]/20 hover:border-[#FF9500]">Filter</Button>
+              <Button variant="outline" size="sm" className="border-[#16250F]/20 hover:border-[#FF9500]">Sort</Button>
+            </div>
+          )}
         </div>
+
+        {/* Manual Entry Dialog */}
         <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
           <DialogTrigger asChild>
-            <Button className="bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Recipe
-            </Button>
+            <Button className="hidden" />
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
@@ -92,39 +127,41 @@ export function RecipeLibraryPage() {
         </Dialog>
       </div>
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#16250F]/40" />
-        <Input
-          placeholder="Search recipes by name or cuisine..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
-        />
-      </div>
+        {/* Search */}
+        {recipes.length > 0 && (
+          <div className="relative mb-6">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#16250F]/40" />
+            <Input
+              placeholder="Search recipes by name or cuisine..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 border-[#16250F]/10 focus-visible:ring-[#FF9500]"
+            />
+          </div>
+        )}
 
-      {/* Recipes Grid */}
-      {filteredRecipes.length === 0 ? (
-        <Card className="border border-[#16250F]/10">
-          <CardContent className="pt-12 pb-12 text-center">
-            <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-              <Book className="h-10 w-10 text-[#F5F1E8]" />
-            </div>
-            <h3 className="text-2xl font-bold text-[#16250F] mb-3">No recipes yet</h3>
-            <p className="text-[#16250F]/70 mb-6 max-w-md mx-auto">
-              {searchQuery ? 'No recipes match your search' : 'Start building your recipe library by adding your favorite recipes!'}
-            </p>
-            {!searchQuery && (
-              <Button 
-                onClick={() => setShowAddDialog(true)}
-                className="bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Your First Recipe
-              </Button>
-            )}
-          </CardContent>
-        </Card>
+        {/* Empty State */}
+        {filteredRecipes.length === 0 ? (
+          <Card className="border border-[#16250F]/10 shadow-xl bg-gradient-to-br from-white to-[#F5F1E8]/30">
+            <CardContent className="pt-12 pb-12 text-center">
+              <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                <Book className="h-10 w-10 text-[#F5F1E8]" />
+              </div>
+              <h3 className="text-2xl font-bold text-[#16250F] mb-3">
+                {searchQuery ? 'No recipes match your search' : 'No recipes yet!'}
+              </h3>
+              <p className="text-[#16250F]/70 mb-6 max-w-md mx-auto">
+                {searchQuery 
+                  ? 'Try adjusting your search terms' 
+                  : 'Import your first recipe by pasting a URL above'}
+              </p>
+              {!searchQuery && (
+                <p className="text-sm text-[#16250F]/60">
+                  Try recipes from AllRecipes, NYTimes Cooking, or any food blog
+                </p>
+              )}
+            </CardContent>
+          </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRecipes.map((recipe) => (

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { MainLayout } from './components/layout/MainLayout'
 import { Dashboard } from './components/pages/Dashboard'
-import { MealPlanningPage } from './components/pages/MealPlanningPage'
+import { MealPlanGenerator } from './components/MealPlanGenerator'
 import { HistoryPage } from './components/pages/HistoryPage'
 import { FamilyProfilesPage } from './components/pages/FamilyProfilesPage'
 import { ThisWeekMealsPage } from './components/pages/ThisWeekMealsPage'
@@ -26,7 +26,12 @@ function App() {
         return <Dashboard onNavigate={handleNavigate} />
       
       case 'planning':
-        return <MealPlanningPage />
+        // Show meal planning page (accessed from Generate button)
+        return (
+          <div className="p-8">
+            <MealPlanGenerator />
+          </div>
+        )
       
       case 'history':
         return <HistoryPage />
@@ -35,7 +40,7 @@ function App() {
         return <FamilyProfilesPage />
       
       case 'thisweek':
-        return <ThisWeekMealsPage />
+        return <ThisWeekMealsPage onNavigate={handleNavigate} />
       
       case 'grocery':
         return <GroceryListsPage />
@@ -51,8 +56,8 @@ function App() {
       
       // Quick actions
       case 'generate':
-        // Navigate to planning page
-        setCurrentPage('planning')
+        // Navigate to This Week's Meals page
+        setCurrentPage('thisweek')
         return null
       
       case 'add-recipe':

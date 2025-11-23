@@ -13,6 +13,7 @@ import cors from 'cors'
 import { mealPlanRoutes } from './routes/mealPlan.js'
 import { toddlerRoutes } from './routes/toddler.js'
 import { groceryRoutes } from './routes/grocery.js'
+import { recipeRoutes } from './routes/recipes.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -29,6 +30,7 @@ app.get('/health', (req, res) => {
 app.use('/api/meal-plan', mealPlanRoutes)
 app.use('/api/toddler', toddlerRoutes)
 app.use('/api/grocery', groceryRoutes)
+app.use('/api/recipes', recipeRoutes)
 
 app.listen(PORT, () => {
   console.log(`🚀 Pantrie API server running on http://localhost:${PORT}`)

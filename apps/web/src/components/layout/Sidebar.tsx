@@ -1,6 +1,6 @@
 import { 
-  Home, Users, Utensils, Calendar, ShoppingCart, 
-  Book, TrendingUp, Settings, Zap, Plus, Star, History, Baby
+  Home, Users, Utensils, ShoppingCart, 
+  Book, TrendingUp, Settings, Zap, Link2, Star, History
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from '../ui/button'
@@ -13,19 +13,18 @@ interface SidebarProps {
 export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
   const mainNavItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
-    { id: 'family', icon: Users, label: 'Family Profiles' },
-    { id: 'thisweek', icon: Utensils, label: "This Week's Meals" },
-    { id: 'planning', icon: Calendar, label: 'Meal Planning' },
+    { id: 'family', icon: Users, label: 'Family' },
+    { id: 'thisweek', icon: Utensils, label: 'This Week' },
     { id: 'history', icon: History, label: 'History' },
-    { id: 'grocery', icon: ShoppingCart, label: 'Grocery Lists' },
-    { id: 'recipes', icon: Book, label: 'Recipe Library' },
+    { id: 'grocery', icon: ShoppingCart, label: 'Grocery' },
+    { id: 'recipes', icon: Book, label: 'Recipes' },
     { id: 'insights', icon: TrendingUp, label: 'Insights' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ]
 
   const quickActions = [
-    { id: 'generate', label: 'Generate Plan', icon: Zap },
-    { id: 'add-recipe', label: 'Add Recipe', icon: Plus },
+    { id: 'thisweek', label: 'Generate Plan', icon: Zap },
+    { id: 'recipes', label: 'Save Recipe', icon: Link2 },
     { id: 'rate-meal', label: 'Rate Last Meal', icon: Star },
   ]
 

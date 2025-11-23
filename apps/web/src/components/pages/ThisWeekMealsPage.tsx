@@ -29,7 +29,11 @@ function getCurrentWeekStart(): string {
   return monday.toISOString().split('T')[0]
 }
 
-export function ThisWeekMealsPage() {
+interface ThisWeekMealsPageProps {
+  onNavigate?: (page: string) => void
+}
+
+export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
   const [currentPlan, setCurrentPlan] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
@@ -107,7 +111,12 @@ export function ThisWeekMealsPage() {
               Generate a meal plan to see your meals for this week!
             </p>
             <Button 
-              onClick={() => window.location.hash = 'planning'}
+              onClick={() => {
+                // Navigate to meal planning page to generate
+                if (onNavigate) {
+                  onNavigate('planning')
+                }
+              }}
               className="bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold"
             >
               <Sparkles className="h-4 w-4 mr-2" />
