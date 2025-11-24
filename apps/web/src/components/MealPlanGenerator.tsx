@@ -141,7 +141,7 @@ export function MealPlanGenerator() {
           cuisine: meal.cuisine,
           difficulty: 'medium',
           estimatedCost: meal.estimatedCost,
-          imageUrl: meal.imageUrl || null  // Include Unsplash image URL
+          imageUrl: meal.imageUrl || undefined  // Include Unsplash image URL
         })),
         grocery_list: mealPlan.grocery_list,
         weekSummary: mealPlan.weekSummary,
