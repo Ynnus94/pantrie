@@ -11,6 +11,7 @@ import { CalendarExport } from './CalendarExport'
 import { generateMealPlan, quickFixMealPlan, saveMealPlan } from '../lib/api'
 import { useMealPlan } from '../context/MealPlanContext'
 import { saveMealPlanToDatabase } from '../lib/mealPlansApi'
+import { fetchImagesForMeals } from '../services/imageService'
 import { Sparkles, Check, Edit2, Clock, Utensils, ChefHat, DollarSign, Calendar, Zap, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -63,8 +64,25 @@ export function MealPlanGenerator() {
       const weekStarting = weekStart.toISOString().split('T')[0]
       
       const plan = await generateMealPlan(weekStarting)
-      setMealPlan(plan)
-      toast.success('Meal plan generated successfully!', { id: 'generate' })
+      
+      // Fetch Unsplash images for all meals
+      console.log('🖼️ Fetching Unsplash images for meals...')
+      toast.loading('Adding beautiful food photos...', { id: 'generate' })
+      const mealsWithImages = await fetchImagesForMeals(
+        plan.meals.map(m => ({ mealName: m.name, ...m }))
+      )
+      
+      // Update plan with images
+      const planWithImages = {
+        ...plan,
+        meals: mealsWithImages.map((meal, index) => ({
+          ...plan.meals[index],
+          imageUrl: meal.imageUrl
+        }))
+      }
+      
+      setMealPlan(planWithImages)
+      toast.success('Meal plan generated with beautiful photos!', { id: 'generate' })
     } catch (error: any) {
       console.error('Failed to generate meal plan:', error)
       toast.error(error.message || 'Failed to generate meal plan. Please try again.', { id: 'generate' })
@@ -119,7 +137,8 @@ export function MealPlanGenerator() {
           toddlerModification: meal.toddlerModification,
           cuisine: meal.cuisine,
           difficulty: 'medium',
-          estimatedCost: meal.estimatedCost
+          estimatedCost: meal.estimatedCost,
+          imageUrl: meal.imageUrl || null  // Include Unsplash image URL
         })),
         grocery_list: mealPlan.grocery_list,
         weekSummary: mealPlan.weekSummary,

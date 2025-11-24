@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { RecipePlaceholder } from '../RecipePlaceholder'
 import { getRecipeById, deleteRecipe } from '../../lib/recipesApi'
 import { 
   ArrowLeft, Clock, Users, Flame, Star, 
@@ -180,14 +181,21 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
         {/* Main Image */}
         <div className="lg:col-span-2">
           <div className="aspect-video rounded-xl overflow-hidden bg-[#F5F1E8] shadow-xl">
-            <img 
-              src={displayImage} 
-              alt={recipe.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.currentTarget.src = `https://source.unsplash.com/800x400/?food,dish,recipe`
-              }}
-            />
+            {displayImage ? (
+              <img 
+                src={displayImage} 
+                alt={recipe.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            ) : (
+              <RecipePlaceholder 
+                mealName={recipe.title}
+                className="w-full h-full"
+              />
+            )}
           </div>
         </div>
 

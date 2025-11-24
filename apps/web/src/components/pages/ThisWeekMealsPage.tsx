@@ -187,16 +187,22 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                 {/* Meal Image */}
                 <div className="relative group">
                   <div className="aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-br from-[#16250F]/10 to-[#FF9500]/10 relative shadow-lg">
-                    <img
-                      src={getMealImageUrl(meal.name, meal.cuisine)}
-                      alt={meal.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop&q=80`
-                      }}
-                    />
+                    {meal.imageUrl ? (
+                      <img
+                        src={meal.imageUrl}
+                        alt={meal.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      />
+                    ) : (
+                      <RecipePlaceholder 
+                        mealName={meal.name}
+                        className="w-full h-full"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                     <div className="absolute top-3 right-3">
                       {meal.isOfficeDayMeal && (
