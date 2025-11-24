@@ -19,10 +19,13 @@ interface Meal {
   name: string
   description: string
   ingredients: string[]
+  instructions?: string[]
   cookTime: number
   toddlerModification: string
   isOfficeDayMeal: boolean
   cuisine?: string
+  estimatedCost?: number
+  imageUrl?: string | null
 }
 
 // Helper function to get meal image URL
@@ -69,7 +72,7 @@ export function MealPlanGenerator() {
       console.log('🖼️ Fetching Unsplash images for meals...')
       toast.loading('Adding beautiful food photos...', { id: 'generate' })
       const mealsWithImages = await fetchImagesForMeals(
-        plan.meals.map(m => ({ mealName: m.name, ...m }))
+        plan.meals.map((m: Meal) => ({ mealName: m.name, ...m }))
       )
       
       // Update plan with images
