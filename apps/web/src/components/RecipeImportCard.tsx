@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
+import { saveRecipe } from '../lib/recipesApi'
 import { Link2, Loader2, Plus, AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription } from './ui/alert'
 import { toast } from 'sonner'
@@ -23,8 +24,12 @@ export function RecipeImportCard({ onManualEntry, onRecipeImported }: RecipeImpo
     
     setIsImporting(true)
     setError(null)
+    toast.loading('Importing recipe...', { id: 'recipe-import' })
     
     try {
+      console.log('🔗 Importing recipe from:', url)
+      
+      // Step 1: Extract recipe from URL using AI
       const response = await fetch(`${API_URL}/api/recipes/import`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,13 +38,50 @@ export function RecipeImportCard({ onManualEntry, onRecipeImported }: RecipeImpo
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Failed to import recipe' }))
+        console.error('❌ API Error:', errorData)
         throw new Error(errorData.error || 'Failed to import recipe')
       }
       
       const recipe = await response.json()
+      console.log('🍳 Recipe extracted:', recipe)
+      
+      // Validate required fields
+      if (!recipe.title) {
+        throw new Error('Recipe title is missing')
+      }
+      if (!recipe.ingredients || recipe.ingredients.length === 0) {
+        throw new Error('Recipe ingredients are missing')
+      }
+      if (!recipe.instructions || recipe.instructions.length === 0) {
+        throw new Error('Recipe instructions are missing')
+      }
+      
+      console.log('💾 Saving to database...')
+      
+      // Step 2: Save to database
+      const savedRecipe = await saveRecipe({
+        title: recipe.title,
+        description: recipe.description || '',
+        sourceType: 'url-import',
+        sourceUrl: url,
+        source: recipe.source || new URL(url).hostname,
+        author: recipe.author,
+        ingredients: recipe.ingredients,
+        instructions: recipe.instructions,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        totalTime: recipe.totalTime,
+        servings: recipe.servings,
+        difficulty: recipe.difficulty,
+        imageUrl: recipe.imageUrl,
+        tags: recipe.tags || []
+      })
+      
+      console.log('✅ Recipe saved to DB:', savedRecipe)
       
       // Show success
-      toast.success('Recipe imported successfully!', {
+      toast.success('Recipe imported and saved!', {
+        id: 'recipe-import',
         description: recipe.title || 'Recipe has been added to your library'
       })
       
@@ -47,16 +89,17 @@ export function RecipeImportCard({ onManualEntry, onRecipeImported }: RecipeImpo
       
       // Callback to parent component
       if (onRecipeImported) {
-        onRecipeImported(recipe)
+        onRecipeImported(savedRecipe)
       }
       
     } catch (err: any) {
+      console.error('❌ Import error:', err)
       const errorMessage = err.message || 'Could not import recipe. Please check the URL and try again.'
       setError(errorMessage)
       toast.error('Import failed', {
+        id: 'recipe-import',
         description: errorMessage
       })
-      console.error('Import error:', err)
     } finally {
       setIsImporting(false)
     }

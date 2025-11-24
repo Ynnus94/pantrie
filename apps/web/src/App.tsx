@@ -2,21 +2,29 @@ import { useState } from 'react'
 import { MainLayout } from './components/layout/MainLayout'
 import { Dashboard } from './components/pages/Dashboard'
 import { MealPlanGenerator } from './components/MealPlanGenerator'
-import { HistoryPage } from './components/pages/HistoryPage'
+import { MealHistory } from './components/pages/MealHistory'
 import { FamilyProfilesPage } from './components/pages/FamilyProfilesPage'
 import { ThisWeekMealsPage } from './components/pages/ThisWeekMealsPage'
 import { GroceryListsPage } from './components/pages/GroceryListsPage'
 import { RecipeLibraryPage } from './components/pages/RecipeLibraryPage'
+import { RecipeDetail } from './components/pages/RecipeDetail'
 import { InsightsPage } from './components/pages/InsightsPage'
 import { SettingsPage } from './components/pages/SettingsPage'
 import { Toaster } from './components/ui/sonner'
+import { MealPlanProvider } from './context/MealPlanContext'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard')
+  const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(null)
   
   // Navigation handler
-  const handleNavigate = (page: string) => {
+  const handleNavigate = (page: string, recipeId?: string) => {
     setCurrentPage(page)
+    if (recipeId) {
+      setSelectedRecipeId(recipeId)
+    } else {
+      setSelectedRecipeId(null)
+    }
   }
 
   // Render current page content
@@ -34,7 +42,7 @@ function App() {
         )
       
       case 'history':
-        return <HistoryPage />
+        return <MealHistory onNavigate={handleNavigate} />
       
       case 'family':
         return <FamilyProfilesPage />
@@ -46,7 +54,14 @@ function App() {
         return <GroceryListsPage />
       
       case 'recipes':
-        return <RecipeLibraryPage />
+        return <RecipeLibraryPage onNavigate={handleNavigate} />
+      
+      case 'recipe-detail':
+        if (!selectedRecipeId) {
+          setCurrentPage('recipes')
+          return null
+        }
+        return <RecipeDetail recipeId={selectedRecipeId} onNavigate={handleNavigate} />
       
       case 'insights':
         return <InsightsPage />
@@ -76,12 +91,12 @@ function App() {
   }
 
   return (
-    <>
+    <MealPlanProvider>
       <MainLayout currentPage={currentPage} onNavigate={handleNavigate}>
         {renderPage()}
       </MainLayout>
       <Toaster position="top-right" richColors />
-    </>
+    </MealPlanProvider>
   )
 }
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card'
+import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Skeleton } from './ui/skeleton'
@@ -147,22 +147,7 @@ export function MealPlanHistory() {
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="border border-[#16250F]/10 shadow-2xl bg-gradient-to-br from-white via-[#F5F1E8]/50 to-white animate-fade-in relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF9500] via-[#16250F] to-[#FF9500]" />
-        <CardHeader className="p-6 sm:p-8 relative z-10">
-          <CardTitle className="text-2xl sm:text-3xl font-bold flex items-center gap-3 text-[#16250F]">
-            <div className="p-2 bg-[#16250F] rounded-lg">
-              <Calendar className="h-6 w-6 text-[#F5F1E8]" />
-            </div>
-            Meal Plan History
-          </CardTitle>
-          <CardDescription className="text-base mt-2">
-            View and manage your saved meal plans
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
+    <div className="space-y-4">
       <div className="grid gap-4">
         {mealPlans.map((plan) => (
           <Card 

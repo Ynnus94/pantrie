@@ -15,9 +15,9 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
     { id: 'family', icon: Users, label: 'Family' },
     { id: 'thisweek', icon: Utensils, label: 'This Week' },
-    { id: 'history', icon: History, label: 'History' },
     { id: 'grocery', icon: ShoppingCart, label: 'Grocery' },
     { id: 'recipes', icon: Book, label: 'Recipes' },
+    { id: 'history', icon: History, label: 'History' },
     { id: 'insights', icon: TrendingUp, label: 'Insights' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ]

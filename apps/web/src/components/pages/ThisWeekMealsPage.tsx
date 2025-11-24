@@ -4,8 +4,10 @@ import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { Skeleton } from '../ui/skeleton'
 import { CalendarExport } from '../CalendarExport'
+import { PostMealRating } from '../PostMealRating'
 import { getMealPlans } from '../../lib/api'
-import { Calendar, Clock, Utensils, ChefHat, Zap, Loader2, Sparkles } from 'lucide-react'
+import { useMealPlan } from '../../context/MealPlanContext'
+import { Calendar, Clock, Utensils, ChefHat, Zap, Loader2, Sparkles, Star, Flame } from 'lucide-react'
 import { toast } from 'sonner'
 
 // Helper function to get meal image URL
@@ -34,34 +36,17 @@ interface ThisWeekMealsPageProps {
 }
 
 export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
-  const [currentPlan, setCurrentPlan] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const { currentMealPlan } = useMealPlan()
+  const [loading, setLoading] = useState(false)
+  const [showRating, setShowRating] = useState(false)
+  const [ratingMeal, setRatingMeal] = useState<any>(null)
 
-  useEffect(() => {
-    fetchCurrentWeekPlan()
-  }, [])
+  const familyMembers = [
+    { id: 1, name: 'Sunny' },
+    { id: 2, name: 'Audrey' },
+    { id: 3, name: 'Daughter' }
+  ]
 
-  const fetchCurrentWeekPlan = async () => {
-    setLoading(true)
-    try {
-      const plans = await getMealPlans()
-      const weekStart = getCurrentWeekStart()
-      
-      // Find plan for current week
-      const plan = plans.find((p: any) => {
-        const planDate = new Date(p.week_starting)
-        const currentDate = new Date(weekStart)
-        return planDate.toISOString().split('T')[0] === currentDate.toISOString().split('T')[0]
-      })
-      
-      setCurrentPlan(plan || null)
-    } catch (error: any) {
-      console.error('Failed to fetch meal plan:', error)
-      toast.error('Failed to load this week\'s meals')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -70,6 +55,14 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
       day: 'numeric',
       year: 'numeric'
     })
+  }
+
+  const handleRateComplete = (data: any) => {
+    console.log('Rating submitted:', data)
+    toast.success(data.saveToLibrary ? 'Meal rated and saved to library!' : 'Meal rated successfully!')
+    setShowRating(false)
+    setRatingMeal(null)
+    // TODO: Save to database
   }
 
   if (loading) {
@@ -91,13 +84,17 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
     )
   }
 
-  if (!currentPlan) {
+  if (!currentMealPlan || !currentMealPlan.meals || currentMealPlan.meals.length === 0) {
     return (
       <div className="p-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-[#16250F] mb-2">This Week's Meals</h1>
           <p className="text-[#16250F]/70">
-            Week of {formatDate(getCurrentWeekStart())}
+            {new Date().toLocaleDateString('en-US', { 
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            })}
           </p>
         </div>
         
@@ -106,21 +103,21 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
             <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
               <Calendar className="h-10 w-10 text-[#F5F1E8]" />
             </div>
-            <h3 className="text-2xl font-bold text-[#16250F] mb-3">No meal plan for this week</h3>
+            <h3 className="text-2xl font-bold text-[#16250F] mb-3">No Meal Plan Yet</h3>
             <p className="text-[#16250F]/70 mb-6 max-w-md mx-auto">
-              Generate a meal plan to see your meals for this week!
+              Let AI create a personalized weekly meal plan tailored to your family's preferences
             </p>
             <Button 
+              size="lg"
               onClick={() => {
-                // Navigate to meal planning page to generate
                 if (onNavigate) {
                   onNavigate('planning')
                 }
               }}
-              className="bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold"
+              className="gap-2 bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold shadow-lg"
             >
-              <Sparkles className="h-4 w-4 mr-2" />
-              Generate Meal Plan
+              <Sparkles className="h-5 w-5" />
+              Generate This Week's Meals
             </Button>
           </CardContent>
         </Card>
@@ -134,15 +131,19 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
         <div>
           <h1 className="text-3xl font-bold text-[#16250F] mb-2">This Week's Meals</h1>
           <p className="text-[#16250F]/70">
-            Week of {formatDate(currentPlan.week_starting)}
+            Week of {new Date(currentMealPlan.weekStarting).toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            })}
           </p>
         </div>
         <div className="flex gap-2">
           <CalendarExport mealPlan={{
-            weekStarting: currentPlan.week_starting,
-            meals: currentPlan.meals,
-            grocery_list: currentPlan.grocery_list,
-            weekSummary: currentPlan.week_summary
+            weekStarting: currentMealPlan.weekStarting,
+            meals: currentMealPlan.meals,
+            grocery_list: currentMealPlan.grocery_list || [],
+            weekSummary: currentMealPlan.weekSummary || { totalEstimatedCost: 0 }
           }} />
         </div>
       </div>
@@ -156,13 +157,13 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                 Week Summary
               </CardTitle>
               <CardDescription className="text-[#F5F1E8]/80">
-                {currentPlan.week_summary?.cuisines?.join(', ') || 'Variety of cuisines'}
+                {currentMealPlan.weekSummary?.cuisines?.join(', ') || 'Variety of cuisines'}
               </CardDescription>
             </div>
             <div className="text-center bg-[#F5F1E8]/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-[#F5F1E8]/20">
               <div className="text-sm text-[#F5F1E8]/90 mb-1">Estimated Cost</div>
               <div className="text-2xl font-bold text-[#F5F1E8]">
-                ${currentPlan.week_summary?.totalEstimatedCost?.toFixed(2) || '0.00'}
+                ${currentMealPlan.weekSummary?.totalEstimatedCost?.toFixed(2) || '0.00'}
               </div>
               <div className="text-xs text-[#F5F1E8]/70">CAD</div>
             </div>
@@ -172,7 +173,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
 
       {/* Meals */}
       <div className="space-y-4">
-        {currentPlan.meals?.map((meal: any, index: number) => (
+        {currentMealPlan.meals?.map((meal: any, index: number) => (
           <Card 
             key={index}
             className={`border-2 ${
@@ -253,6 +254,50 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
           </Card>
         ))}
       </div>
+
+      {/* Post-Meal Rating */}
+      {showRating && ratingMeal && (
+        <div className="mt-6">
+          <PostMealRating
+            meal={ratingMeal}
+            mealName={ratingMeal.name || 'Meal'}
+            mealDate={new Date().toLocaleDateString('en-US', { 
+              weekday: 'long',
+              month: 'long',
+              day: 'numeric'
+            })}
+            familyMembers={familyMembers}
+            onComplete={handleRateComplete}
+          />
+        </div>
+      )}
+
+      {/* Rate Last Meal Button */}
+      {!showRating && currentMealPlan.meals && currentMealPlan.meals.length > 0 && (
+        <Card className="border-2 border-dashed border-[#FF9500]/30 bg-gradient-to-br from-[#FF9500]/5 to-white">
+          <CardContent className="pt-6 pb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-[#16250F] mb-1">How was your meal?</h3>
+                <p className="text-sm text-[#16250F]/70">
+                  Rate your last meal and help us learn what your family loves
+                </p>
+              </div>
+              <Button 
+                className="gap-2 bg-[#FF9500] hover:bg-[#FF8500] text-white"
+                onClick={() => {
+                  // Pass the full meal object, not just the name
+                  setRatingMeal(currentMealPlan.meals[0])
+                  setShowRating(true)
+                }}
+              >
+                <Star className="h-4 w-4" />
+                Rate Last Meal
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

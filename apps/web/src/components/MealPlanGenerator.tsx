@@ -9,6 +9,8 @@ import { Label } from './ui/label'
 import { Separator } from './ui/separator'
 import { CalendarExport } from './CalendarExport'
 import { generateMealPlan, quickFixMealPlan, saveMealPlan } from '../lib/api'
+import { useMealPlan } from '../context/MealPlanContext'
+import { saveMealPlanToDatabase } from '../lib/mealPlansApi'
 import { Sparkles, Check, Edit2, Clock, Utensils, ChefHat, DollarSign, Calendar, Zap, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -49,6 +51,7 @@ export function MealPlanGenerator() {
   const [fixRequest, setFixRequest] = useState('')
   const [showQuickFix, setShowQuickFix] = useState(false)
   const [saved, setSaved] = useState(false)
+  const { setCurrentMealPlan } = useMealPlan()
 
   const handleGenerate = async () => {
     setLoading(true)
@@ -95,9 +98,53 @@ export function MealPlanGenerator() {
     setLoading(true)
     toast.loading('Saving meal plan...', { id: 'save' })
     try {
+      // Save to old API for backward compatibility
       await saveMealPlan(mealPlan)
+      
+      // Prepare meal plan data for context and database
+      const contextMealPlan = {
+        id: Date.now().toString(),
+        weekStarting: mealPlan.weekStarting,
+        meals: mealPlan.meals.map((meal, index) => ({
+          id: `${Date.now()}-${index}`,
+          day: index.toString(),
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][index],
+          name: meal.name,
+          description: meal.description,
+          cookTime: meal.cookTime,
+          isOfficeDayMeal: meal.isOfficeDayMeal,
+          isAdventureMeal: meal.cuisine === 'Adventure' || false,
+          ingredients: meal.ingredients,
+          instructions: meal.instructions || [],
+          toddlerModification: meal.toddlerModification,
+          cuisine: meal.cuisine,
+          difficulty: 'medium',
+          estimatedCost: meal.estimatedCost
+        })),
+        grocery_list: mealPlan.grocery_list,
+        weekSummary: mealPlan.weekSummary,
+        status: 'approved',
+        generatedAt: new Date().toISOString()
+      }
+      
+      // Save to context for immediate display
+      setCurrentMealPlan(contextMealPlan)
+      
+      // Save to database for persistence
+      try {
+        await saveMealPlanToDatabase({
+          weekStarting: contextMealPlan.weekStarting,
+          meals: contextMealPlan.meals,
+          grocery_list: contextMealPlan.grocery_list,
+          weekSummary: contextMealPlan.weekSummary
+        })
+        console.log('✅ Meal plan saved to database!')
+      } catch (dbError) {
+        console.error('⚠️ Failed to save to database (will still work with context):', dbError)
+      }
+      
       setSaved(true)
-      toast.success('Meal plan saved!', { id: 'save' })
+      toast.success('Meal plan saved! View it in "This Week\'s Meals"', { id: 'save' })
     } catch (error: any) {
       console.error('Failed to save meal plan:', error)
       toast.error(error.message || 'Failed to save meal plan.', { id: 'save' })
