@@ -104,7 +104,7 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
       {/* Header */}
       <div>
         <h1 className="text-4xl font-bold text-[#1a1a1a] mb-2">Recipes</h1>
-        <p className="text-lg text-[#4a4a4a] font-serif">
+        <p className="text-lg text-[#4a4a4a]">
           Your curated collection of favorite recipes. Import from URLs or save from meal history.
         </p>
       </div>
@@ -250,7 +250,7 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                 </div>
                 <div className="p-5">
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-[#1a1a1a] font-serif">{title}</h3>
+                    <h3 className="text-lg font-semibold text-[#1a1a1a]">{title}</h3>
                     {rating && rating > 0 && (
                       <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 text-[#C19A6B] fill-[#C19A6B]" />

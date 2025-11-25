@@ -95,11 +95,11 @@
     min-height: 100vh;
   }
   
-  /* Elegant serif for headings */
-  h1, h2, h3, h4, h5, h6, .font-serif {
-    font-family: 'Playfair Display', Georgia, serif;
+  /* Clean sans-serif for headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: #1a1a1a;
   }
 }

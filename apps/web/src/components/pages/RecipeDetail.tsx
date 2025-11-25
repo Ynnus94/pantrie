@@ -143,7 +143,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex-1 min-w-0">
-          <h1 className="text-4xl font-bold text-[#16250F] mb-2 font-serif">{recipe.title}</h1>
+          <h1 className="text-4xl font-bold text-[#1a1a1a] mb-2">{recipe.title}</h1>
           {recipe.description && (
             <p className="text-lg text-[#16250F]/70">{recipe.description}</p>
           )}
