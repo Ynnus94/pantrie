@@ -287,7 +287,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
                 </div>
               )}
 
-              {recipe.average_rating && recipe.average_rating > 0 && (
+              {recipe.average_rating > 0 && (
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-xl bg-yellow-500/10">
                     <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
@@ -299,7 +299,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
                 </div>
               )}
 
-              {recipe.times_made && recipe.times_made > 0 && (
+              {recipe.times_made > 0 && (
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-xl bg-[var(--accent-primary)]/10">
                     <Calendar className="h-5 w-5 text-[var(--accent-primary)]" />
