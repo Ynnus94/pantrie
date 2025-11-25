@@ -140,7 +140,7 @@ export function MealPlanHistory() {
             <Calendar className="h-10 w-10 text-[#F5F1E8]" />
           </div>
           <h3 className="text-xl font-semibold mb-2">No meal plans yet</h3>
-          <p className="text-gray-600 mb-4">Generate and save your first meal plan to see it here!</p>
+          <p className="text-muted mb-4">Generate and save your first meal plan to see it here!</p>
         </CardContent>
       </Card>
     )
@@ -160,14 +160,14 @@ export function MealPlanHistory() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                    <h3 className="text-lg sm:text-xl font-bold text-primary">
                       Week of {formatDate(plan.week_starting)}
                     </h3>
                     <Badge variant="outline" className="border-green-300 text-green-700 w-fit">
                       {plan.status}
                     </Badge>
                   </div>
-                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-gray-600 mb-3">
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-muted mb-3">
                     <div className="flex items-center gap-2">
                       <ChefHat className="h-4 w-4 text-indigo-600" />
                       <span>{plan.meals?.length || 0} meals</span>
@@ -176,7 +176,7 @@ export function MealPlanHistory() {
                       <DollarSign className="h-4 w-4 text-indigo-600" />
                       <span>${plan.week_summary?.totalEstimatedCost?.toFixed(2) || '0.00'} CAD</span>
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-muted">
                       Saved {formatDate(plan.created_at)}
                     </div>
                   </div>
@@ -344,11 +344,11 @@ export function MealPlanHistory() {
                         <Badge variant="outline">{meal.cuisine}</Badge>
                       )}
                     </div>
-                    <p className="text-sm text-gray-700 mb-3">{meal.description}</p>
+                    <p className="text-sm text-secondary mb-3">{meal.description}</p>
                     <div className="grid md:grid-cols-2 gap-4 text-sm">
                       <div>
                         <h5 className="font-medium mb-1">Ingredients:</h5>
-                        <ul className="list-disc list-inside space-y-1 text-gray-700">
+                        <ul className="list-disc list-inside space-y-1 text-secondary">
                           {meal.ingredients?.map((ing: string, i: number) => (
                             <li key={i}>{ing}</li>
                           ))}
@@ -356,7 +356,7 @@ export function MealPlanHistory() {
                       </div>
                       <div>
                         <h5 className="font-medium mb-1">👶 Toddler Modification:</h5>
-                        <p className="text-gray-700">{meal.toddlerModification}</p>
+                        <p className="text-secondary">{meal.toddlerModification}</p>
                       </div>
                     </div>
                   </CardContent>

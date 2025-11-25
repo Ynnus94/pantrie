@@ -427,12 +427,12 @@ export function MealPlanGenerator() {
                         }`}>
                           <ChefHat className="h-5 w-5" />
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                        <h3 className="text-xl sm:text-2xl font-bold text-primary">
                           {getDayName(index)}: {meal.name}
                         </h3>
                       </div>
-                      <p className="text-gray-700 mb-4 leading-relaxed">{meal.description}</p>
-                      <div className="flex items-center gap-6 text-sm text-gray-600 mb-4">
+                      <p className="text-secondary mb-4 leading-relaxed">{meal.description}</p>
+                      <div className="flex items-center gap-6 text-sm text-muted mb-4">
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-primary" />
                           <span className="font-medium">{meal.cookTime} min</span>
@@ -449,25 +449,25 @@ export function MealPlanGenerator() {
                   
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                        <Utensils className="h-4 w-4 text-primary" />
+                      <h4 className="font-semibold text-primary flex items-center gap-2">
+                        <Utensils className="h-4 w-4 text-[var(--accent-primary)]" />
                         Ingredients
                       </h4>
                       <ul className="space-y-1.5">
                         {meal.ingredients.map((ing, i) => (
-                          <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                            <span className="text-[#FF9500] mt-1.5">•</span>
+                          <li key={i} className="text-sm text-secondary flex items-start gap-2">
+                            <span className="text-[var(--accent-primary)] mt-1.5">•</span>
                             <span>{ing}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="font-semibold text-gray-900 flex items-center gap-2">
+                      <h4 className="font-semibold text-primary flex items-center gap-2">
                         <span className="text-2xl">👶</span>
                         Toddler Modification
                       </h4>
-                      <p className="text-sm text-gray-700 leading-relaxed bg-[rgba(212,165,116,0.1)] p-3 rounded-lg border border-[rgba(212,165,116,0.25)]">
+                      <p className="text-sm text-secondary leading-relaxed bg-[var(--accent-primary)]/10 p-3 rounded-lg border border-[var(--accent-primary)]/25">
                         {meal.toddlerModification}
                       </p>
                     </div>

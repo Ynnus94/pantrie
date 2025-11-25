@@ -161,8 +161,8 @@ export function PostMealRating({
                     <Star
                       className={`h-6 w-6 ${
                         (ratings[member.id] || 0) >= star
-                          ? 'fill-[#FF9500] text-[#FF9500]'
-                          : 'text-gray-300'
+                          ? 'fill-[var(--accent-primary)] text-[var(--accent-primary)]'
+                          : 'text-muted'
                       }`}
                     />
                   </button>

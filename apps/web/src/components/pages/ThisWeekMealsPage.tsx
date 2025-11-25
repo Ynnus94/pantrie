@@ -621,8 +621,8 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                     </div>
                     
                     {meal.toddlerModification && (
-                      <div className="bg-[rgba(212,165,116,0.1)] p-3 rounded-lg border border-[rgba(212,165,116,0.25)] mb-4">
-                        <p className="text-sm text-gray-700">
+                      <div className="bg-[var(--accent-primary)]/10 p-3 rounded-lg border border-[var(--accent-primary)]/25 mb-4">
+                        <p className="text-sm text-secondary">
                           <span className="font-semibold">👶 Toddler Modification:</span> {meal.toddlerModification}
                         </p>
                       </div>
