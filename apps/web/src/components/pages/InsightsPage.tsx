@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Progress } from '../ui/progress'
+import { GlassCard } from '../ui/GlassCard'
 import { getMealPlans, getFoodTries } from '../../lib/api'
 import { TrendingUp, DollarSign, ChefHat, Heart, Calendar, Award, Target } from 'lucide-react'
 import { Skeleton } from '../ui/skeleton'
@@ -75,11 +75,9 @@ export function InsightsPage() {
         <Skeleton className="h-10 w-64 mb-2" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <Card key={i}>
-              <CardContent className="pt-6">
-                <Skeleton className="h-20 w-full" />
-              </CardContent>
-            </Card>
+            <GlassCard key={i} hover={false}>
+              <Skeleton className="h-20 w-full" />
+            </GlassCard>
           ))}
         </div>
       </div>
@@ -90,160 +88,149 @@ export function InsightsPage() {
     <div className="p-8 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-primary mb-2">Insights & Analytics</h1>
-        <p className="text-primary/70">
+        <p className="text-secondary">
           Track your meal planning habits and discover patterns
         </p>
       </div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border border-[#16250F]/10">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-primary/70 mb-1">Total Meal Plans</p>
-                <p className="text-2xl font-bold text-primary">{stats.totalMealPlans}</p>
-              </div>
-              <Calendar className="h-8 w-8 text-[#FF9500]" />
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted mb-1">Total Meal Plans</p>
+              <p className="text-2xl font-bold text-primary">{stats.totalMealPlans}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--accent-primary)]/20">
+              <Calendar className="h-8 w-8 text-[var(--accent-primary)]" />
+            </div>
+          </div>
+        </GlassCard>
 
-        <Card className="border border-[#16250F]/10">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-primary/70 mb-1">Total Meals</p>
-                <p className="text-2xl font-bold text-primary">{stats.totalMeals}</p>
-              </div>
-              <ChefHat className="h-8 w-8 text-blue-600" />
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted mb-1">Total Meals</p>
+              <p className="text-2xl font-bold text-primary">{stats.totalMeals}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--info-bg)]">
+              <ChefHat className="h-8 w-8 text-[var(--info-text)]" />
+            </div>
+          </div>
+        </GlassCard>
 
-        <Card className="border border-[#16250F]/10">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-primary/70 mb-1">Avg Weekly Cost</p>
-                <p className="text-2xl font-bold text-primary">${stats.avgWeeklyCost.toFixed(2)}</p>
-              </div>
-              <DollarSign className="h-8 w-8 text-green-600" />
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted mb-1">Avg Weekly Cost</p>
+              <p className="text-2xl font-bold text-primary">${stats.avgWeeklyCost.toFixed(2)}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--success-bg)]">
+              <DollarSign className="h-8 w-8 text-[var(--success-text)]" />
+            </div>
+          </div>
+        </GlassCard>
 
-        <Card className="border border-[#16250F]/10">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-primary/70 mb-1">Foods Loved</p>
-                <p className="text-2xl font-bold text-primary">{stats.lovedFoods}</p>
-              </div>
-              <Heart className="h-8 w-8 text-red-600 fill-red-600" />
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted mb-1">Foods Loved</p>
+              <p className="text-2xl font-bold text-primary">{stats.lovedFoods}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--error-bg)]">
+              <Heart className="h-8 w-8 text-[var(--error-text)] fill-[var(--error-text)]" />
+            </div>
+          </div>
+        </GlassCard>
       </div>
 
       {/* Detailed Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Favorite Cuisines */}
-        <Card className="border border-[#16250F]/10">
-          <CardHeader>
-            <CardTitle className="text-primary flex items-center gap-2">
-              <Award className="h-5 w-5" />
-              Favorite Cuisines
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {stats.favoriteCuisines.length > 0 ? (
-              <div className="space-y-3">
-                {stats.favoriteCuisines.map((cuisine, index) => (
-                  <div key={cuisine} className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#FF9500]/20 flex items-center justify-center text-sm font-bold text-[#FF9500]">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-primary">{cuisine}</p>
-                    </div>
-                    <Badge variant="outline" className="border-[#16250F]/30">
-                      {stats.totalMealPlans > 0 ? Math.round((1 / stats.favoriteCuisines.length) * 100) : 0}%
-                    </Badge>
+        <GlassCard hover={false}>
+          <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
+            <Award className="h-5 w-5 text-[var(--accent-primary)]" />
+            Favorite Cuisines
+          </h3>
+          {stats.favoriteCuisines.length > 0 ? (
+            <div className="space-y-3">
+              {stats.favoriteCuisines.map((cuisine, index) => (
+                <div key={cuisine} className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[var(--accent-primary)]/20 flex items-center justify-center text-sm font-bold text-[var(--accent-primary)]">
+                    {index + 1}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-primary/70 text-center py-8">No data yet. Generate some meal plans to see insights!</p>
-            )}
-          </CardContent>
-        </Card>
+                  <div className="flex-1">
+                    <p className="font-medium text-primary">{cuisine}</p>
+                  </div>
+                  <Badge variant="outline" className="glass-badge">
+                    {stats.totalMealPlans > 0 ? Math.round((1 / stats.favoriteCuisines.length) * 100) : 0}%
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted text-center py-8">No data yet. Generate some meal plans to see insights!</p>
+          )}
+        </GlassCard>
 
         {/* Food Exploration */}
-        <Card className="border border-[#16250F]/10">
-          <CardHeader>
-            <CardTitle className="text-primary flex items-center gap-2">
-              <Target className="h-5 w-5" />
-              Food Exploration
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <GlassCard hover={false}>
+          <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
+            <Target className="h-5 w-5 text-[var(--accent-primary)]" />
+            Food Exploration
+          </h3>
+          <div className="space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-primary/70">Foods Tried</span>
+                <span className="text-muted">Foods Tried</span>
                 <span className="font-medium text-primary">{stats.triedFoods}</span>
               </div>
-              <Progress value={stats.triedFoods > 0 ? (stats.lovedFoods / stats.triedFoods) * 100 : 0} />
+              <Progress value={stats.triedFoods > 0 ? (stats.lovedFoods / stats.triedFoods) * 100 : 0} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-primary/70">Foods Loved</span>
+                <span className="text-muted">Foods Loved</span>
                 <span className="font-medium text-primary">{stats.lovedFoods}</span>
               </div>
-              <Progress value={stats.triedFoods > 0 ? (stats.lovedFoods / stats.triedFoods) * 100 : 0} />
+              <Progress value={stats.triedFoods > 0 ? (stats.lovedFoods / stats.triedFoods) * 100 : 0} className="h-2" />
             </div>
             {stats.triedFoods > 0 && (
-              <div className="pt-4 border-t border-[#16250F]/10">
-                <p className="text-sm text-primary/70">
-                  Success Rate: <span className="font-bold text-[#FF9500]">
+              <div className="pt-4 border-t border-[var(--border-subtle)]">
+                <p className="text-sm text-muted">
+                  Success Rate: <span className="font-bold text-[var(--accent-primary)]">
                     {Math.round((stats.lovedFoods / stats.triedFoods) * 100)}%
                   </span>
                 </p>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </GlassCard>
 
         {/* Budget Tracking */}
-        <Card className="lg:col-span-2 border border-[#16250F]/10">
-          <CardHeader>
-            <CardTitle className="text-primary flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Budget Overview
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <p className="text-sm text-primary/70 mb-1">Total Spent</p>
-                <p className="text-3xl font-bold text-primary">${stats.totalSpent.toFixed(2)}</p>
-                <p className="text-xs text-primary/60 mt-1">Across all meal plans</p>
-              </div>
-              <div>
-                <p className="text-sm text-primary/70 mb-1">Average per Week</p>
-                <p className="text-3xl font-bold text-primary">${stats.avgWeeklyCost.toFixed(2)}</p>
-                <p className="text-xs text-primary/60 mt-1">CAD</p>
-              </div>
-              <div>
-                <p className="text-sm text-primary/70 mb-1">Budget Status</p>
-                <p className="text-3xl font-bold text-green-600">On Track</p>
-                <p className="text-xs text-primary/60 mt-1">Within budget range</p>
-              </div>
+        <GlassCard hover={false} className="lg:col-span-2">
+          <h3 className="text-lg font-semibold text-primary flex items-center gap-2 mb-4">
+            <TrendingUp className="h-5 w-5 text-[var(--accent-primary)]" />
+            Budget Overview
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-4 rounded-xl bg-[var(--bg-glass-light)]">
+              <p className="text-sm text-muted mb-1">Total Spent</p>
+              <p className="text-3xl font-bold text-primary">${stats.totalSpent.toFixed(2)}</p>
+              <p className="text-xs text-muted mt-1">Across all meal plans</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-4 rounded-xl bg-[var(--bg-glass-light)]">
+              <p className="text-sm text-muted mb-1">Average per Week</p>
+              <p className="text-3xl font-bold text-primary">${stats.avgWeeklyCost.toFixed(2)}</p>
+              <p className="text-xs text-muted mt-1">CAD</p>
+            </div>
+            <div className="p-4 rounded-xl bg-[var(--bg-glass-light)]">
+              <p className="text-sm text-muted mb-1">Budget Status</p>
+              <p className="text-3xl font-bold text-[var(--success-text)]">On Track</p>
+              <p className="text-xs text-muted mt-1">Within budget range</p>
+            </div>
+          </div>
+        </GlassCard>
       </div>
     </div>
   )
 }
-

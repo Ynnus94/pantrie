@@ -1,174 +1,182 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
-import { Separator } from '../ui/separator'
+import { GlassCard } from '../ui/GlassCard'
+import { useTheme } from '../../context/ThemeContext'
 import { Settings, User, DollarSign, MapPin, Bell, Moon, Sun } from 'lucide-react'
 
 export function SettingsPage() {
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <div className="p-8 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-primary mb-2">Settings</h1>
-        <p className="text-primary/70">
+        <p className="text-secondary">
           Manage your preferences and account settings
         </p>
       </div>
 
       {/* Family Profile */}
-      <Card className="border border-[#16250F]/10">
-        <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2">
-            <User className="h-5 w-5" />
-            Family Profile
-          </CardTitle>
-          <CardDescription>
-            Update your family information and preferences
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <GlassCard hover={false}>
+        <div className="flex items-center gap-2 mb-2">
+          <User className="h-5 w-5 text-[var(--accent-primary)]" />
+          <h3 className="text-lg font-semibold text-primary">Family Profile</h3>
+        </div>
+        <p className="text-sm text-muted mb-6">
+          Update your family information and preferences
+        </p>
+        
+        <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="adult1">Adult 1 Name</Label>
-              <Input id="adult1" defaultValue="Sunny" />
+              <Label htmlFor="adult1" className="text-secondary">Adult 1 Name</Label>
+              <Input id="adult1" defaultValue="Sunny" className="glass-input" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="adult2">Adult 2 Name</Label>
-              <Input id="adult2" defaultValue="Audrey" />
+              <Label htmlFor="adult2" className="text-secondary">Adult 2 Name</Label>
+              <Input id="adult2" defaultValue="Audrey" className="glass-input" />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="location">Location</Label>
+            <Label htmlFor="location" className="text-secondary">Location</Label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary/40" />
-              <Input id="location" defaultValue="Montreal, QC" className="pl-10" />
+              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted" />
+              <Input id="location" defaultValue="Montreal, QC" className="pl-10 glass-input" />
             </div>
           </div>
-          <Button className="bg-[#FF9500] hover:bg-[#FF8500] text-white">
+          <Button>
             Save Changes
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </GlassCard>
 
       {/* Budget Settings */}
-      <Card className="border border-[#16250F]/10">
-        <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2">
-            <DollarSign className="h-5 w-5" />
-            Budget Preferences
-          </CardTitle>
-          <CardDescription>
-            Set your weekly grocery budget range
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <GlassCard hover={false}>
+        <div className="flex items-center gap-2 mb-2">
+          <DollarSign className="h-5 w-5 text-[var(--accent-primary)]" />
+          <h3 className="text-lg font-semibold text-primary">Budget Preferences</h3>
+        </div>
+        <p className="text-sm text-muted mb-6">
+          Set your weekly grocery budget range
+        </p>
+        
+        <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="min-budget">Minimum Budget (CAD)</Label>
-              <Input id="min-budget" type="number" defaultValue="150" />
+              <Label htmlFor="min-budget" className="text-secondary">Minimum Budget (CAD)</Label>
+              <Input id="min-budget" type="number" defaultValue="150" className="glass-input" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="max-budget">Maximum Budget (CAD)</Label>
-              <Input id="max-budget" type="number" defaultValue="200" />
+              <Label htmlFor="max-budget" className="text-secondary">Maximum Budget (CAD)</Label>
+              <Input id="max-budget" type="number" defaultValue="200" className="glass-input" />
             </div>
           </div>
-          <Button className="bg-[#FF9500] hover:bg-[#FF8500] text-white">
+          <Button>
             Update Budget
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </GlassCard>
 
       {/* Office Days */}
-      <Card className="border border-[#16250F]/10">
-        <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2">
-            <Settings className="h-5 w-5" />
-            Office Days
-          </CardTitle>
-          <CardDescription>
-            Select days when you need quick meal options
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
+      <GlassCard hover={false}>
+        <div className="flex items-center gap-2 mb-2">
+          <Settings className="h-5 w-5 text-[var(--accent-primary)]" />
+          <h3 className="text-lg font-semibold text-primary">Office Days</h3>
+        </div>
+        <p className="text-sm text-muted mb-6">
+          Select days when you need quick meal options
+        </p>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+          {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => {
+            const isSelected = ['Monday', 'Wednesday', 'Friday'].includes(day)
+            return (
               <Button
                 key={day}
-                variant={['Monday', 'Wednesday', 'Friday'].includes(day) ? 'default' : 'outline'}
-                className={['Monday', 'Wednesday', 'Friday'].includes(day) 
-                  ? 'bg-[#FF9500] hover:bg-[#FF8500] text-white' 
-                  : 'border-[#16250F]/20 hover:border-[#FF9500]'}
+                variant={isSelected ? 'default' : 'glass'}
+                className={isSelected ? '' : 'hover:border-[var(--accent-primary)]'}
               >
                 {day.slice(0, 3)}
               </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            )
+          })}
+        </div>
+      </GlassCard>
 
       {/* Notifications */}
-      <Card className="border border-[#16250F]/10">
-        <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2">
-            <Bell className="h-5 w-5" />
-            Notifications
-          </CardTitle>
-          <CardDescription>
-            Manage your notification preferences
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
+      <GlassCard hover={false}>
+        <div className="flex items-center gap-2 mb-2">
+          <Bell className="h-5 w-5 text-[var(--accent-primary)]" />
+          <h3 className="text-lg font-semibold text-primary">Notifications</h3>
+        </div>
+        <p className="text-sm text-muted mb-6">
+          Manage your notification preferences
+        </p>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-glass-light)]">
             <div>
               <p className="font-medium text-primary">Meal Plan Reminders</p>
-              <p className="text-sm text-primary/70">Get notified when it's time to plan meals</p>
+              <p className="text-sm text-muted">Get notified when it's time to plan meals</p>
             </div>
             <input type="checkbox" defaultChecked />
           </div>
-          <Separator />
-          <div className="flex items-center justify-between">
+          
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-glass-light)]">
             <div>
               <p className="font-medium text-primary">Grocery List Updates</p>
-              <p className="text-sm text-primary/70">Notifications when grocery lists are ready</p>
+              <p className="text-sm text-muted">Notifications when grocery lists are ready</p>
             </div>
             <input type="checkbox" defaultChecked />
           </div>
-          <Separator />
-          <div className="flex items-center justify-between">
+          
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-glass-light)]">
             <div>
               <p className="font-medium text-primary">AI Suggestions</p>
-              <p className="text-sm text-primary/70">Weekly meal suggestions based on your preferences</p>
+              <p className="text-sm text-muted">Weekly meal suggestions based on your preferences</p>
             </div>
             <input type="checkbox" defaultChecked />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </GlassCard>
 
       {/* Appearance */}
-      <Card className="border border-[#16250F]/10">
-        <CardHeader>
-          <CardTitle className="text-primary flex items-center gap-2">
-            <Sun className="h-5 w-5" />
-            Appearance
-          </CardTitle>
-          <CardDescription>
-            Customize the look and feel of the app
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-primary">Theme</p>
-              <p className="text-sm text-primary/70">Light mode (default)</p>
-            </div>
-            <Button variant="outline" className="border-[#16250F]/20">
-              <Moon className="h-4 w-4 mr-2" />
-              Switch to Dark
-            </Button>
+      <GlassCard hover={false}>
+        <div className="flex items-center gap-2 mb-2">
+          {theme === 'light' ? (
+            <Sun className="h-5 w-5 text-[var(--accent-primary)]" />
+          ) : (
+            <Moon className="h-5 w-5 text-[var(--accent-primary)]" />
+          )}
+          <h3 className="text-lg font-semibold text-primary">Appearance</h3>
+        </div>
+        <p className="text-sm text-muted mb-6">
+          Customize the look and feel of the app
+        </p>
+        
+        <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-glass-light)]">
+          <div>
+            <p className="font-medium text-primary">Theme</p>
+            <p className="text-sm text-muted">
+              {theme === 'light' ? 'Light mode' : 'Dark mode'}
+            </p>
           </div>
-        </CardContent>
-      </Card>
+          <Button variant="glass" onClick={toggleTheme} className="gap-2">
+            {theme === 'light' ? (
+              <>
+                <Moon className="h-4 w-4" />
+                Switch to Dark
+              </>
+            ) : (
+              <>
+                <Sun className="h-4 w-4" />
+                Switch to Light
+              </>
+            )}
+          </Button>
+        </div>
+      </GlassCard>
     </div>
   )
 }
-

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Skeleton } from './ui/skeleton'
+import { GlassCard } from './ui/GlassCard'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
@@ -61,19 +61,19 @@ export function ToddlerTracker() {
 
   const getReactionIcon = (reaction: string) => {
     switch (reaction) {
-      case 'loved': return <Heart className="h-5 w-5 text-green-600 fill-green-600" />
-      case 'tried': return <Meh className="h-5 w-5 text-yellow-600" />
-      case 'refused': return <X className="h-5 w-5 text-red-600" />
+      case 'loved': return <Heart className="h-5 w-5 text-[var(--success-text)] fill-[var(--success-text)]" />
+      case 'tried': return <Meh className="h-5 w-5 text-[var(--warning-text)]" />
+      case 'refused': return <X className="h-5 w-5 text-[var(--error-text)]" />
       default: return null
     }
   }
 
   const getReactionColor = (reaction: string) => {
     switch (reaction) {
-      case 'loved': return 'bg-green-100 text-green-800 border-green-300'
-      case 'tried': return 'bg-yellow-100 text-yellow-800 border-yellow-300'
-      case 'refused': return 'bg-red-100 text-red-800 border-red-300'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'loved': return 'glass-badge-success'
+      case 'tried': return 'glass-badge-warning'
+      case 'refused': return 'bg-[var(--error-bg)] text-[var(--error-text)] border-[var(--error-border)]'
+      default: return 'glass-badge'
     }
   }
 
@@ -82,181 +82,159 @@ export function ToddlerTracker() {
   const refusedCount = foodTries.filter(t => t.reaction === 'refused').length
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-6">
       {/* Hero Card */}
-      <Card className="border border-[#16250F]/10 shadow-2xl bg-gradient-to-br from-white via-[#F5F1E8] to-white overflow-hidden hover-lift animate-fade-in relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FF9500]/5 via-transparent to-[#16250F]/5 pointer-events-none" />
-        <CardHeader className="relative p-6 sm:p-8 z-10">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary flex items-center gap-3">
-                <div className="p-2.5 bg-[#16250F] rounded-xl shadow-lg">
-                  <Baby className="h-5 w-5 sm:h-6 sm:w-6 text-[#F5F1E8]" />
-                </div>
-                Little Foodie Journey
-              </CardTitle>
-              <CardDescription className="text-sm sm:text-base text-primary/70 max-w-2xl">
-                Track your daughter's food exploration and build great eating habits
-              </CardDescription>
-            </div>
-            <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
-              <DialogTrigger asChild>
-                <Button 
-                  size="lg"
-                  className="w-full sm:w-auto bg-[#FF9500] hover:bg-[#FF8500] active:bg-[#FF7500] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-100 transition-all duration-200 font-semibold"
-                >
-                  <Plus className="h-5 w-5 mr-2" />
-                  Add Food Adventure
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <Plus className="h-5 w-5 text-pink-600" />
-                    Add New Food Adventure
-                  </DialogTitle>
-                  <DialogDescription>
-                    Record what your little one tried and how they reacted
-                  </DialogDescription>
-                </DialogHeader>
-                <AddFoodTryForm 
-                  onAdd={handleAddFoodTry} 
-                  onCancel={() => setShowAddForm(false)}
-                  loading={loading}
-                />
-              </DialogContent>
-            </Dialog>
+      <GlassCard hover={false} className="week-summary-card">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-3">
+              <div className="p-2.5 bg-[var(--accent-primary)] rounded-xl">
+                <Baby className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+              </div>
+              Little Foodie Journey
+            </h2>
+            <p className="text-sm sm:text-base text-secondary max-w-2xl">
+              Track your daughter's food exploration and build great eating habits
+            </p>
           </div>
-        </CardHeader>
-      </Card>
+          <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
+            <DialogTrigger asChild>
+              <Button size="lg" className="w-full sm:w-auto gap-2">
+                <Plus className="h-5 w-5" />
+                Add Food Adventure
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px] glass-card-strong">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-primary">
+                  <Plus className="h-5 w-5 text-[var(--accent-primary)]" />
+                  Add New Food Adventure
+                </DialogTitle>
+                <DialogDescription className="text-muted">
+                  Record what your little one tried and how they reacted
+                </DialogDescription>
+              </DialogHeader>
+              <AddFoodTryForm 
+                onAdd={handleAddFoodTry} 
+                onCancel={() => setShowAddForm(false)}
+                loading={loading}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
+      </GlassCard>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-        <Card className="border border-[#16250F]/10 shadow-lg bg-white hover:shadow-xl card-hover animate-fade-in">
-          <CardContent className="pt-6 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-primary/70 mb-1">Foods Loved</p>
-                <p className="text-3xl font-bold text-primary">{lovedCount}</p>
-              </div>
-              <div className="p-3 bg-green-50 rounded-xl">
-                <Heart className="h-6 w-6 text-green-600 fill-green-600" />
-              </div>
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted mb-1">Foods Loved</p>
+              <p className="text-3xl font-bold text-primary">{lovedCount}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--success-bg)]">
+              <Heart className="h-6 w-6 text-[var(--success-text)] fill-[var(--success-text)]" />
+            </div>
+          </div>
+        </GlassCard>
 
-        <Card className="border border-[#16250F]/10 shadow-lg bg-white hover:shadow-xl card-hover animate-fade-in" style={{ animationDelay: '50ms' }}>
-          <CardContent className="pt-6 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-primary/70 mb-1">Foods Tried</p>
-                <p className="text-3xl font-bold text-primary">{triedCount}</p>
-              </div>
-              <div className="p-3 bg-yellow-50 rounded-xl">
-                <Meh className="h-6 w-6 text-yellow-600" />
-              </div>
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted mb-1">Foods Tried</p>
+              <p className="text-3xl font-bold text-primary">{triedCount}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--warning-bg)]">
+              <Meh className="h-6 w-6 text-[var(--warning-text)]" />
+            </div>
+          </div>
+        </GlassCard>
 
-        <Card className="border border-[#16250F]/10 shadow-lg bg-white hover:shadow-xl card-hover animate-fade-in" style={{ animationDelay: '100ms' }}>
-          <CardContent className="pt-6 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-primary/70 mb-1">Foods Refused</p>
-                <p className="text-3xl font-bold text-primary">{refusedCount}</p>
-              </div>
-              <div className="p-3 bg-red-50 rounded-xl">
-                <X className="h-6 w-6 text-red-600" />
-              </div>
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted mb-1">Foods Refused</p>
+              <p className="text-3xl font-bold text-primary">{refusedCount}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--error-bg)]">
+              <X className="h-6 w-6 text-[var(--error-text)]" />
+            </div>
+          </div>
+        </GlassCard>
 
-        <Card className="border border-[#16250F]/10 shadow-lg bg-white hover:shadow-xl card-hover">
-          <CardContent className="pt-6 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-blue-700 mb-1">Total Adventures</p>
-                <p className="text-3xl font-bold text-blue-900">{foodTries.length}</p>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <TrendingUp className="h-6 w-6 text-blue-600" />
-              </div>
+        <GlassCard>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted mb-1">Total Adventures</p>
+              <p className="text-3xl font-bold text-primary">{foodTries.length}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-3 rounded-xl bg-[var(--info-bg)]">
+              <TrendingUp className="h-6 w-6 text-[var(--info-text)]" />
+            </div>
+          </div>
+        </GlassCard>
       </div>
 
       {/* Food History */}
-      <Card className="border border-[#16250F]/10 shadow-xl bg-white">
-        <CardHeader className="p-6 sm:p-8">
-          <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Recent Food Adventures</CardTitle>
-          <CardDescription className="text-base mt-2">
-            Track your little one's culinary journey
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-6 sm:p-8 pt-0">
-          {fetching ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-20 w-full" />
-              ))}
+      <GlassCard hover={false}>
+        <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2">Recent Food Adventures</h3>
+        <p className="text-sm text-muted mb-6">
+          Track your little one's culinary journey
+        </p>
+        
+        {fetching ? (
+          <div className="space-y-3">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-20 w-full" />
+            ))}
+          </div>
+        ) : foodTries.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="p-4 bg-[var(--bg-glass-strong)] border-2 border-[var(--accent-primary)] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+              <Baby className="h-10 w-10 text-[var(--accent-primary)]" />
             </div>
-          ) : foodTries.length === 0 ? (
-            <div className="text-center py-16 px-4">
-              <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center animate-pulse">
-                <Baby className="h-10 w-10 text-[#F5F1E8]" />
-              </div>
-              <h3 className="text-2xl font-bold text-primary mb-3">No food adventures yet</h3>
-              <p className="text-primary/70 mb-6 max-w-md mx-auto">Start tracking your little one's food journey!</p>
-              <Button 
-                onClick={() => setShowAddForm(true)}
-                className="bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold"
+            <h3 className="text-xl font-bold text-primary mb-3">No food adventures yet</h3>
+            <p className="text-muted mb-6 max-w-md mx-auto">Start tracking your little one's food journey!</p>
+            <Button onClick={() => setShowAddForm(true)} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add First Food Adventure
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {foodTries.slice(0, 10).map((foodTry) => (
+              <div 
+                key={foodTry.id} 
+                className="p-4 rounded-xl bg-[var(--bg-glass-light)] border-l-4 border-l-[var(--accent-primary)] hover:bg-[var(--bg-glass)] transition-all"
               >
-                <Plus className="h-4 w-4 mr-2" />
-                Add First Food Adventure
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {foodTries.slice(0, 10).map((foodTry) => (
-                <Card 
-                  key={foodTry.id} 
-                  className="hover:shadow-md transition-all border-l-4 border-l-[#FF9500] bg-white card-hover"
-                >
-                  <CardContent className="pt-4">
-                    <div className="flex items-start gap-4">
-                      <div className="p-2 bg-gray-50 rounded-lg">
-                        {getReactionIcon(foodTry.reaction)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                          <h4 className="font-semibold text-gray-900 text-lg">{foodTry.food_item}</h4>
-                          <Badge className={getReactionColor(foodTry.reaction)}>
-                            {foodTry.reaction}
-                          </Badge>
-                        </div>
-                        {foodTry.meal_context && (
-                          <p className="text-sm text-gray-600 mb-2">{foodTry.meal_context}</p>
-                        )}
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-[var(--bg-glass)] rounded-lg">
+                    {getReactionIcon(foodTry.reaction)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <h4 className="font-semibold text-primary text-lg">{foodTry.food_item}</h4>
+                      <Badge className={getReactionColor(foodTry.reaction)}>
+                        {foodTry.reaction}
+                      </Badge>
+                    </div>
+                    {foodTry.meal_context && (
+                      <p className="text-sm text-secondary mb-2">{foodTry.meal_context}</p>
+                    )}
+                    <div className="flex items-center gap-4 text-xs text-muted">
                       <span className="whitespace-nowrap">{new Date(foodTry.tried_at).toLocaleDateString('en-US', { 
                         month: 'short', 
                         day: 'numeric',
                         year: 'numeric'
                       })}</span>
                     </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </GlassCard>
     </div>
   )
 }
@@ -284,9 +262,9 @@ function AddFoodTryForm({
 
   const getReactionIcon = (reaction: string) => {
     switch (reaction) {
-      case 'loved': return <Heart className="h-4 w-4 text-green-600 fill-green-600" />
-      case 'tried': return <Meh className="h-4 w-4 text-yellow-600" />
-      case 'refused': return <X className="h-4 w-4 text-red-600" />
+      case 'loved': return <Heart className="h-4 w-4 text-[var(--success-text)] fill-[var(--success-text)]" />
+      case 'tried': return <Meh className="h-4 w-4 text-[var(--warning-text)]" />
+      case 'refused': return <X className="h-4 w-4 text-[var(--error-text)]" />
       default: return null
     }
   }
@@ -294,19 +272,19 @@ function AddFoodTryForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4 py-4">
       <div className="space-y-2">
-        <Label htmlFor="food-item">Food Item</Label>
+        <Label htmlFor="food-item" className="text-secondary">Food Item</Label>
         <Input
           id="food-item"
           value={foodItem}
           onChange={(e) => setFoodItem(e.target.value)}
           placeholder="e.g., Broccoli, Korean BBQ sauce, Quinoa"
           required
-          className="h-11"
+          className="glass-input h-11"
         />
       </div>
       
       <div className="space-y-2">
-        <Label>Reaction</Label>
+        <Label className="text-secondary">Reaction</Label>
         <div className="grid grid-cols-3 gap-2">
           {(['loved', 'tried', 'refused'] as const).map((r) => (
             <button
@@ -315,47 +293,43 @@ function AddFoodTryForm({
               onClick={() => setReaction(r)}
               className={`px-4 py-3 rounded-lg border-2 flex flex-col items-center gap-2 transition-all ${
                 reaction === r 
-                  ? 'border-pink-500 bg-pink-50 shadow-md' 
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
+                  ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/10' 
+                  : 'border-[var(--border-subtle)] hover:border-[var(--border-medium)] bg-[var(--bg-glass-light)]'
               }`}
             >
               {getReactionIcon(r)}
-              <span className="text-sm font-medium capitalize">{r}</span>
+              <span className="text-sm font-medium capitalize text-primary">{r}</span>
             </button>
           ))}
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="meal-context">Meal Context (Optional)</Label>
+        <Label htmlFor="meal-context" className="text-secondary">Meal Context (Optional)</Label>
         <Input
           id="meal-context"
           value={mealContext}
           onChange={(e) => setMealContext(e.target.value)}
           placeholder="e.g., Tuesday Korean Tacos, Breakfast smoothie"
-          className="h-11"
+          className="glass-input h-11"
         />
       </div>
 
-      <Separator />
+      <Separator className="bg-[var(--border-subtle)]" />
 
       <div className="flex gap-2 justify-end">
-        <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
+        <Button type="button" variant="glass" onClick={onCancel} disabled={loading}>
           Cancel
         </Button>
-        <Button 
-          type="submit" 
-          disabled={loading}
-          className="bg-gradient-to-r from-pink-600 to-rose-600"
-        >
+        <Button type="submit" disabled={loading} className="gap-2">
           {loading ? (
             <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin" />
               Adding...
             </>
           ) : (
             <>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4" />
               Add Food Adventure
             </>
           )}
