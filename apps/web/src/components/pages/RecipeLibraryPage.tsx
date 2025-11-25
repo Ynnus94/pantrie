@@ -6,7 +6,7 @@ import { Input } from '../ui/input'
 import { GlassCard } from '../ui/GlassCard'
 import { getRecipes, deleteRecipe } from '../../lib/recipesApi'
 import { RecipePlaceholder } from '../RecipePlaceholder'
-import { Book, Search, Plus, Clock, Utensils, Star, Loader2, MoreVertical, Eye, Pencil, Calendar, Share2, Trash2 } from 'lucide-react'
+import { Book, Search, Plus, Clock, Utensils, Star, Loader2, MoreVertical, Eye, Pencil, Calendar, Share2, Trash2, ImageIcon } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 import { RecipeImportCard } from '../RecipeImportCard'
+import { RefreshImageModal } from '../modals/RefreshImageModal'
+import { updateRecipeImage } from '../../lib/recipesApi'
 import { toast } from 'sonner'
 
 interface Recipe {
@@ -44,6 +46,7 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
   const [searchQuery, setSearchQuery] = useState('')
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [refreshingRecipe, setRefreshingRecipe] = useState<Recipe | null>(null)
 
   useEffect(() => {
     loadRecipes()
@@ -96,6 +99,34 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
   const handleViewRecipe = (recipeId: string | number) => {
     if (onNavigate) {
       onNavigate('recipe-detail', String(recipeId))
+    }
+  }
+
+  const handleRefreshImage = (recipe: Recipe) => {
+    setRefreshingRecipe(recipe)
+  }
+
+  const handleImageSelected = async (newImageUrl: string) => {
+    if (!refreshingRecipe) return
+    
+    try {
+      // Update in database
+      await updateRecipeImage(
+        typeof refreshingRecipe.id === 'string' ? parseInt(refreshingRecipe.id) : refreshingRecipe.id,
+        newImageUrl
+      )
+      
+      // Update local state
+      setRecipes(recipes.map(r => 
+        r.id === refreshingRecipe.id 
+          ? { ...r, image_url: newImageUrl, imageUrl: newImageUrl }
+          : r
+      ))
+      
+      setRefreshingRecipe(null)
+    } catch (error) {
+      console.error('Failed to update image:', error)
+      toast.error('Failed to update image')
     }
   }
 
@@ -229,7 +260,7 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
             return (
               <GlassCard key={recipe.id} padding="none" className="overflow-hidden">
                 <div 
-                  className="h-48 overflow-hidden bg-pantry-dark relative cursor-pointer group"
+                  className="h-48 overflow-hidden bg-[var(--bg-glass-light)] relative cursor-pointer group"
                   onClick={() => handleViewRecipe(recipe.id)}
                 >
                   {imageUrl ? (
@@ -247,6 +278,18 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                       className="w-full h-full"
                     />
                   )}
+                  
+                  {/* Refresh Image Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRefreshImage(recipe)
+                    }}
+                    className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 glass-button p-2 rounded-lg bg-white/80 hover:bg-white hover:scale-110 shadow-lg"
+                    aria-label="Find better image"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                  </button>
                 </div>
                 <div className="p-5">
                   <div className="flex items-start justify-between mb-2">
@@ -325,6 +368,14 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
           })}
         </div>
       )}
+
+      {/* Refresh Image Modal */}
+      <RefreshImageModal
+        meal={refreshingRecipe ? { name: refreshingRecipe.title || refreshingRecipe.name, ...refreshingRecipe } : null}
+        isOpen={!!refreshingRecipe}
+        onClose={() => setRefreshingRecipe(null)}
+        onImageSelected={handleImageSelected}
+      />
     </div>
   )
 }

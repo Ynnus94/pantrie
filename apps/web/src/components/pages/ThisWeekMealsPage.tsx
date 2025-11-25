@@ -16,12 +16,13 @@ import { PostMealRating } from '../PostMealRating'
 import { RecipePlaceholder } from '../RecipePlaceholder'
 import { ReplaceMealModal } from '../ReplaceMealModal'
 import { MealPlanGeneratorModal } from '../modals/MealPlanGeneratorModal'
+import { RefreshImageModal } from '../modals/RefreshImageModal'
 import { getMealPlans } from '../../lib/api'
 import { useMealPlan } from '../../context/MealPlanContext'
 import { 
   Calendar, Clock, Utensils, ChefHat, Zap, Loader2, Sparkles, Star, Flame,
   MoreVertical, Eye, RefreshCw, Check, Trash2, MessageSquare, BookOpen,
-  AlertCircle, CheckCircle2, Plus
+  AlertCircle, CheckCircle2, Plus, ImageIcon
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -61,6 +62,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
   const [cookedMeals, setCookedMeals] = useState<Set<string>>(new Set())
   const [ratedMeals, setRatedMeals] = useState<Record<string, number>>({})
   const [showGenerateModal, setShowGenerateModal] = useState(false)
+  const [refreshingMeal, setRefreshingMeal] = useState<any>(null)
 
   const familyMembers = [
     { id: 1, name: 'Sunny' },
@@ -224,6 +226,29 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
     toast.info(`Generating meal for ${getDayName(dayIndex)}`, {
       description: 'This feature coming soon!'
     })
+  }
+
+  // ============ IMAGE REFRESH ============
+
+  const handleRefreshImage = (meal: any) => {
+    setRefreshingMeal(meal)
+  }
+
+  const handleImageSelected = (newImageUrl: string) => {
+    if (!refreshingMeal || !currentMealPlan) return
+    
+    // Update the meal in context
+    const updatedMeals = currentMealPlan.meals.map((m: any) => 
+      m.id === refreshingMeal.id ? { ...m, imageUrl: newImageUrl } : m
+    )
+    
+    setCurrentMealPlan({
+      ...currentMealPlan,
+      meals: updatedMeals
+    })
+    
+    // Close modal
+    setRefreshingMeal(null)
   }
 
   // ============ LOADING STATE ============
@@ -460,7 +485,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                 <div className="grid md:grid-cols-[280px_1fr] gap-6">
                   {/* Meal Image */}
                   <div className="relative group">
-                    <div className="aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-br from-[#16250F]/10 to-[#FF9500]/10 relative shadow-lg">
+                    <div className="aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-br from-[var(--bg-glass-light)] to-[var(--bg-glass)] relative shadow-lg">
                       {meal.imageUrl ? (
                         <img
                           src={meal.imageUrl}
@@ -478,6 +503,18 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                         />
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                      
+                      {/* Refresh Image Button - appears on hover */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleRefreshImage(meal)
+                        }}
+                        className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 glass-button p-2.5 rounded-lg bg-white/80 hover:bg-white hover:scale-110 shadow-lg"
+                        aria-label="Find better image"
+                      >
+                        <ImageIcon className="h-4 w-4" />
+                      </button>
                       
                       {/* Top badges */}
                       <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
@@ -504,9 +541,9 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                       </div>
                       
                       {/* Bottom cuisine badge */}
-                      <div className="absolute bottom-3 left-3 right-3">
+                      <div className="absolute bottom-3 left-3">
                         {meal.cuisine && (
-                          <Badge className="bg-[#16250F]/80 text-white border-0 backdrop-blur-sm">
+                          <Badge className="bg-[var(--bg-glass-strong)] text-primary border-0 backdrop-blur-sm">
                             {meal.cuisine}
                           </Badge>
                         )}
@@ -704,6 +741,14 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
       <MealPlanGeneratorModal
         isOpen={showGenerateModal}
         onClose={() => setShowGenerateModal(false)}
+      />
+
+      {/* ============ REFRESH IMAGE MODAL ============ */}
+      <RefreshImageModal
+        meal={refreshingMeal}
+        isOpen={!!refreshingMeal}
+        onClose={() => setRefreshingMeal(null)}
+        onImageSelected={handleImageSelected}
       />
     </div>
   )

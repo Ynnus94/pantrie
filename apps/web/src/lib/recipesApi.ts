@@ -98,6 +98,30 @@ export async function getRecipeById(id: number) {
   }
 }
 
+export async function updateRecipeImage(id: number, imageUrl: string) {
+  try {
+    console.log('🖼️ Updating recipe image:', id)
+    
+    const { error } = await supabase
+      .from('recipes')
+      .update({ 
+        image_url: imageUrl,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
+
+    if (error) {
+      console.error('❌ Error updating recipe image:', error)
+      throw error
+    }
+    
+    console.log('✅ Recipe image updated successfully')
+  } catch (error) {
+    console.error('❌ Error updating recipe image:', error)
+    throw error
+  }
+}
+
 export async function deleteRecipe(id: number) {
   try {
     console.log('🗑️ Attempting to delete recipe:', id)
