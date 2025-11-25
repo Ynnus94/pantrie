@@ -203,7 +203,7 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                 <Button variant="outline" onClick={() => setShowAddDialog(false)}>
                   Cancel
                 </Button>
-                <Button className="bg-[#FF9500] hover:bg-[#FF8500]">
+                <Button>
                   Save Recipe
                 </Button>
               </div>
@@ -296,13 +296,13 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                     <h3 className="text-lg font-semibold text-primary">{title}</h3>
                     {rating && rating > 0 && (
                       <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 text-[#C19A6B] fill-[#C19A6B]" />
+                        <Star className="h-4 w-4 text-[var(--accent-primary)] fill-[var(--accent-primary)]" />
                         <span className="text-sm font-medium text-primary">{rating}</span>
                       </div>
                     )}
                   </div>
                   <div className="flex items-center gap-2 mb-3">
-                    <Badge variant="outline" className="border-[rgba(212,165,116,0.3)] text-xs bg-[rgba(212,165,116,0.1)] text-[#A67C52]">
+                    <Badge variant="outline" className="border-[var(--accent-primary)]/30 text-xs bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
                       {cuisine}
                     </Badge>
                     {cookTime > 0 && (

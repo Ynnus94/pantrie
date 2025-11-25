@@ -224,18 +224,18 @@ export function GroceryListsPage() {
       <div className="p-8">
         <div className="mb-6">
           <div className="h-10 w-48 bg-[var(--bg-glass-light)] rounded-lg animate-pulse mb-2" />
-          <div className="h-6 w-64 bg-white/30 rounded-lg animate-pulse" />
+          <div className="h-6 w-64 bg-[var(--bg-glass-light)] rounded-lg animate-pulse" />
         </div>
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-4">
             {[1, 2, 3].map(i => (
               <GlassCard key={i} hover={false}>
-                <div className="h-32 animate-pulse bg-white/30 rounded-lg" />
+                <div className="h-32 animate-pulse bg-[var(--bg-glass-light)] rounded-lg" />
               </GlassCard>
             ))}
           </div>
           <GlassCard hover={false}>
-            <div className="h-48 animate-pulse bg-white/30 rounded-lg" />
+            <div className="h-48 animate-pulse bg-[var(--bg-glass-light)] rounded-lg" />
           </GlassCard>
         </div>
       </div>
@@ -366,7 +366,7 @@ export function GroceryListsPage() {
                 {/* Category Header */}
                 <button
                   onClick={() => toggleCategory(category)}
-                  className="w-full flex items-center justify-between p-1 hover:bg-white/20 rounded-lg transition-colors -m-1"
+                  className="w-full flex items-center justify-between p-1 hover:bg-[var(--bg-glass-light)] rounded-lg transition-colors -m-1"
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">{CATEGORY_ICONS[category]}</span>
@@ -420,7 +420,7 @@ export function GroceryListsPage() {
                 <span className="text-secondary">Progress</span>
                 <span className="font-semibold text-primary">{progressPercent}%</span>
               </div>
-              <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-[var(--bg-glass-light)] rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-to-r from-honey to-honey-dark transition-all duration-500"
                   style={{ width: `${progressPercent}%` }}
@@ -478,10 +478,10 @@ export function GroceryListsPage() {
 
           {/* Meal Plan Connection */}
           {currentMealPlan && currentMealPlan.meals.length > 0 && (
-            <GlassCard hover={false} className="bg-[rgba(212,165,116,0.05)] border-[rgba(212,165,116,0.2)]">
+            <GlassCard hover={false} className="bg-[var(--accent-primary)]/5 border-[var(--accent-primary)]/20">
               <div className="flex items-start gap-3">
-                <div className="p-2 bg-[rgba(212,165,116,0.2)] rounded-lg">
-                  <AlertCircle className="h-4 w-4 text-[var(--accent-primary)]-dark" />
+                <div className="p-2 bg-[var(--accent-primary)]/20 rounded-lg">
+                  <AlertCircle className="h-4 w-4 text-[var(--accent-primary)]" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-primary">
@@ -493,7 +493,7 @@ export function GroceryListsPage() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="mt-2 h-7 text-xs text-[var(--accent-primary)]-dark hover:text-[var(--accent-primary)]"
+                    className="mt-2 h-7 text-xs text-[var(--accent-primary)] hover:text-[var(--accent-hover)]"
                     onClick={handleSyncWithMealPlan}
                     disabled={syncing}
                   >
@@ -533,7 +533,7 @@ function GroceryItemRow({
 
   if (isEditing) {
     return (
-      <div className="flex items-center gap-2 p-2 bg-white/30 rounded-lg">
+      <div className="flex items-center gap-2 p-2 bg-[var(--bg-glass-light)] rounded-lg">
         <Input
           value={editName}
           onChange={(e) => setEditName(e.target.value)}

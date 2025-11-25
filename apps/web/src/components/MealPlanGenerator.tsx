@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Skeleton } from './ui/skeleton'
@@ -7,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Textarea } from './ui/textarea'
 import { Label } from './ui/label'
 import { Separator } from './ui/separator'
+import { GlassCard } from './ui/GlassCard'
 import { CalendarExport } from './CalendarExport'
 import { generateMealPlan, quickFixMealPlan, saveMealPlan } from '../lib/api'
 import { useMealPlan } from '../context/MealPlanContext'
@@ -30,11 +30,7 @@ interface Meal {
 
 // Helper function to get meal image URL
 function getMealImageUrl(mealName: string, cuisine?: string): string {
-  // Use Unsplash API with food search - using a curated food photo
-  // This uses Unsplash's search API with a specific food photo ID as fallback
   const searchTerm = encodeURIComponent(`${mealName} ${cuisine || 'food'}`)
-  // Using Unsplash's source API (works without key for basic usage)
-  // If this doesn't work, we have a fallback in onError handler
   return `https://source.unsplash.com/600x400/?${searchTerm},food,dish`
 }
 
@@ -141,7 +137,7 @@ export function MealPlanGenerator() {
           cuisine: meal.cuisine,
           difficulty: 'medium',
           estimatedCost: meal.estimatedCost,
-          imageUrl: meal.imageUrl || undefined  // Include Unsplash image URL
+          imageUrl: meal.imageUrl || undefined
         })),
         grocery_list: mealPlan.grocery_list,
         weekSummary: mealPlan.weekSummary,
@@ -182,66 +178,61 @@ export function MealPlanGenerator() {
 
   return (
     <div className="space-y-6 md:space-y-8 animate-in fade-in duration-500">
-      {/* Hero Generate Card with gradient background */}
-      <Card className="border border-[#16250F]/10 shadow-2xl bg-gradient-to-br from-white via-[#F5F1E8] to-white overflow-hidden hover-lift animate-fade-in relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FF9500]/5 via-transparent to-[#16250F]/5 pointer-events-none" />
-        <CardHeader className="relative p-6 sm:p-8 z-10">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary flex items-center gap-3">
-                <div className="p-2.5 bg-[#16250F] rounded-xl shadow-lg">
-                  <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-[#F5F1E8]" />
-                </div>
-                Weekly Meal Plan Generator
-              </CardTitle>
-              <CardDescription className="text-sm sm:text-base text-primary/70 max-w-2xl">
-                Let AI create a personalized meal plan tailored to your family's preferences, dietary needs, and schedule
-              </CardDescription>
-            </div>
-            <Button 
-              onClick={handleGenerate} 
-              disabled={loading}
-              size="lg"
-              className="w-full sm:w-auto bg-[#FF9500] hover:bg-[#FF8500] active:bg-[#FF7500] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-100 transition-all duration-200 flex items-center gap-2 font-semibold"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Zap className="h-5 w-5" />
-                  Generate Meal Plan
-                </>
-              )}
-            </Button>
+      {/* Hero Generate Card */}
+      <GlassCard hover={false}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary flex items-center gap-3">
+              <div className="p-2.5 bg-[var(--accent-primary)] rounded-xl shadow-lg">
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+              </div>
+              Weekly Meal Plan Generator
+            </h2>
+            <p className="text-secondary max-w-2xl">
+              Let AI create a personalized meal plan tailored to your family's preferences, dietary needs, and schedule
+            </p>
           </div>
-        </CardHeader>
-      </Card>
+          <Button 
+            onClick={handleGenerate} 
+            disabled={loading}
+            size="lg"
+            className="w-full sm:w-auto"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Zap className="h-5 w-5 mr-2" />
+                Generate Meal Plan
+              </>
+            )}
+          </Button>
+        </div>
+      </GlassCard>
 
       {/* Loading Skeleton */}
       {loading && !mealPlan && (
         <div className="space-y-6 animate-fade-in">
           <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#FF9500]/10 mb-4">
-              <Loader2 className="h-8 w-8 text-[#FF9500] animate-spin" />
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--accent-primary)]/10 mb-4">
+              <Loader2 className="h-8 w-8 text-[var(--accent-primary)] animate-spin" />
             </div>
             <p className="text-lg font-medium text-primary mb-2">Creating your meal plan...</p>
-            <p className="text-sm text-primary/60">This may take a few moments</p>
+            <p className="text-sm text-muted">This may take a few moments</p>
           </div>
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse border border-[#16250F]/10">
-              <CardContent className="pt-6">
-                <Skeleton className="h-6 w-48 mb-4 rounded-md" />
-                <Skeleton className="h-4 w-full mb-2 rounded-md" />
-                <Skeleton className="h-4 w-3/4 mb-4 rounded-md" />
-                <div className="grid md:grid-cols-2 gap-4">
-                  <Skeleton className="h-32 rounded-lg" />
-                  <Skeleton className="h-32 rounded-lg" />
-                </div>
-              </CardContent>
-            </Card>
+            <GlassCard key={i} hover={false}>
+              <Skeleton className="h-6 w-48 mb-4 rounded-md" />
+              <Skeleton className="h-4 w-full mb-2 rounded-md" />
+              <Skeleton className="h-4 w-3/4 mb-4 rounded-md" />
+              <div className="grid md:grid-cols-2 gap-4">
+                <Skeleton className="h-32 rounded-lg" />
+                <Skeleton className="h-32 rounded-lg" />
+              </div>
+            </GlassCard>
           ))}
         </div>
       )}
@@ -249,77 +240,68 @@ export function MealPlanGenerator() {
       {mealPlan && (
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
           {/* Week Summary Card */}
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-[#16250F] via-[#1a2f12] to-[#16250F] text-[#F5F1E8] overflow-hidden animate-scale-in relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#FF9500]/10 via-transparent to-transparent pointer-events-none" />
-            <CardHeader className="relative p-6 sm:p-8 z-10">
-              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-                <div className="space-y-2">
-                  <CardTitle className="text-xl sm:text-2xl font-bold flex items-center gap-2 text-[#F5F1E8]">
-                    <Calendar className="h-5 w-5 sm:h-6 sm:w-6" />
-                    Week of {new Date(mealPlan.weekStarting).toLocaleDateString('en-US', { 
-                      month: 'long', 
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
-                  </CardTitle>
-                  <CardDescription className="text-[#F5F1E8]/80">
-                    {mealPlan.weekSummary.cuisines?.join(', ') || 'Variety of cuisines'}
-                  </CardDescription>
+          <GlassCard hover={false} className="week-summary-card">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+              <div className="space-y-2">
+                <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-2 text-primary">
+                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6" />
+                  Week of {new Date(mealPlan.weekStarting).toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </h3>
+                <p className="text-secondary">
+                  {mealPlan.weekSummary.cuisines?.join(', ') || 'Variety of cuisines'}
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+                <div className="text-center p-4 rounded-xl bg-[var(--bg-glass-light)] border border-[var(--border-subtle)]">
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted mb-1">
+                    <DollarSign className="h-4 w-4" />
+                    Estimated Cost
+                  </div>
+                  <div className="text-xl sm:text-2xl font-bold text-primary">
+                    ${mealPlan.weekSummary.totalEstimatedCost.toFixed(2)}
+                  </div>
+                  <div className="text-xs text-muted">CAD</div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
-                  <div className="text-center bg-[#F5F1E8]/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-[#F5F1E8]/20">
-                    <div className="flex items-center justify-center gap-2 text-sm text-[#F5F1E8]/90 mb-1">
-                      <DollarSign className="h-4 w-4" />
-                      Estimated Cost
-                    </div>
-                    <div className="text-xl sm:text-2xl font-bold text-[#F5F1E8]">
-                      ${mealPlan.weekSummary.totalEstimatedCost.toFixed(2)}
-                    </div>
-                    <div className="text-xs text-[#F5F1E8]/70">CAD</div>
-                  </div>
-                  <div className="flex gap-2">
-                    <CalendarExport mealPlan={mealPlan} />
-                    <Button 
-                      onClick={handleSave} 
-                      disabled={loading || saved}
-                      variant={saved ? "outline" : "default"}
-                      size="lg"
-                      className={saved 
-                        ? "bg-[#F5F1E8]/20 hover:bg-[#F5F1E8]/30 text-[#F5F1E8] border-[#F5F1E8]/30 flex-1 sm:flex-initial" 
-                        : "bg-[#FF9500] hover:bg-[#FF8500] active:bg-[#FF7500] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-100 flex-1 sm:flex-initial transition-all font-semibold"
-                      }
-                    >
-                      {saved ? (
-                        <>
-                          <Check className="h-4 w-4 mr-2" />
-                          Saved
-                        </>
-                      ) : (
-                        'Save Plan'
-                      )}
-                    </Button>
-                  </div>
+                <div className="flex gap-2">
+                  <CalendarExport mealPlan={mealPlan} />
+                  <Button 
+                    onClick={handleSave} 
+                    disabled={loading || saved}
+                    variant={saved ? "glass" : "default"}
+                  >
+                    {saved ? (
+                      <>
+                        <Check className="h-4 w-4 mr-2" />
+                        Saved
+                      </>
+                    ) : (
+                      'Save Plan'
+                    )}
+                  </Button>
                 </div>
               </div>
-            </CardHeader>
-          </Card>
+            </div>
+          </GlassCard>
 
           {/* Quick Fix Dialog */}
           <Dialog open={showQuickFix} onOpenChange={setShowQuickFix}>
             <DialogTrigger asChild>
               <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto border-2 border-dashed border-[#16250F]/30 hover:border-[#FF9500] hover:bg-[#F5F1E8] hover:scale-105 active:scale-100 transition-all font-medium"
+                variant="glass"
+                className="gap-2"
               >
-                <Edit2 className="h-4 w-4 mr-2" />
+                <Edit2 className="h-4 w-4" />
                 Quick Fix
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
+            <DialogContent className="sm:max-w-[600px] glass-card-static">
               <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <Edit2 className="h-5 w-5 text-primary" />
+                <DialogTitle className="flex items-center gap-2 text-primary">
+                  <Edit2 className="h-5 w-5" />
                   Quick Fix Meal Plan
                 </DialogTitle>
                 <DialogDescription>
@@ -334,15 +316,15 @@ export function MealPlanGenerator() {
                     value={fixRequest}
                     onChange={(e) => setFixRequest(e.target.value)}
                     placeholder="e.g., Replace Tuesday's meal with something vegetarian, or Make Wednesday's meal take less than 20 minutes"
-                    className="min-h-[120px] resize-none"
+                    className="min-h-[120px] resize-none glass-input"
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted">
                     Be specific about which day and what changes you want
                   </p>
                 </div>
                 <div className="flex gap-2 justify-end">
                   <Button 
-                    variant="outline" 
+                    variant="glass" 
                     onClick={() => {
                       setShowQuickFix(false)
                       setFixRequest('')
@@ -353,7 +335,6 @@ export function MealPlanGenerator() {
                   <Button 
                     onClick={handleQuickFix} 
                     disabled={loading || !fixRequest.trim()}
-                    className="bg-[#FF9500] hover:bg-[#FF8500] active:bg-[#FF7500] text-white shadow-md hover:shadow-lg hover:scale-105 active:scale-100 transition-all font-semibold"
                   >
                     {loading ? (
                       <>
@@ -371,147 +352,135 @@ export function MealPlanGenerator() {
 
           {/* Meals Grid */}
           <div className="grid gap-6">
-                {mealPlan.meals.map((meal, index) => (
-              <Card 
+            {mealPlan.meals.map((meal, index) => (
+              <GlassCard 
                 key={index} 
-                className={`group card-hover border-2 ${
-                  meal.isOfficeDayMeal 
-                    ? 'border-blue-200 bg-gradient-to-br from-blue-50/80 to-white' 
-                    : 'border-[#16250F]/10 hover:border-[#FF9500]/30 bg-gradient-to-br from-white to-[#F5F1E8]/30'
-                } animate-fade-in relative overflow-hidden`}
+                hover={false}
+                className={`animate-fade-in ${meal.isOfficeDayMeal ? 'border-[var(--info-border)] bg-[var(--info-bg)]' : ''}`}
                 style={{ animationDelay: `${index * 80}ms` }}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#FF9500]/5 to-transparent rounded-full blur-2xl pointer-events-none" />
-                <CardContent className="pt-6 p-6 sm:p-8 relative z-10">
-                  <div className="grid md:grid-cols-[280px_1fr] gap-6 mb-6">
-                    {/* Meal Image */}
-                    <div className="relative group">
-                      <div className="aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-br from-[#16250F]/10 to-[#FF9500]/10 relative shadow-lg">
-                        <img
-                          src={getMealImageUrl(meal.name, meal.cuisine)}
-                          alt={meal.name}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          loading="lazy"
-                          onError={(e) => {
-                            // Fallback to a placeholder if image fails to load
-                            const target = e.target as HTMLImageElement
-                            target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop&q=80`
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                        <div className="absolute top-3 right-3 flex flex-col gap-2">
-                          {meal.isOfficeDayMeal && (
-                            <Badge className="bg-blue-500/90 text-white border-0 backdrop-blur-sm shadow-md">
-                              <Zap className="h-3 w-3 mr-1" />
-                              Quick
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="absolute bottom-3 left-3 right-3">
-                          {meal.cuisine && (
-                            <Badge className="bg-[#16250F]/80 text-white border-0 backdrop-blur-sm shadow-md">
-                              {meal.cuisine}
-                            </Badge>
-                          )}
-                        </div>
+                <div className="grid md:grid-cols-[280px_1fr] gap-6 mb-6">
+                  {/* Meal Image */}
+                  <div className="relative group">
+                    <div className="aspect-[4/3] rounded-xl overflow-hidden bg-[var(--bg-glass-light)] relative shadow-lg">
+                      <img
+                        src={getMealImageUrl(meal.name, meal.cuisine)}
+                        alt={meal.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop&q=80`
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                      <div className="absolute top-3 right-3 flex flex-col gap-2">
+                        {meal.isOfficeDayMeal && (
+                          <Badge className="bg-[var(--info-bg)] text-[var(--info-text)] border-[var(--info-border)]">
+                            <Zap className="h-3 w-3 mr-1" />
+                            Quick
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="absolute bottom-3 left-3 right-3">
+                        {meal.cuisine && (
+                          <Badge variant="secondary">
+                            {meal.cuisine}
+                          </Badge>
+                        )}
                       </div>
                     </div>
+                  </div>
 
-                    {/* Meal Details */}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className={`p-2 rounded-lg flex-shrink-0 ${
-                          meal.isOfficeDayMeal 
-                            ? 'bg-blue-100 text-blue-600' 
-                            : 'bg-[#16250F] text-[#F5F1E8]'
-                        }`}>
-                          <ChefHat className="h-5 w-5" />
-                        </div>
-                        <h3 className="text-xl sm:text-2xl font-bold text-primary">
-                          {getDayName(index)}: {meal.name}
-                        </h3>
+                  {/* Meal Details */}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className={`p-2 rounded-lg flex-shrink-0 ${
+                        meal.isOfficeDayMeal 
+                          ? 'bg-[var(--info-bg)] text-[var(--info-text)]' 
+                          : 'bg-[var(--accent-primary)] text-white'
+                      }`}>
+                        <ChefHat className="h-5 w-5" />
                       </div>
-                      <p className="text-secondary mb-4 leading-relaxed">{meal.description}</p>
-                      <div className="flex items-center gap-6 text-sm text-muted mb-4">
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-primary" />
-                          <span className="font-medium">{meal.cookTime} min</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Utensils className="h-4 w-4 text-primary" />
-                          <span className="font-medium">{meal.ingredients.length} ingredients</span>
-                        </div>
+                      <h3 className="text-xl sm:text-2xl font-bold text-primary">
+                        {getDayName(index)}: {meal.name}
+                      </h3>
+                    </div>
+                    <p className="text-secondary mb-4 leading-relaxed">{meal.description}</p>
+                    <div className="flex items-center gap-6 text-sm text-muted mb-4">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-primary" />
+                        <span className="font-medium">{meal.cookTime} min</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Utensils className="h-4 w-4 text-primary" />
+                        <span className="font-medium">{meal.ingredients.length} ingredients</span>
                       </div>
                     </div>
                   </div>
-                  
-                  <Separator className="my-4" />
-                  
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-primary flex items-center gap-2">
-                        <Utensils className="h-4 w-4 text-[var(--accent-primary)]" />
-                        Ingredients
-                      </h4>
-                      <ul className="space-y-1.5">
-                        {meal.ingredients.map((ing, i) => (
-                          <li key={i} className="text-sm text-secondary flex items-start gap-2">
-                            <span className="text-[var(--accent-primary)] mt-1.5">•</span>
-                            <span>{ing}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-primary flex items-center gap-2">
-                        <span className="text-2xl">👶</span>
-                        Toddler Modification
-                      </h4>
-                      <p className="text-sm text-secondary leading-relaxed bg-[var(--accent-primary)]/10 p-3 rounded-lg border border-[var(--accent-primary)]/25">
-                        {meal.toddlerModification}
-                      </p>
-                    </div>
+                </div>
+                
+                <Separator className="my-4" />
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-primary flex items-center gap-2">
+                      <Utensils className="h-4 w-4 text-[var(--accent-primary)]" />
+                      Ingredients
+                    </h4>
+                    <ul className="space-y-1.5">
+                      {meal.ingredients.map((ing, i) => (
+                        <li key={i} className="text-sm text-secondary flex items-start gap-2">
+                          <span className="text-[var(--accent-primary)] mt-1.5">•</span>
+                          <span>{ing}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-primary flex items-center gap-2">
+                      <span className="text-2xl">👶</span>
+                      Toddler Modification
+                    </h4>
+                    <p className="text-sm text-secondary leading-relaxed bg-[var(--accent-primary)]/10 p-3 rounded-lg border border-[var(--accent-primary)]/25">
+                      {meal.toddlerModification}
+                    </p>
+                  </div>
+                </div>
+              </GlassCard>
             ))}
           </div>
 
           {/* Grocery List Card */}
           {mealPlan.grocery_list && mealPlan.grocery_list.length > 0 && (
-            <Card className="border border-[#16250F]/10 shadow-2xl bg-gradient-to-br from-white via-[#F5F1E8]/20 to-white animate-fade-in relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF9500] via-[#16250F] to-[#FF9500]" />
-              <CardHeader className="p-6 sm:p-8">
-                <CardTitle className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-3">
-                  <div className="p-2.5 bg-[#16250F] rounded-xl">
-                    <Utensils className="h-6 w-6 text-[#F5F1E8]" />
-                  </div>
-                  Grocery List
-                </CardTitle>
-                <CardDescription className="text-base mt-2">
-                  {mealPlan.grocery_list.length} items • Total: ${mealPlan.grocery_list.reduce((sum: number, item: any) => sum + (item.estimatedPrice || 0), 0).toFixed(2)} CAD
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6 sm:p-8 pt-0">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {mealPlan.grocery_list.map((item: any, index: number) => (
-                    <div 
-                      key={index} 
-                      className="flex items-center justify-between p-3 bg-white rounded-lg border border-[#16250F]/20 hover:border-[#FF9500] hover:shadow-md transition-all group"
-                    >
-                      <span className="font-medium text-primary group-hover:text-[#FF9500] transition-colors">
-                        {item.item}
-                      </span>
-                      {item.estimatedPrice && (
-                        <span className="text-sm font-semibold text-primary ml-2">
-                          ${item.estimatedPrice.toFixed(2)}
-                        </span>
-                      )}
-                    </div>
-                  ))}
+            <GlassCard hover={false}>
+              <h3 className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-3 mb-2">
+                <div className="p-2.5 bg-[var(--accent-primary)] rounded-xl">
+                  <Utensils className="h-6 w-6 text-white" />
                 </div>
-              </CardContent>
-            </Card>
+                Grocery List
+              </h3>
+              <p className="text-secondary mb-6">
+                {mealPlan.grocery_list.length} items • Total: ${mealPlan.grocery_list.reduce((sum: number, item: any) => sum + (item.estimatedPrice || 0), 0).toFixed(2)} CAD
+              </p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {mealPlan.grocery_list.map((item: any, index: number) => (
+                  <div 
+                    key={index} 
+                    className="flex items-center justify-between p-3 rounded-xl bg-[var(--bg-glass-light)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] hover:shadow-md transition-all group"
+                  >
+                    <span className="font-medium text-primary group-hover:text-[var(--accent-primary)] transition-colors">
+                      {item.item}
+                    </span>
+                    {item.estimatedPrice && (
+                      <span className="text-sm font-semibold text-primary ml-2">
+                        ${item.estimatedPrice.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
           )}
         </div>
       )}

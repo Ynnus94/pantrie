@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { Textarea } from './ui/textarea'
-import { Badge } from './ui/badge'
+import { GlassCard } from './ui/GlassCard'
 import { saveMealRating } from '../lib/mealHistoryApi'
 import { Star, BookmarkPlus, ThumbsUp, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
@@ -86,38 +85,37 @@ export function PostMealRating({
   // If showing save prompt
   if (showSavePrompt) {
     return (
-      <Card className="border-2 border-[#FF9500]/30 bg-gradient-to-br from-[#FF9500]/10 to-white shadow-xl">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-primary">
-            <Sparkles className="h-5 w-5 text-[#FF9500]" />
-            This was a hit!
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <GlassCard hover={false} className="border-2 border-[var(--accent-primary)]/30 bg-[var(--accent-primary)]/5">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="h-5 w-5 text-[var(--accent-primary)]" />
+          <h3 className="text-lg font-semibold text-primary">This was a hit!</h3>
+        </div>
+        
+        <div className="space-y-4">
           <div>
-            <div className="text-3xl font-bold text-[#FF9500] mb-2">
+            <div className="text-3xl font-bold text-[var(--accent-primary)] mb-2">
               {averageRating.toFixed(1)}★
             </div>
-            <p className="text-primary/70">
+            <p className="text-secondary">
               Looks like everyone loved <strong>{mealName}</strong>!
             </p>
           </div>
 
-          <div className="bg-white p-4 rounded-lg border border-[#16250F]/10">
+          <div className="p-4 rounded-xl bg-[var(--bg-glass-light)] border border-[var(--border-subtle)]">
             <p className="text-sm font-medium text-primary mb-3">
               Save this to your Recipe Library so you can easily make it again?
             </p>
             <div className="flex gap-2">
               <Button 
-                className="flex-1 gap-2 bg-[#FF9500] hover:bg-[#FF8500] text-white"
+                className="flex-1 gap-2"
                 onClick={() => handleSubmit(true)}
               >
                 <BookmarkPlus className="h-4 w-4" />
                 Save to Library
               </Button>
               <Button 
-                variant="outline" 
-                className="flex-1 gap-2 border-[#16250F]/20 hover:border-[#FF9500]"
+                variant="glass" 
+                className="flex-1 gap-2"
                 onClick={() => handleSubmit(false)}
               >
                 <ThumbsUp className="h-4 w-4" />
@@ -126,24 +124,23 @@ export function PostMealRating({
             </div>
           </div>
 
-          <p className="text-xs text-primary/60 text-center">
+          <p className="text-xs text-muted text-center">
             You can always save it from History later if you change your mind
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </GlassCard>
     )
   }
 
   // Main rating form
   return (
-    <Card className="border border-[#16250F]/10 shadow-xl bg-gradient-to-br from-white to-[#F5F1E8]/30">
-      <CardHeader>
-        <CardTitle className="text-primary">How was dinner tonight?</CardTitle>
-        <p className="text-sm text-primary/70">
-          {mealName} • {mealDate}
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <GlassCard hover={false}>
+      <h3 className="text-lg font-semibold text-primary mb-1">How was dinner tonight?</h3>
+      <p className="text-sm text-secondary mb-6">
+        {mealName} • {mealDate}
+      </p>
+      
+      <div className="space-y-6">
         {/* Family ratings */}
         <div className="space-y-4">
           <p className="text-sm font-medium text-primary">Rate for each family member:</p>
@@ -174,11 +171,11 @@ export function PostMealRating({
 
         {/* Average rating display */}
         {allRated && (
-          <div className="bg-[#F5F1E8] p-4 rounded-lg text-center border border-[#16250F]/10">
+          <div className="p-4 rounded-xl bg-[var(--bg-glass-light)] text-center border border-[var(--border-subtle)]">
             <div className="text-2xl font-bold text-primary mb-1">
               {averageRating.toFixed(1)}★
             </div>
-            <p className="text-sm text-primary/70">Average Rating</p>
+            <p className="text-sm text-muted">Average Rating</p>
           </div>
         )}
 
@@ -192,13 +189,13 @@ export function PostMealRating({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
-            className="border-[#16250F]/10 focus-visible:ring-[#FF9500]"
+            className="glass-input"
           />
         </div>
 
         {/* Submit button */}
         <Button 
-          className="w-full bg-[#FF9500] hover:bg-[#FF8500] text-white"
+          className="w-full"
           disabled={!allRated}
           onClick={handleRatingComplete}
         >
@@ -206,12 +203,11 @@ export function PostMealRating({
         </Button>
 
         {!allRated && (
-          <p className="text-xs text-center text-primary/60">
+          <p className="text-xs text-center text-muted">
             Please rate for all family members
           </p>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </GlassCard>
   )
 }
-

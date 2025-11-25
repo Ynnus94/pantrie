@@ -69,12 +69,12 @@ export function CalendarExport({ mealPlan }: CalendarExportProps) {
   return (
     <Button 
       onClick={generateICSFile}
-      variant="outline" 
-      size="lg"
-      className="border-2 border-[#16250F]/30 hover:border-[#FF9500] hover:bg-[#F5F1E8] hover:scale-105 active:scale-100 transition-all font-medium"
+      variant="glass" 
+      size="sm"
+      className="gap-2"
     >
-      <Calendar className="h-4 w-4 mr-2" />
-      Export Calendar
+      <Calendar className="h-4 w-4" />
+      Export
     </Button>
   )
 }
