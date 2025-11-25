@@ -290,8 +290,8 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
         
         <GlassCard hover={false} className="border-2 border-dashed border-[var(--border-glass)] max-w-2xl mx-auto">
           <div className="py-12 text-center">
-            <div className="p-6 bg-gradient-to-br from-honey to-honey-dark rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center shadow-lg animate-float">
-              <Calendar className="h-12 w-12 text-white" />
+            <div className="p-6 bg-[var(--bg-glass-strong)] border-2 border-[var(--accent-primary)] rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center shadow-lg animate-float">
+              <Calendar className="h-12 w-12 text-[var(--accent-primary)]" />
             </div>
             <h3 className="text-2xl font-bold text-primary mb-3">Ready to plan your week?</h3>
             <p className="text-secondary mb-8 max-w-md mx-auto">

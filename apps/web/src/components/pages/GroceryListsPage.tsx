@@ -248,7 +248,7 @@ export function GroceryListsPage() {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-primary flex items-center gap-3">
-            <ShoppingCart className="h-8 w-8 text-[#C19A6B]" />
+            <ShoppingCart className="h-8 w-8 text-[var(--accent-primary)]" />
             Grocery List
           </h1>
           <p className="text-secondary">
@@ -324,8 +324,8 @@ export function GroceryListsPage() {
           {items.length === 0 && (
             <GlassCard hover={false} className="border-2 border-dashed border-[var(--border-glass)]">
               <div className="py-12 text-center">
-                <div className="p-4 bg-[rgba(212,165,116,0.2)] rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                  <ShoppingCart className="h-10 w-10 text-[#C19A6B]-dark" />
+                <div className="p-4 bg-[var(--bg-glass-strong)] border-2 border-[var(--accent-primary)] rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                  <ShoppingCart className="h-10 w-10 text-[var(--accent-primary)]" />
                 </div>
                 <h3 className="text-xl font-bold text-primary mb-2">
                   Your grocery list is empty
@@ -410,7 +410,7 @@ export function GroceryListsPage() {
         <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
           <GlassCard hover={false}>
             <h3 className="font-semibold text-primary mb-4 flex items-center gap-2">
-              <ShoppingCart className="h-5 w-5 text-[#C19A6B]" />
+              <ShoppingCart className="h-5 w-5 text-[var(--accent-primary)]" />
               Shopping Progress
             </h3>
             
@@ -481,7 +481,7 @@ export function GroceryListsPage() {
             <GlassCard hover={false} className="bg-[rgba(212,165,116,0.05)] border-[rgba(212,165,116,0.2)]">
               <div className="flex items-start gap-3">
                 <div className="p-2 bg-[rgba(212,165,116,0.2)] rounded-lg">
-                  <AlertCircle className="h-4 w-4 text-[#C19A6B]-dark" />
+                  <AlertCircle className="h-4 w-4 text-[var(--accent-primary)]-dark" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-primary">
@@ -493,7 +493,7 @@ export function GroceryListsPage() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="mt-2 h-7 text-xs text-[#C19A6B]-dark hover:text-[#C19A6B]"
+                    className="mt-2 h-7 text-xs text-[var(--accent-primary)]-dark hover:text-[var(--accent-primary)]"
                     onClick={handleSyncWithMealPlan}
                     disabled={syncing}
                   >

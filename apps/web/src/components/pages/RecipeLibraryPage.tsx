@@ -230,8 +230,8 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
         {filteredRecipes.length === 0 ? (
           <GlassCard hover={false}>
             <div className="py-8 text-center">
-              <div className="p-4 bg-gradient-to-br from-honey to-honey-dark rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-                <Book className="h-10 w-10 text-white" />
+              <div className="p-4 bg-[var(--bg-glass-strong)] border-2 border-[var(--accent-primary)] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                <Book className="h-10 w-10 text-[var(--accent-primary)]" />
               </div>
               <h3 className="text-2xl font-bold text-primary mb-3">
                 {searchQuery ? 'No recipes match your search' : 'No recipes yet!'}
