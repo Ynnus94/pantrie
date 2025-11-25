@@ -585,16 +585,12 @@ function GroceryItemRow({
       }`}
     >
       {/* Checkbox */}
-      <button
-        onClick={onToggle}
-        className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
-          item.is_checked 
-            ? 'bg-[var(--accent-primary)] border-[var(--accent-primary)]' 
-            : 'border-[var(--border-strong)] hover:border-[var(--accent-primary)]'
-        }`}
-      >
-        {item.is_checked && <Check className="h-3 w-3 text-white" />}
-      </button>
+      <input
+        type="checkbox"
+        checked={item.is_checked}
+        onChange={onToggle}
+        aria-label={`Mark ${item.item_name} as ${item.is_checked ? 'not purchased' : 'purchased'}`}
+      />
 
       {/* Item Info */}
       <div className="flex-1 min-w-0">
