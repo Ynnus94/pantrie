@@ -114,8 +114,8 @@ export function RefreshImageModal({
             </div>
           )}
 
-          {/* Error state */}
-          {error && !loading && (
+          {/* Error state - only show if no images */}
+          {error && !loading && images.length === 0 && (
             <div className="text-center py-8">
               <p className="text-sm text-muted">{error}</p>
             </div>

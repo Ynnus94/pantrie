@@ -191,7 +191,10 @@ SPECIAL REQUESTS: ${specialRequests}
                   className="w-full h-9 px-3 rounded-xl glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-sm"
                   disabled={generating}
                 >
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
                   <option value={5}>5</option>
+                  <option value={6}>6</option>
                   <option value={7}>7</option>
                 </select>
               </div>
