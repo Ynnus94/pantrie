@@ -276,209 +276,167 @@ ${specialRequests}
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[900px] max-h-[650px] p-0 overflow-hidden">
-        <div className="p-6 pb-0">
+      <DialogContent className="max-w-[850px] max-h-[600px] p-0 overflow-hidden">
+        <div className="p-4 pb-0">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+            <DialogTitle className="flex items-center gap-2 text-lg font-bold">
               <div className="p-1.5 bg-[var(--accent-primary)] rounded-lg">
                 <Sparkles className="h-4 w-4 text-white" />
               </div>
-              Generate Weekly Meal Plan
+              Generate Meal Plan
             </DialogTitle>
           </DialogHeader>
         </div>
 
         {/* Two-column layout */}
-        <div className="grid md:grid-cols-[380px_1fr] gap-6 p-6 pt-4 h-[calc(650px-80px)]">
+        <div className="grid md:grid-cols-[360px_1fr] gap-5 p-5 pt-3 h-[calc(600px-70px)]">
           {/* LEFT COLUMN - Controls */}
-          <div className="space-y-4 overflow-y-auto pr-2 scrollbar-thin">
-            {/* Week & Meal Count - Compact */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs text-muted mb-1 block">Week</label>
+          <div className="space-y-3">
+            {/* Week & Meal Count + Presets in one row */}
+            <div className="flex gap-2 items-end">
+              <div className="flex-1">
+                <label className="text-[10px] text-muted mb-0.5 block">Week</label>
                 <Input 
                   type="date"
                   value={weekStart}
                   onChange={(e) => setWeekStart(e.target.value)}
-                  className="glass-input h-9 text-sm"
+                  className="glass-input h-8 text-xs"
                   disabled={generating}
                 />
               </div>
-              <div>
-                <label className="text-xs text-muted mb-1 block">Meals</label>
+              <div className="w-24">
+                <label className="text-[10px] text-muted mb-0.5 block">Meals</label>
                 <select 
                   value={mealCount}
                   onChange={(e) => setMealCount(Number(e.target.value))}
-                  className="w-full h-9 px-3 rounded-lg glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-sm"
+                  className="w-full h-8 px-2 rounded-lg glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-xs"
                   disabled={generating}
                 >
-                  <option value={3}>3 dinners</option>
-                  <option value={5}>5 dinners</option>
-                  <option value={7}>7 dinners</option>
+                  <option value={3}>3</option>
+                  <option value={5}>5</option>
+                  <option value={7}>7</option>
                 </select>
               </div>
             </div>
 
-            {/* Quick Presets */}
-            <div>
-              <label className="text-xs font-medium text-primary mb-2 block">Quick Presets</label>
-              <div className="grid grid-cols-2 gap-2">
+            {/* Quick Presets - Single row */}
+            <div className="flex gap-1.5">
+              {[
+                { id: 'quick', icon: Zap, label: '⚡ Quick' },
+                { id: 'budget', icon: DollarSign, label: '💰 Budget' },
+                { id: 'healthy', icon: Heart, label: '🥗 Healthy' },
+                { id: 'adventurous', icon: Sparkles, label: '✨ Adventure' },
+              ].map(preset => (
                 <button
-                  onClick={() => applyPreset('quick')}
-                  className="glass-button px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 hover:bg-[var(--accent-primary)]/10 transition-colors"
+                  key={preset.id}
+                  onClick={() => applyPreset(preset.id)}
+                  className="flex-1 glass-button px-2 py-1.5 rounded-lg text-[10px] hover:bg-[var(--accent-primary)]/10 transition-colors"
                   disabled={generating}
                 >
-                  <Zap className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Quick
+                  {preset.label}
                 </button>
-                <button
-                  onClick={() => applyPreset('budget')}
-                  className="glass-button px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 hover:bg-[var(--accent-primary)]/10 transition-colors"
-                  disabled={generating}
-                >
-                  <DollarSign className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Budget
-                </button>
-                <button
-                  onClick={() => applyPreset('healthy')}
-                  className="glass-button px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 hover:bg-[var(--accent-primary)]/10 transition-colors"
-                  disabled={generating}
-                >
-                  <Heart className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Healthy
-                </button>
-                <button
-                  onClick={() => applyPreset('adventurous')}
-                  className="glass-button px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 hover:bg-[var(--accent-primary)]/10 transition-colors"
-                  disabled={generating}
-                >
-                  <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Adventure
-                </button>
-              </div>
+              ))}
             </div>
 
-            {/* Core Preferences */}
-            <GlassCard hover={false} className="p-3 space-y-2">
-              {/* Family Size */}
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2 text-secondary">
-                  <Users className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  {familySize} members
-                </span>
-                {editingField === 'familySize' ? (
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5, 6].map(n => (
-                      <button
-                        key={n}
-                        onClick={() => { setFamilySize(n); setEditingField(null) }}
-                        className={cn(
-                          'w-7 h-7 rounded text-xs font-medium transition-all',
-                          familySize === n
-                            ? 'bg-[var(--accent-primary)] text-white'
-                            : 'glass-button'
-                        )}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <button 
-                    onClick={() => setEditingField('familySize')}
-                    className="text-xs text-[var(--accent-primary)] hover:underline"
-                    disabled={generating}
-                  >
-                    Edit
-                  </button>
-                )}
-              </div>
-
-              {/* Budget */}
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2 text-secondary">
-                  <DollarSign className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  ${budget} budget
-                </span>
-                {editingField === 'budget' ? (
-                  <div className="flex items-center gap-1">
-                    <Input
-                      type="number"
-                      value={budget}
-                      onChange={(e) => setBudget(Number(e.target.value))}
-                      className="glass-input w-20 h-7 text-sm"
-                    />
-                    <button 
-                      onClick={() => setEditingField(null)}
-                      className="text-xs text-[var(--accent-primary)] hover:underline px-2"
-                    >
-                      Done
+            {/* Core Preferences - More compact */}
+            <GlassCard hover={false} className="p-2.5 space-y-1.5">
+              {/* Family & Budget on same line */}
+              <div className="flex items-center gap-3 text-xs">
+                <div className="flex items-center gap-1.5 flex-1">
+                  <Users className="h-3 w-3 text-[var(--accent-primary)]" />
+                  {editingField === 'familySize' ? (
+                    <div className="flex gap-0.5">
+                      {[1, 2, 3, 4, 5, 6].map(n => (
+                        <button
+                          key={n}
+                          onClick={() => { setFamilySize(n); setEditingField(null) }}
+                          className={cn(
+                            'w-5 h-5 rounded text-[10px] font-medium',
+                            familySize === n ? 'bg-[var(--accent-primary)] text-white' : 'glass-button'
+                          )}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <button onClick={() => setEditingField('familySize')} className="text-secondary hover:text-[var(--accent-primary)]" disabled={generating}>
+                      {familySize} people
                     </button>
-                  </div>
-                ) : (
-                  <button 
-                    onClick={() => setEditingField('budget')}
-                    className="text-xs text-[var(--accent-primary)] hover:underline"
-                    disabled={generating}
-                  >
-                    Edit
-                  </button>
-                )}
+                  )}
+                </div>
+                <div className="flex items-center gap-1.5 flex-1">
+                  <DollarSign className="h-3 w-3 text-[var(--accent-primary)]" />
+                  {editingField === 'budget' ? (
+                    <div className="flex items-center gap-1">
+                      <Input type="number" value={budget} onChange={(e) => setBudget(Number(e.target.value))} className="glass-input w-14 h-5 text-[10px] px-1" />
+                      <button onClick={() => setEditingField(null)} className="text-[10px] text-[var(--accent-primary)]">✓</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => setEditingField('budget')} className="text-secondary hover:text-[var(--accent-primary)]" disabled={generating}>
+                      ${budget}
+                    </button>
+                  )}
+                </div>
               </div>
 
-              {/* Quick Meal Days */}
-              <div>
-                <span className="text-sm flex items-center gap-2 mb-2 text-secondary">
-                  <Clock className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Quick meals on:
-                </span>
-                <div className="flex gap-1">
+              {/* Quick Meal Days - Compact */}
+              <div className="flex items-center gap-2">
+                <Clock className="h-3 w-3 text-[var(--accent-primary)] flex-shrink-0" />
+                <span className="text-[10px] text-muted">Quick:</span>
+                <div className="flex gap-0.5">
                   {DAYS.map((day, i) => (
                     <button
                       key={day}
                       onClick={() => toggleQuickMealDay(FULL_DAYS[i])}
                       className={cn(
-                        'w-9 h-8 rounded-lg text-xs font-medium transition-all',
+                        'w-7 h-6 rounded text-[10px] font-medium transition-all',
                         quickMealDays.includes(FULL_DAYS[i])
                           ? 'bg-[var(--accent-primary)] text-white'
                           : 'glass-button hover:bg-[var(--accent-primary)]/10'
                       )}
                       disabled={generating}
                     >
-                      {day}
+                      {day.charAt(0)}
                     </button>
                   ))}
                 </div>
               </div>
             </GlassCard>
 
-            {/* Toggles */}
-            <div className="space-y-1">
-              <div className="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg hover:bg-[var(--bg-glass-light)]">
-                <span className="flex items-center gap-2 text-secondary">
-                  <Baby className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Toddler-friendly
+            {/* Toggles - Ultra compact */}
+            <div className="grid grid-cols-2 gap-x-2 gap-y-0.5">
+              <div className="flex items-center justify-between text-xs py-1 px-1.5 rounded hover:bg-[var(--bg-glass-light)]">
+                <span className="flex items-center gap-1.5 text-secondary">
+                  <Baby className="h-3 w-3 text-[var(--accent-primary)]" />
+                  Toddler
                 </span>
                 <Switch checked={toddlerFriendly} onCheckedChange={setToddlerFriendly} disabled={generating} />
               </div>
               
-              <div className="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg hover:bg-[var(--bg-glass-light)]">
-                <span className="flex items-center gap-2 text-secondary">
-                  <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Adventure meals
+              <div className="flex items-center justify-between text-xs py-1 px-1.5 rounded hover:bg-[var(--bg-glass-light)]">
+                <span className="flex items-center gap-1.5 text-secondary">
+                  <Globe className="h-3 w-3 text-[var(--accent-primary)]" />
+                  Diverse
                 </span>
-                <div className="flex items-center gap-2">
+                <Switch checked={diverseCuisines} onCheckedChange={setDiverseCuisines} disabled={generating} />
+              </div>
+              
+              <div className="flex items-center justify-between text-xs py-1 px-1.5 rounded hover:bg-[var(--bg-glass-light)]">
+                <span className="flex items-center gap-1.5 text-secondary">
+                  <Sparkles className="h-3 w-3 text-[var(--accent-primary)]" />
+                  Adventure
+                </span>
+                <div className="flex items-center gap-1">
                   {adventureMeals && (
-                    <div className="flex gap-1">
+                    <div className="flex gap-0.5">
                       {[1, 2, 3].map(n => (
                         <button
                           key={n}
                           onClick={() => setAdventureCount(n)}
                           className={cn(
-                            'w-6 h-6 rounded text-xs font-medium transition-all',
-                            adventureCount === n
-                              ? 'bg-[var(--accent-primary)] text-white'
-                              : 'glass-button'
+                            'w-4 h-4 rounded text-[9px] font-medium',
+                            adventureCount === n ? 'bg-[var(--accent-primary)] text-white' : 'glass-button'
                           )}
                           disabled={generating}
                         >
@@ -491,18 +449,10 @@ ${specialRequests}
                 </div>
               </div>
               
-              <div className="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg hover:bg-[var(--bg-glass-light)]">
-                <span className="flex items-center gap-2 text-secondary">
-                  <Globe className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Diverse cuisines
-                </span>
-                <Switch checked={diverseCuisines} onCheckedChange={setDiverseCuisines} disabled={generating} />
-              </div>
-              
-              <div className="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg hover:bg-[var(--bg-glass-light)]">
-                <span className="flex items-center gap-2 text-secondary">
-                  <Package className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  Plan leftovers
+              <div className="flex items-center justify-between text-xs py-1 px-1.5 rounded hover:bg-[var(--bg-glass-light)]">
+                <span className="flex items-center gap-1.5 text-secondary">
+                  <Package className="h-3 w-3 text-[var(--accent-primary)]" />
+                  Leftovers
                 </span>
                 <Switch checked={planLeftovers} onCheckedChange={setPlanLeftovers} disabled={generating} />
               </div>
@@ -510,96 +460,101 @@ ${specialRequests}
 
             {/* Advanced Options */}
             <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
-              <CollapsibleTrigger className="flex items-center gap-2 w-full text-xs font-medium py-1.5 hover:text-[var(--accent-primary)] transition-colors text-primary">
-                <Settings className="h-3.5 w-3.5" />
-                Advanced Options
-                <ChevronDown className={cn("h-3.5 w-3.5 ml-auto transition-transform", advancedOpen && "rotate-180")} />
+              <CollapsibleTrigger className="flex items-center gap-1.5 w-full text-[10px] font-medium py-1 hover:text-[var(--accent-primary)] transition-colors text-muted">
+                <Settings className="h-3 w-3" />
+                Advanced
+                <ChevronDown className={cn("h-3 w-3 ml-auto transition-transform", advancedOpen && "rotate-180")} />
               </CollapsibleTrigger>
               
-              <CollapsibleContent className="mt-2 space-y-3 pt-2 border-t border-[var(--border-subtle)]">
-                {/* Dietary */}
-                <div>
-                  <label className="text-xs font-medium text-primary mb-1.5 block">Dietary</label>
-                  <div className="flex flex-wrap gap-1.5">
-                    {['Vegetarian', 'Vegan', 'Gluten-free', 'Dairy-free', 'Keto'].map(diet => (
-                      <button
-                        key={diet}
-                        onClick={() => toggleDietaryRestriction(diet)}
-                        className={cn(
-                          'px-2 py-1 rounded text-xs transition-all',
-                          dietaryRestrictions.includes(diet)
-                            ? 'bg-[var(--accent-primary)] text-white'
-                            : 'glass-button'
-                        )}
-                        disabled={generating}
-                      >
-                        {diet}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Cuisines */}
-                <div>
-                  <label className="text-xs font-medium text-primary mb-1.5 block">Cuisines</label>
-                  <div className="flex flex-wrap gap-1.5">
-                    {['Italian', 'Asian', 'Mexican', 'Mediterranean', 'Indian', 'Thai'].map(cuisine => (
-                      <button
-                        key={cuisine}
-                        onClick={() => toggleCuisine(cuisine)}
-                        className={cn(
-                          'px-2 py-1 rounded text-xs transition-all',
-                          cuisinePreferences.includes(cuisine)
-                            ? 'bg-[var(--accent-primary)] text-white'
-                            : 'glass-button'
-                        )}
-                        disabled={generating}
-                      >
-                        {cuisine}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Exclude */}
-                <div>
-                  <label className="text-xs font-medium text-primary mb-1.5 block">Exclude</label>
-                  <Input
-                    placeholder="e.g., mushrooms, cilantro"
-                    value={excludeIngredients}
-                    onChange={(e) => setExcludeIngredients(e.target.value)}
-                    className="glass-input h-8 text-xs"
-                    disabled={generating}
-                  />
-                </div>
-
-                {/* Cook Time & Complexity */}
+              <CollapsibleContent className="mt-1.5 space-y-2 pt-1.5 border-t border-[var(--border-subtle)]">
+                {/* Dietary & Cuisines side by side */}
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-xs font-medium text-primary mb-1.5 block">Max Time</label>
+                    <label className="text-[10px] font-medium text-primary mb-1 block">Dietary</label>
+                    <div className="flex flex-wrap gap-1">
+                      {['Veg', 'Vegan', 'GF', 'DF', 'Keto'].map((diet, i) => {
+                        const fullNames = ['Vegetarian', 'Vegan', 'Gluten-free', 'Dairy-free', 'Keto']
+                        return (
+                          <button
+                            key={diet}
+                            onClick={() => toggleDietaryRestriction(fullNames[i])}
+                            className={cn(
+                              'px-1.5 py-0.5 rounded text-[9px] transition-all',
+                              dietaryRestrictions.includes(fullNames[i])
+                                ? 'bg-[var(--accent-primary)] text-white'
+                                : 'glass-button'
+                            )}
+                            disabled={generating}
+                          >
+                            {diet}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-medium text-primary mb-1 block">Cuisines</label>
+                    <div className="flex flex-wrap gap-1">
+                      {['🇮🇹', '🇯🇵', '🇲🇽', '🇬🇷', '🇮🇳', '🇹🇭'].map((flag, i) => {
+                        const cuisines = ['Italian', 'Asian', 'Mexican', 'Mediterranean', 'Indian', 'Thai']
+                        return (
+                          <button
+                            key={flag}
+                            onClick={() => toggleCuisine(cuisines[i])}
+                            title={cuisines[i]}
+                            className={cn(
+                              'w-6 h-6 rounded text-sm transition-all',
+                              cuisinePreferences.includes(cuisines[i])
+                                ? 'bg-[var(--accent-primary)]/20 ring-1 ring-[var(--accent-primary)]'
+                                : 'glass-button'
+                            )}
+                            disabled={generating}
+                          >
+                            {flag}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Exclude + Time + Level in one row */}
+                <div className="flex gap-2 items-end">
+                  <div className="flex-1">
+                    <label className="text-[10px] font-medium text-primary mb-0.5 block">Exclude</label>
+                    <Input
+                      placeholder="mushrooms, cilantro..."
+                      value={excludeIngredients}
+                      onChange={(e) => setExcludeIngredients(e.target.value)}
+                      className="glass-input h-6 text-[10px] px-2"
+                      disabled={generating}
+                    />
+                  </div>
+                  <div className="w-16">
+                    <label className="text-[10px] font-medium text-primary mb-0.5 block">Time</label>
                     <select 
                       value={maxCookTime}
                       onChange={(e) => setMaxCookTime(e.target.value)}
-                      className="w-full h-8 px-2 rounded glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-xs"
+                      className="w-full h-6 px-1 rounded glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-[10px]"
                       disabled={generating}
                     >
-                      <option value="30">30 min</option>
-                      <option value="45">45 min</option>
-                      <option value="60">1 hour</option>
+                      <option value="30">30m</option>
+                      <option value="45">45m</option>
+                      <option value="60">1h</option>
                       <option value="any">Any</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="text-xs font-medium text-primary mb-1.5 block">Level</label>
+                  <div className="w-20">
+                    <label className="text-[10px] font-medium text-primary mb-0.5 block">Level</label>
                     <select 
                       value={complexityLevel}
                       onChange={(e) => setComplexityLevel(e.target.value)}
-                      className="w-full h-8 px-2 rounded glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-xs"
+                      className="w-full h-6 px-1 rounded glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-[10px]"
                       disabled={generating}
                     >
-                      <option value="Beginner">Beginner</option>
-                      <option value="Intermediate">Intermediate</option>
-                      <option value="Advanced">Advanced</option>
+                      <option value="Beginner">Easy</option>
+                      <option value="Intermediate">Med</option>
+                      <option value="Advanced">Hard</option>
                     </select>
                   </div>
                 </div>
@@ -609,87 +564,70 @@ ${specialRequests}
 
           {/* RIGHT COLUMN - Preview & Actions */}
           <div className="flex flex-col h-full">
-            {/* Live Preview */}
-            <GlassCard hover={false} className="bg-[var(--accent-primary)]/5 border-2 border-[var(--accent-primary)]/20 mb-4">
-              <div className="flex items-start gap-2 mb-3">
-                <Lightbulb className="h-4 w-4 text-[var(--accent-primary)] flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-semibold text-primary mb-1">AI will generate:</p>
-                  <p className="text-sm text-secondary leading-relaxed">
-                    <strong>{mealCount} meals</strong> for <strong>{familySize}</strong>
-                    {quickMealDays.length > 0 && (
-                      <>, quick on <strong>{quickMealDays.map(d => d.slice(0, 3)).join('/')}</strong></>
-                    )}
-                    {adventureMeals && adventureCount > 0 && (
-                      <>, <strong>{adventureCount} adventure</strong></>
-                    )}
-                    {`, ~`}<strong>${budget}</strong>
-                    {toddlerFriendly && <>, toddler-safe</>}
-                  </p>
-                </div>
+            {/* Live Preview - Compact */}
+            <GlassCard hover={false} className="bg-[var(--accent-primary)]/5 border border-[var(--accent-primary)]/20 p-3 mb-3">
+              <div className="flex items-start gap-2 mb-2">
+                <Lightbulb className="h-3.5 w-3.5 text-[var(--accent-primary)] flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-secondary leading-relaxed">
+                  <strong>{mealCount} meals</strong> for <strong>{familySize}</strong>
+                  {quickMealDays.length > 0 && <>, quick on <strong>{quickMealDays.map(d => d.charAt(0)).join('')}</strong></>}
+                  {adventureMeals && adventureCount > 0 && <>, <strong>{adventureCount}× adventure</strong></>}
+                  {`, ~`}<strong>${budget}</strong>
+                  {toddlerFriendly && <>, 👶</>}
+                </p>
               </div>
               
-              {/* Visual breakdown */}
-              <div className="grid grid-cols-4 gap-2">
-                <div className="glass-button p-2 rounded-lg text-center">
-                  <Utensils className="h-4 w-4 mx-auto mb-1 text-[var(--accent-primary)]" />
-                  <div className="text-sm font-semibold text-primary">{mealCount}</div>
-                  <div className="text-[10px] text-muted">Meals</div>
-                </div>
-                <div className="glass-button p-2 rounded-lg text-center">
-                  <Clock className="h-4 w-4 mx-auto mb-1 text-[var(--accent-primary)]" />
-                  <div className="text-sm font-semibold text-primary">{quickMealDays.length}</div>
-                  <div className="text-[10px] text-muted">Quick</div>
-                </div>
-                <div className="glass-button p-2 rounded-lg text-center">
-                  <DollarSign className="h-4 w-4 mx-auto mb-1 text-[var(--accent-primary)]" />
-                  <div className="text-sm font-semibold text-primary">${budget}</div>
-                  <div className="text-[10px] text-muted">Budget</div>
-                </div>
-                <div className="glass-button p-2 rounded-lg text-center">
-                  <Sparkles className="h-4 w-4 mx-auto mb-1 text-[var(--accent-primary)]" />
-                  <div className="text-sm font-semibold text-primary">{adventureMeals ? adventureCount : 0}</div>
-                  <div className="text-[10px] text-muted">Adventure</div>
-                </div>
+              {/* Visual breakdown - Smaller */}
+              <div className="grid grid-cols-4 gap-1.5">
+                {[
+                  { icon: Utensils, value: mealCount, label: 'Meals' },
+                  { icon: Clock, value: quickMealDays.length, label: 'Quick' },
+                  { icon: DollarSign, value: `$${budget}`, label: 'Budget' },
+                  { icon: Sparkles, value: adventureMeals ? adventureCount : 0, label: 'Adv' },
+                ].map((stat, i) => (
+                  <div key={i} className="glass-button p-1.5 rounded-lg text-center">
+                    <stat.icon className="h-3 w-3 mx-auto mb-0.5 text-[var(--accent-primary)]" />
+                    <div className="text-xs font-semibold text-primary">{stat.value}</div>
+                    <div className="text-[9px] text-muted">{stat.label}</div>
+                  </div>
+                ))}
               </div>
             </GlassCard>
 
             {/* Special Requests */}
-            <div className="flex-1">
-              <label className="text-sm font-medium text-primary mb-2 block">
-                Special Requests (Optional)
+            <div className="flex-1 min-h-0">
+              <label className="text-xs font-medium text-primary mb-1.5 block">
+                Special Requests
               </label>
               <Textarea
                 value={specialRequests}
                 onChange={(e) => setSpecialRequests(e.target.value)}
-                placeholder="e.g., 'Make Tuesday vegetarian' or 'No seafood this week' or 'Use up the chicken in my fridge'"
-                className="glass-input h-28 resize-none text-sm"
+                placeholder="e.g., 'Tuesday vegetarian' • 'No seafood' • 'Use up chicken'"
+                className="glass-input h-full min-h-[100px] resize-none text-xs"
                 disabled={generating}
               />
-              <p className="text-[10px] text-muted mt-1">
-                💡 AI considers all your preferences automatically
-              </p>
             </div>
 
             {/* Progress indicator */}
             {generating && (
-              <div className="mt-3 p-3 rounded-lg bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20">
+              <div className="mt-2 p-2 rounded-lg bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20">
                 <div className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 text-[var(--accent-primary)] animate-spin" />
+                  <Loader2 className="h-3.5 w-3.5 text-[var(--accent-primary)] animate-spin" />
                   <div>
-                    <p className="text-sm font-medium text-primary">{progress}</p>
-                    <p className="text-xs text-secondary">~20-30 seconds</p>
+                    <p className="text-xs font-medium text-primary">{progress}</p>
+                    <p className="text-[10px] text-secondary">~20-30 seconds</p>
                   </div>
                 </div>
               </div>
             )}
 
             {/* Actions */}
-            <div className="flex gap-3 pt-4 mt-auto border-t border-[var(--border-subtle)]">
+            <div className="flex gap-2 pt-3 mt-auto border-t border-[var(--border-subtle)]">
               <Button
                 variant="glass"
                 onClick={onClose}
                 disabled={generating}
+                size="sm"
                 className="flex-1"
               >
                 Cancel
@@ -697,17 +635,18 @@ ${specialRequests}
               <Button
                 onClick={handleGenerate}
                 disabled={generating}
+                size="sm"
                 className="flex-1"
               >
                 {generating ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
                     Generating...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    Generate Plan
+                    <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+                    Generate
                   </>
                 )}
               </Button>
