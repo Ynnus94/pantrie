@@ -9,8 +9,8 @@ export function SettingsPage() {
   return (
     <div className="p-8 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-[#16250F] mb-2">Settings</h1>
-        <p className="text-[#16250F]/70">
+        <h1 className="text-3xl font-bold text-primary mb-2">Settings</h1>
+        <p className="text-primary/70">
           Manage your preferences and account settings
         </p>
       </div>
@@ -18,7 +18,7 @@ export function SettingsPage() {
       {/* Family Profile */}
       <Card className="border border-[#16250F]/10">
         <CardHeader>
-          <CardTitle className="text-[#16250F] flex items-center gap-2">
+          <CardTitle className="text-primary flex items-center gap-2">
             <User className="h-5 w-5" />
             Family Profile
           </CardTitle>
@@ -40,7 +40,7 @@ export function SettingsPage() {
           <div className="space-y-2">
             <Label htmlFor="location">Location</Label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#16250F]/40" />
+              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary/40" />
               <Input id="location" defaultValue="Montreal, QC" className="pl-10" />
             </div>
           </div>
@@ -53,7 +53,7 @@ export function SettingsPage() {
       {/* Budget Settings */}
       <Card className="border border-[#16250F]/10">
         <CardHeader>
-          <CardTitle className="text-[#16250F] flex items-center gap-2">
+          <CardTitle className="text-primary flex items-center gap-2">
             <DollarSign className="h-5 w-5" />
             Budget Preferences
           </CardTitle>
@@ -81,7 +81,7 @@ export function SettingsPage() {
       {/* Office Days */}
       <Card className="border border-[#16250F]/10">
         <CardHeader>
-          <CardTitle className="text-[#16250F] flex items-center gap-2">
+          <CardTitle className="text-primary flex items-center gap-2">
             <Settings className="h-5 w-5" />
             Office Days
           </CardTitle>
@@ -109,7 +109,7 @@ export function SettingsPage() {
       {/* Notifications */}
       <Card className="border border-[#16250F]/10">
         <CardHeader>
-          <CardTitle className="text-[#16250F] flex items-center gap-2">
+          <CardTitle className="text-primary flex items-center gap-2">
             <Bell className="h-5 w-5" />
             Notifications
           </CardTitle>
@@ -120,24 +120,24 @@ export function SettingsPage() {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium text-[#16250F]">Meal Plan Reminders</p>
-              <p className="text-sm text-[#16250F]/70">Get notified when it's time to plan meals</p>
+              <p className="font-medium text-primary">Meal Plan Reminders</p>
+              <p className="text-sm text-primary/70">Get notified when it's time to plan meals</p>
             </div>
             <input type="checkbox" defaultChecked className="rounded" />
           </div>
           <Separator />
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium text-[#16250F]">Grocery List Updates</p>
-              <p className="text-sm text-[#16250F]/70">Notifications when grocery lists are ready</p>
+              <p className="font-medium text-primary">Grocery List Updates</p>
+              <p className="text-sm text-primary/70">Notifications when grocery lists are ready</p>
             </div>
             <input type="checkbox" defaultChecked className="rounded" />
           </div>
           <Separator />
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium text-[#16250F]">AI Suggestions</p>
-              <p className="text-sm text-[#16250F]/70">Weekly meal suggestions based on your preferences</p>
+              <p className="font-medium text-primary">AI Suggestions</p>
+              <p className="text-sm text-primary/70">Weekly meal suggestions based on your preferences</p>
             </div>
             <input type="checkbox" defaultChecked className="rounded" />
           </div>
@@ -147,7 +147,7 @@ export function SettingsPage() {
       {/* Appearance */}
       <Card className="border border-[#16250F]/10">
         <CardHeader>
-          <CardTitle className="text-[#16250F] flex items-center gap-2">
+          <CardTitle className="text-primary flex items-center gap-2">
             <Sun className="h-5 w-5" />
             Appearance
           </CardTitle>
@@ -158,8 +158,8 @@ export function SettingsPage() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium text-[#16250F]">Theme</p>
-              <p className="text-sm text-[#16250F]/70">Light mode (default)</p>
+              <p className="font-medium text-primary">Theme</p>
+              <p className="text-sm text-primary/70">Light mode (default)</p>
             </div>
             <Button variant="outline" className="border-[#16250F]/20">
               <Moon className="h-4 w-4 mr-2" />

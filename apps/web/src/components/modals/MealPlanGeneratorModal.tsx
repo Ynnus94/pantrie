@@ -122,7 +122,7 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl glass-card-static border-white/40">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-3 text-2xl font-bold text-[#1a1a1a]">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-bold text-primary">
             <div className="p-2 bg-[#D4A574] rounded-xl">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
@@ -136,47 +136,47 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
             <div className="flex items-center gap-3">
               <Calendar className="h-5 w-5 text-[#A67C52]" />
               <div>
-                <p className="font-semibold text-[#1a1a1a]">
+                <p className="font-semibold text-primary">
                   Week of {new Date(weekStartDate).toLocaleDateString('en-US', {
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric'
                   })}
                 </p>
-                <p className="text-sm text-[#4a4a4a]">7 dinners will be planned</p>
+                <p className="text-sm text-secondary">7 dinners will be planned</p>
               </div>
             </div>
           </GlassCard>
 
           {/* Family Preferences Summary */}
           <div>
-            <h3 className="font-semibold text-[#1a1a1a] mb-3 flex items-center gap-2">
+            <h3 className="font-semibold text-primary mb-3 flex items-center gap-2">
               <Users className="h-4 w-4" />
               Based on your family
             </h3>
             <GlassCard hover={false}>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center gap-2 text-[#4a4a4a]">
+                <div className="flex items-center gap-2 text-secondary">
                   <span className="text-lg">👨‍👩‍👧</span>
                   <span>3 family members</span>
                 </div>
-                <div className="flex items-center gap-2 text-[#4a4a4a]">
+                <div className="flex items-center gap-2 text-secondary">
                   <span className="text-lg">👶</span>
                   <span>Toddler-friendly options</span>
                 </div>
-                <div className="flex items-center gap-2 text-[#4a4a4a]">
+                <div className="flex items-center gap-2 text-secondary">
                   <Clock className="h-4 w-4" />
                   <span>Quick meals on office days</span>
                 </div>
-                <div className="flex items-center gap-2 text-[#4a4a4a]">
+                <div className="flex items-center gap-2 text-secondary">
                   <Sparkles className="h-4 w-4" />
                   <span>1 adventure meal</span>
                 </div>
-                <div className="flex items-center gap-2 text-[#4a4a4a]">
+                <div className="flex items-center gap-2 text-secondary">
                   <DollarSign className="h-4 w-4" />
                   <span>~$200 weekly budget</span>
                 </div>
-                <div className="flex items-center gap-2 text-[#4a4a4a]">
+                <div className="flex items-center gap-2 text-secondary">
                   <Utensils className="h-4 w-4" />
                   <span>Diverse cuisines</span>
                 </div>
@@ -186,7 +186,7 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
 
           {/* Special Requests */}
           <div>
-            <Label htmlFor="special-requests" className="text-[#1a1a1a] font-semibold mb-2 block">
+            <Label htmlFor="special-requests" className="text-primary font-semibold mb-2 block">
               Special Requests (Optional)
             </Label>
             <Textarea
@@ -197,7 +197,7 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
               className="glass-input min-h-[100px] resize-none"
               disabled={generating}
             />
-            <p className="text-xs text-[#737373] mt-2">
+            <p className="text-xs text-muted mt-2">
               💡 The AI will consider your family preferences automatically
             </p>
           </div>
@@ -208,8 +208,8 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
               <div className="flex items-center gap-3">
                 <Loader2 className="h-5 w-5 text-[#D4A574] animate-spin" />
                 <div>
-                  <p className="font-medium text-[#1a1a1a]">{progress}</p>
-                  <p className="text-sm text-[#4a4a4a]">This usually takes 20-30 seconds</p>
+                  <p className="font-medium text-primary">{progress}</p>
+                  <p className="text-sm text-secondary">This usually takes 20-30 seconds</p>
                 </div>
               </div>
             </GlassCard>

@@ -188,13 +188,13 @@ export function MealPlanGenerator() {
         <CardHeader className="relative p-6 sm:p-8 z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div className="space-y-2">
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#16250F] flex items-center gap-3">
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary flex items-center gap-3">
                 <div className="p-2.5 bg-[#16250F] rounded-xl shadow-lg">
                   <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-[#F5F1E8]" />
                 </div>
                 Weekly Meal Plan Generator
               </CardTitle>
-              <CardDescription className="text-sm sm:text-base text-[#16250F]/70 max-w-2xl">
+              <CardDescription className="text-sm sm:text-base text-primary/70 max-w-2xl">
                 Let AI create a personalized meal plan tailored to your family's preferences, dietary needs, and schedule
               </CardDescription>
             </div>
@@ -227,8 +227,8 @@ export function MealPlanGenerator() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#FF9500]/10 mb-4">
               <Loader2 className="h-8 w-8 text-[#FF9500] animate-spin" />
             </div>
-            <p className="text-lg font-medium text-[#16250F] mb-2">Creating your meal plan...</p>
-            <p className="text-sm text-[#16250F]/60">This may take a few moments</p>
+            <p className="text-lg font-medium text-primary mb-2">Creating your meal plan...</p>
+            <p className="text-sm text-primary/60">This may take a few moments</p>
           </div>
           {[1, 2, 3].map((i) => (
             <Card key={i} className="animate-pulse border border-[#16250F]/10">
@@ -319,7 +319,7 @@ export function MealPlanGenerator() {
             <DialogContent className="sm:max-w-[600px]">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <Edit2 className="h-5 w-5 text-[#16250F]" />
+                  <Edit2 className="h-5 w-5 text-primary" />
                   Quick Fix Meal Plan
                 </DialogTitle>
                 <DialogDescription>
@@ -434,11 +434,11 @@ export function MealPlanGenerator() {
                       <p className="text-gray-700 mb-4 leading-relaxed">{meal.description}</p>
                       <div className="flex items-center gap-6 text-sm text-gray-600 mb-4">
                         <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-[#16250F]" />
+                          <Clock className="h-4 w-4 text-primary" />
                           <span className="font-medium">{meal.cookTime} min</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Utensils className="h-4 w-4 text-[#16250F]" />
+                          <Utensils className="h-4 w-4 text-primary" />
                           <span className="font-medium">{meal.ingredients.length} ingredients</span>
                         </div>
                       </div>
@@ -450,7 +450,7 @@ export function MealPlanGenerator() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                        <Utensils className="h-4 w-4 text-[#16250F]" />
+                        <Utensils className="h-4 w-4 text-primary" />
                         Ingredients
                       </h4>
                       <ul className="space-y-1.5">
@@ -482,7 +482,7 @@ export function MealPlanGenerator() {
             <Card className="border border-[#16250F]/10 shadow-2xl bg-gradient-to-br from-white via-[#F5F1E8]/20 to-white animate-fade-in relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF9500] via-[#16250F] to-[#FF9500]" />
               <CardHeader className="p-6 sm:p-8">
-                <CardTitle className="text-2xl sm:text-3xl font-bold text-[#16250F] flex items-center gap-3">
+                <CardTitle className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-3">
                   <div className="p-2.5 bg-[#16250F] rounded-xl">
                     <Utensils className="h-6 w-6 text-[#F5F1E8]" />
                   </div>
@@ -499,11 +499,11 @@ export function MealPlanGenerator() {
                       key={index} 
                       className="flex items-center justify-between p-3 bg-white rounded-lg border border-[#16250F]/20 hover:border-[#FF9500] hover:shadow-md transition-all group"
                     >
-                      <span className="font-medium text-[#16250F] group-hover:text-[#FF9500] transition-colors">
+                      <span className="font-medium text-primary group-hover:text-[#FF9500] transition-colors">
                         {item.item}
                       </span>
                       {item.estimatedPrice && (
-                        <span className="text-sm font-semibold text-[#16250F] ml-2">
+                        <span className="text-sm font-semibold text-primary ml-2">
                           ${item.estimatedPrice.toFixed(2)}
                         </span>
                       )}

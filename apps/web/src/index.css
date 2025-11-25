@@ -3,223 +3,275 @@
 @tailwind utilities;
 
 /* ============================================
-   PANTRIE - MINIMAL GLASSMORPHISM
-   Apple Standard • Sophisticated • Professional
+   PANTRIE - THEME SYSTEM
+   Light/Dark Mode with Proper Text Contrast
    ============================================ */
 
-@layer base {
-  :root {
-    /* Minimal neutral palette */
-    --background: 0 0% 98%;
-    --foreground: 0 0% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
-    
-    /* Muted gold accent */
-    --primary: 30 45% 64%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 30 30% 94%;
-    --accent-foreground: 0 0% 10%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    
-    /* Subtle borders */
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 30 45% 64%;
-    --radius: 1rem;
-    
-    /* Glass tokens */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --glass-shadow: rgba(0, 0, 0, 0.08);
-    
-    /* Accent colors */
-    --accent-gold: #D4A574;
-    --accent-gold-hover: #C19A6B;
-    --accent-gold-dark: #A67C52;
-  }
+/* Base theme setup */
+:root {
+  color-scheme: light dark;
 }
 
+/* ============================================
+   LIGHT MODE
+   ============================================ */
+:root[data-theme="light"] {
+  /* Backgrounds */
+  --bg-gradient-start: #fafafa;
+  --bg-gradient-mid: #f5f5f5;
+  --bg-gradient-end: #e8e8e8;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-strong: rgba(255, 255, 255, 0.85);
+  --bg-glass-light: rgba(255, 255, 255, 0.6);
+  
+  /* Text - DARK for light mode */
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #737373;
+  --text-disabled: #a3a3a3;
+  
+  /* Accents - Muted Gold */
+  --accent-primary: #D4A574;
+  --accent-hover: #C19A6B;
+  --accent-active: #A67C52;
+  --accent-text: #ffffff;
+  
+  /* Borders */
+  --border-glass: rgba(255, 255, 255, 0.5);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.2);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-accent: 0 4px 16px rgba(212, 165, 116, 0.25);
+  --shadow-accent-hover: 0 6px 24px rgba(212, 165, 116, 0.35);
+  
+  /* Status Colors */
+  --success-bg: rgba(34, 197, 94, 0.15);
+  --success-border: rgba(34, 197, 94, 0.25);
+  --success-text: #166534;
+  
+  --warning-bg: rgba(251, 191, 36, 0.15);
+  --warning-border: rgba(251, 191, 36, 0.25);
+  --warning-text: #92400e;
+  
+  --error-bg: rgba(239, 68, 68, 0.15);
+  --error-border: rgba(239, 68, 68, 0.25);
+  --error-text: #991b1b;
+  
+  --info-bg: rgba(59, 130, 246, 0.15);
+  --info-border: rgba(59, 130, 246, 0.25);
+  --info-text: #1e40af;
+  
+  /* Input focus */
+  --focus-ring: rgba(212, 165, 116, 0.3);
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+:root[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-gradient-start: #0f0f0f;
+  --bg-gradient-mid: #171717;
+  --bg-gradient-end: #1f1f1f;
+  --bg-glass: rgba(30, 30, 30, 0.7);
+  --bg-glass-strong: rgba(30, 30, 30, 0.85);
+  --bg-glass-light: rgba(30, 30, 30, 0.6);
+  
+  /* Text - LIGHT for dark mode */
+  --text-primary: #f5f5f5;
+  --text-secondary: #d4d4d4;
+  --text-muted: #a3a3a3;
+  --text-disabled: #737373;
+  
+  /* Accents - Brighter Gold for dark mode */
+  --accent-primary: #E8B76A;
+  --accent-hover: #F5C77E;
+  --accent-active: #D4A574;
+  --accent-text: #1a1a1a;
+  
+  /* Borders */
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-accent: 0 4px 16px rgba(232, 183, 106, 0.2);
+  --shadow-accent-hover: 0 6px 24px rgba(232, 183, 106, 0.3);
+  
+  /* Status Colors - Brighter for dark mode */
+  --success-bg: rgba(34, 197, 94, 0.2);
+  --success-border: rgba(34, 197, 94, 0.3);
+  --success-text: #86efac;
+  
+  --warning-bg: rgba(251, 191, 36, 0.2);
+  --warning-border: rgba(251, 191, 36, 0.3);
+  --warning-text: #fde047;
+  
+  --error-bg: rgba(239, 68, 68, 0.2);
+  --error-border: rgba(239, 68, 68, 0.3);
+  --error-text: #fca5a5;
+  
+  --info-bg: rgba(59, 130, 246, 0.2);
+  --info-border: rgba(59, 130, 246, 0.3);
+  --info-text: #93c5fd;
+  
+  /* Input focus */
+  --focus-ring: rgba(232, 183, 106, 0.3);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
 @layer base {
   * {
-    border-color: hsl(var(--border));
+    border-color: var(--border-subtle);
   }
   
-  /* ============================================
-     MINIMAL GRADIENT BACKGROUND
-     Soft neutral - Apple/macOS inspired
-     ============================================ */
   body {
     background: linear-gradient(135deg, 
-      #fafafa 0%,
-      #f5f5f5 25%,
-      #f0f0f0 50%,
-      #ebebeb 75%,
-      #e8e8e8 100%
+      var(--bg-gradient-start) 0%, 
+      var(--bg-gradient-mid) 50%,
+      var(--bg-gradient-end) 100%
     );
     background-attachment: fixed;
     min-height: 100vh;
-    color: #1a1a1a;
+    color: var(--text-primary);
     font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    position: relative;
-  }
-
-  /* Subtle depth overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-      radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
   #root {
-    position: relative;
-    z-index: 1;
     min-height: 100vh;
   }
   
-  /* Clean sans-serif for headings */
+  /* Headings */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 600;
     letter-spacing: -0.025em;
-    color: #1a1a1a;
+    color: var(--text-primary);
   }
 }
 
 /* ============================================
-   MINIMAL GLASS COMPONENTS
-   Higher opacity for contrast on light bg
+   GLASS COMPONENTS
    ============================================ */
 
 /* Glass Card - Primary container */
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--bg-glass);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-glass);
   border-radius: 20px;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-glass);
+  color: var(--text-primary);
   padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-glass-strong);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-4px);
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
-/* Glass Card - Static (no hover effects) */
+/* Glass Card - Static (no hover) */
 .glass-card-static {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--bg-glass);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-glass);
   border-radius: 20px;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-glass);
+  color: var(--text-primary);
   padding: 1.5rem;
 }
 
-/* Glass Card - Strong (for overlays/modals) */
+/* Glass Card - Strong (modals/overlays) */
 .glass-card-strong {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-glass-strong);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-glass);
   border-radius: 20px;
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
   padding: 1.5rem;
 }
 
 /* Glass Card - Light variant */
 .glass-card-light {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--bg-glass-light);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--border-glass);
   border-radius: 16px;
-  box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
   padding: 1rem;
 }
 
 /* Glass Sidebar */
 .glass-sidebar {
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--bg-glass-strong);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.04);
+  border-right: 1px solid var(--border-subtle);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.05);
 }
 
 /* Glass Header */
 .glass-header {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-glass-strong);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* ============================================
    BUTTONS
    ============================================ */
 
-/* Accent Button - Primary CTA (Muted Gold) */
+/* Accent Button - Primary CTA */
 .accent-button,
 .honey-button {
   background: linear-gradient(135deg, 
-    #D4A574 0%, 
-    #C19A6B 100%
+    var(--accent-primary) 0%, 
+    var(--accent-hover) 100%
   );
   color: #ffffff;
   font-weight: 600;
   border: none;
   border-radius: 12px;
-  box-shadow: 
-    0 4px 16px rgba(212, 165, 116, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: var(--shadow-accent);
   transition: all 0.2s ease;
 }
 
 .accent-button:hover,
 .honey-button:hover {
   background: linear-gradient(135deg, 
-    #C19A6B 0%, 
-    #A67C52 100%
+    var(--accent-hover) 0%, 
+    var(--accent-active) 100%
   );
-  box-shadow: 
-    0 6px 24px rgba(212, 165, 116, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: var(--shadow-accent-hover);
   transform: translateY(-2px);
 }
 
@@ -230,21 +282,21 @@
 
 /* Glass Button - Secondary */
 .glass-button {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--bg-glass-light);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: #1a1a1a;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
   font-weight: 500;
   border-radius: 12px;
   transition: all 0.2s ease;
 }
 
 .glass-button:hover {
-  background: rgba(255, 255, 255, 0.75);
-  border-color: rgba(0, 0, 0, 0.12);
+  background: var(--bg-glass);
+  border-color: var(--border-medium);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .glass-button:active {
@@ -256,24 +308,24 @@
    ============================================ */
 
 .glass-input {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--bg-glass-light);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  color: #1a1a1a;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
   border-radius: 12px;
   transition: all 0.2s ease;
 }
 
 .glass-input::placeholder {
-  color: rgba(26, 26, 26, 0.4);
+  color: var(--text-muted);
 }
 
 .glass-input:focus {
-  background: rgba(255, 255, 255, 0.75);
-  border-color: #D4A574;
+  background: var(--bg-glass);
+  border-color: var(--accent-primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 /* ============================================
@@ -281,72 +333,129 @@
    ============================================ */
 
 .glass-badge {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--bg-glass-light);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-subtle);
   border-radius: 999px;
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 /* Status badges */
 .glass-badge-success,
 .badge-success {
-  background: rgba(34, 197, 94, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(34, 197, 94, 0.25);
-  color: #166534;
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success-text);
 }
 
 .glass-badge-warning,
 .badge-warning {
-  background: rgba(251, 191, 36, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(251, 191, 36, 0.25);
-  color: #92400e;
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  color: var(--warning-text);
 }
 
 .glass-badge-info,
 .badge-info {
-  background: rgba(59, 130, 246, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  color: #1e40af;
+  background: var(--info-bg);
+  border: 1px solid var(--info-border);
+  color: var(--info-text);
+}
+
+.glass-badge-error,
+.badge-error {
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error-text);
 }
 
 .glass-badge-accent {
   background: rgba(212, 165, 116, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(212, 165, 116, 0.25);
-  color: #92400e;
+  color: var(--accent-primary);
 }
 
 /* ============================================
-   BROWSER COMPATIBILITY FALLBACKS
+   TEXT UTILITIES
+   ============================================ */
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-disabled {
+  color: var(--text-disabled);
+}
+
+.text-accent {
+  color: var(--accent-primary);
+}
+
+/* Legacy class support */
+.text-warm-text-primary {
+  color: var(--text-primary);
+}
+
+.text-warm-text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-warm-text-muted {
+  color: var(--text-muted);
+}
+
+/* Honey color utilities (maps to accent) */
+.text-honey {
+  color: var(--accent-primary);
+}
+
+.text-honey-dark {
+  color: var(--accent-active);
+}
+
+.bg-honey {
+  background-color: var(--accent-primary);
+}
+
+.bg-honey\/20 {
+  background-color: rgba(212, 165, 116, 0.2);
+}
+
+.border-honey {
+  border-color: var(--accent-primary);
+}
+
+/* ============================================
+   BROWSER COMPATIBILITY
    ============================================ */
 @supports not (backdrop-filter: blur(12px)) {
   .glass-card,
   .glass-card-static,
   .glass-card-strong,
   .glass-card-light {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-glass-strong);
   }
   .glass-sidebar,
   .glass-header {
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--bg-glass-strong);
   }
   .glass-button {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--bg-glass);
   }
   .glass-input {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-glass);
   }
 }
 
@@ -385,9 +494,9 @@
 
 .shimmer {
   background: linear-gradient(90deg, 
-    rgba(0, 0, 0, 0.04) 0px, 
-    rgba(0, 0, 0, 0.08) 40px, 
-    rgba(0, 0, 0, 0.04) 80px
+    var(--bg-glass-light) 0px, 
+    var(--bg-glass) 40px, 
+    var(--bg-glass-light) 80px
   );
   background-size: 200px 100%;
   animation: shimmer 1.5s infinite;
@@ -412,7 +521,7 @@
   animation: float 6s ease-in-out infinite;
 }
 
-/* Staggered animation delays */
+/* Staggered delays */
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
 .stagger-3 { animation-delay: 0.15s; }
@@ -423,7 +532,7 @@
 .stagger-8 { animation-delay: 0.4s; }
 
 /* ============================================
-   SCROLLBAR - Minimal
+   SCROLLBAR
    ============================================ */
 ::-webkit-scrollbar {
   width: 10px;
@@ -431,64 +540,32 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.02);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--border-medium);
   border-radius: 5px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--border-strong);
   background-clip: content-box;
-}
-
-/* ============================================
-   TEXT COLORS
-   ============================================ */
-.text-primary {
-  color: #1a1a1a;
-}
-
-.text-secondary {
-  color: #4a4a4a;
-}
-
-.text-muted {
-  color: #737373;
-}
-
-.text-disabled {
-  color: #a3a3a3;
-}
-
-/* Legacy class support */
-.text-warm-text-primary {
-  color: #1a1a1a;
-}
-
-.text-warm-text-secondary {
-  color: #4a4a4a;
-}
-
-.text-warm-text-muted {
-  color: #737373;
 }
 
 /* ============================================
    FOCUS & SELECTION
    ============================================ */
 *:focus-visible {
-  outline: 2px solid #D4A574;
+  outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
 }
 
 ::selection {
   background: rgba(212, 165, 116, 0.25);
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 /* ============================================
@@ -506,7 +583,17 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Glass shine effect on hover */
+/* Theme transition */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Loading pulse */
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Glass shine effect */
 .glass-shine {
   position: relative;
   overflow: hidden;
@@ -522,7 +609,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.1),
     transparent
   );
   transition: left 0.5s ease;
@@ -531,43 +618,4 @@
 
 .glass-shine:hover::after {
   left: 100%;
-}
-
-/* Loading pulse */
-.loading-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Accent color utilities */
-.text-accent {
-  color: #D4A574;
-}
-
-.bg-accent {
-  background-color: #D4A574;
-}
-
-.border-accent {
-  border-color: #D4A574;
-}
-
-/* Legacy honey color support - maps to muted gold */
-.text-honey {
-  color: #D4A574;
-}
-
-.text-honey-dark {
-  color: #A67C52;
-}
-
-.bg-honey {
-  background-color: #D4A574;
-}
-
-.bg-honey\/20 {
-  background-color: rgba(212, 165, 116, 0.2);
-}
-
-.border-honey {
-  border-color: #D4A574;
 }

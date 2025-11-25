@@ -185,7 +185,7 @@ export function ReplaceMealModal({
           {/* Recipe Library Option */}
           <div className="border rounded-xl p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2 text-lg">
-              <BookOpen className="h-5 w-5 text-[#16250F]" />
+              <BookOpen className="h-5 w-5 text-primary" />
               Choose from your Recipe Library
             </h3>
             

@@ -224,7 +224,7 @@ export function MealPlanHistory() {
                     <DialogContent className="sm:max-w-[600px]">
                       <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                          <Edit2 className="h-5 w-5 text-[#16250F]" />
+                          <Edit2 className="h-5 w-5 text-primary" />
                           Edit Meal Plan
                         </DialogTitle>
                         <DialogDescription>

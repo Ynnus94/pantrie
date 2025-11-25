@@ -89,8 +89,8 @@ export function InsightsPage() {
   return (
     <div className="p-8 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-[#16250F] mb-2">Insights & Analytics</h1>
-        <p className="text-[#16250F]/70">
+        <h1 className="text-3xl font-bold text-primary mb-2">Insights & Analytics</h1>
+        <p className="text-primary/70">
           Track your meal planning habits and discover patterns
         </p>
       </div>
@@ -101,8 +101,8 @@ export function InsightsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Total Meal Plans</p>
-                <p className="text-2xl font-bold text-[#16250F]">{stats.totalMealPlans}</p>
+                <p className="text-sm text-primary/70 mb-1">Total Meal Plans</p>
+                <p className="text-2xl font-bold text-primary">{stats.totalMealPlans}</p>
               </div>
               <Calendar className="h-8 w-8 text-[#FF9500]" />
             </div>
@@ -113,8 +113,8 @@ export function InsightsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Total Meals</p>
-                <p className="text-2xl font-bold text-[#16250F]">{stats.totalMeals}</p>
+                <p className="text-sm text-primary/70 mb-1">Total Meals</p>
+                <p className="text-2xl font-bold text-primary">{stats.totalMeals}</p>
               </div>
               <ChefHat className="h-8 w-8 text-blue-600" />
             </div>
@@ -125,8 +125,8 @@ export function InsightsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Avg Weekly Cost</p>
-                <p className="text-2xl font-bold text-[#16250F]">${stats.avgWeeklyCost.toFixed(2)}</p>
+                <p className="text-sm text-primary/70 mb-1">Avg Weekly Cost</p>
+                <p className="text-2xl font-bold text-primary">${stats.avgWeeklyCost.toFixed(2)}</p>
               </div>
               <DollarSign className="h-8 w-8 text-green-600" />
             </div>
@@ -137,8 +137,8 @@ export function InsightsPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Foods Loved</p>
-                <p className="text-2xl font-bold text-[#16250F]">{stats.lovedFoods}</p>
+                <p className="text-sm text-primary/70 mb-1">Foods Loved</p>
+                <p className="text-2xl font-bold text-primary">{stats.lovedFoods}</p>
               </div>
               <Heart className="h-8 w-8 text-red-600 fill-red-600" />
             </div>
@@ -151,7 +151,7 @@ export function InsightsPage() {
         {/* Favorite Cuisines */}
         <Card className="border border-[#16250F]/10">
           <CardHeader>
-            <CardTitle className="text-[#16250F] flex items-center gap-2">
+            <CardTitle className="text-primary flex items-center gap-2">
               <Award className="h-5 w-5" />
               Favorite Cuisines
             </CardTitle>
@@ -165,7 +165,7 @@ export function InsightsPage() {
                       {index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-[#16250F]">{cuisine}</p>
+                      <p className="font-medium text-primary">{cuisine}</p>
                     </div>
                     <Badge variant="outline" className="border-[#16250F]/30">
                       {stats.totalMealPlans > 0 ? Math.round((1 / stats.favoriteCuisines.length) * 100) : 0}%
@@ -174,7 +174,7 @@ export function InsightsPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-[#16250F]/70 text-center py-8">No data yet. Generate some meal plans to see insights!</p>
+              <p className="text-primary/70 text-center py-8">No data yet. Generate some meal plans to see insights!</p>
             )}
           </CardContent>
         </Card>
@@ -182,7 +182,7 @@ export function InsightsPage() {
         {/* Food Exploration */}
         <Card className="border border-[#16250F]/10">
           <CardHeader>
-            <CardTitle className="text-[#16250F] flex items-center gap-2">
+            <CardTitle className="text-primary flex items-center gap-2">
               <Target className="h-5 w-5" />
               Food Exploration
             </CardTitle>
@@ -190,21 +190,21 @@ export function InsightsPage() {
           <CardContent className="space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-[#16250F]/70">Foods Tried</span>
-                <span className="font-medium text-[#16250F]">{stats.triedFoods}</span>
+                <span className="text-primary/70">Foods Tried</span>
+                <span className="font-medium text-primary">{stats.triedFoods}</span>
               </div>
               <Progress value={stats.triedFoods > 0 ? (stats.lovedFoods / stats.triedFoods) * 100 : 0} />
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-[#16250F]/70">Foods Loved</span>
-                <span className="font-medium text-[#16250F]">{stats.lovedFoods}</span>
+                <span className="text-primary/70">Foods Loved</span>
+                <span className="font-medium text-primary">{stats.lovedFoods}</span>
               </div>
               <Progress value={stats.triedFoods > 0 ? (stats.lovedFoods / stats.triedFoods) * 100 : 0} />
             </div>
             {stats.triedFoods > 0 && (
               <div className="pt-4 border-t border-[#16250F]/10">
-                <p className="text-sm text-[#16250F]/70">
+                <p className="text-sm text-primary/70">
                   Success Rate: <span className="font-bold text-[#FF9500]">
                     {Math.round((stats.lovedFoods / stats.triedFoods) * 100)}%
                   </span>
@@ -217,7 +217,7 @@ export function InsightsPage() {
         {/* Budget Tracking */}
         <Card className="lg:col-span-2 border border-[#16250F]/10">
           <CardHeader>
-            <CardTitle className="text-[#16250F] flex items-center gap-2">
+            <CardTitle className="text-primary flex items-center gap-2">
               <TrendingUp className="h-5 w-5" />
               Budget Overview
             </CardTitle>
@@ -225,19 +225,19 @@ export function InsightsPage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Total Spent</p>
-                <p className="text-3xl font-bold text-[#16250F]">${stats.totalSpent.toFixed(2)}</p>
-                <p className="text-xs text-[#16250F]/60 mt-1">Across all meal plans</p>
+                <p className="text-sm text-primary/70 mb-1">Total Spent</p>
+                <p className="text-3xl font-bold text-primary">${stats.totalSpent.toFixed(2)}</p>
+                <p className="text-xs text-primary/60 mt-1">Across all meal plans</p>
               </div>
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Average per Week</p>
-                <p className="text-3xl font-bold text-[#16250F]">${stats.avgWeeklyCost.toFixed(2)}</p>
-                <p className="text-xs text-[#16250F]/60 mt-1">CAD</p>
+                <p className="text-sm text-primary/70 mb-1">Average per Week</p>
+                <p className="text-3xl font-bold text-primary">${stats.avgWeeklyCost.toFixed(2)}</p>
+                <p className="text-xs text-primary/60 mt-1">CAD</p>
               </div>
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Budget Status</p>
+                <p className="text-sm text-primary/70 mb-1">Budget Status</p>
                 <p className="text-3xl font-bold text-green-600">On Track</p>
-                <p className="text-xs text-[#16250F]/60 mt-1">Within budget range</p>
+                <p className="text-xs text-primary/60 mt-1">Within budget range</p>
               </div>
             </div>
           </CardContent>

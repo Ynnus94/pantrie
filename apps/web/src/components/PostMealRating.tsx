@@ -88,7 +88,7 @@ export function PostMealRating({
     return (
       <Card className="border-2 border-[#FF9500]/30 bg-gradient-to-br from-[#FF9500]/10 to-white shadow-xl">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-[#16250F]">
+          <CardTitle className="flex items-center gap-2 text-primary">
             <Sparkles className="h-5 w-5 text-[#FF9500]" />
             This was a hit!
           </CardTitle>
@@ -98,13 +98,13 @@ export function PostMealRating({
             <div className="text-3xl font-bold text-[#FF9500] mb-2">
               {averageRating.toFixed(1)}★
             </div>
-            <p className="text-[#16250F]/70">
+            <p className="text-primary/70">
               Looks like everyone loved <strong>{mealName}</strong>!
             </p>
           </div>
 
           <div className="bg-white p-4 rounded-lg border border-[#16250F]/10">
-            <p className="text-sm font-medium text-[#16250F] mb-3">
+            <p className="text-sm font-medium text-primary mb-3">
               Save this to your Recipe Library so you can easily make it again?
             </p>
             <div className="flex gap-2">
@@ -126,7 +126,7 @@ export function PostMealRating({
             </div>
           </div>
 
-          <p className="text-xs text-[#16250F]/60 text-center">
+          <p className="text-xs text-primary/60 text-center">
             You can always save it from History later if you change your mind
           </p>
         </CardContent>
@@ -138,19 +138,19 @@ export function PostMealRating({
   return (
     <Card className="border border-[#16250F]/10 shadow-xl bg-gradient-to-br from-white to-[#F5F1E8]/30">
       <CardHeader>
-        <CardTitle className="text-[#16250F]">How was dinner tonight?</CardTitle>
-        <p className="text-sm text-[#16250F]/70">
+        <CardTitle className="text-primary">How was dinner tonight?</CardTitle>
+        <p className="text-sm text-primary/70">
           {mealName} • {mealDate}
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Family ratings */}
         <div className="space-y-4">
-          <p className="text-sm font-medium text-[#16250F]">Rate for each family member:</p>
+          <p className="text-sm font-medium text-primary">Rate for each family member:</p>
           
           {familyMembers.map((member) => (
             <div key={member.id} className="flex items-center justify-between">
-              <span className="font-medium text-[#16250F]">{member.name}</span>
+              <span className="font-medium text-primary">{member.name}</span>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -175,16 +175,16 @@ export function PostMealRating({
         {/* Average rating display */}
         {allRated && (
           <div className="bg-[#F5F1E8] p-4 rounded-lg text-center border border-[#16250F]/10">
-            <div className="text-2xl font-bold text-[#16250F] mb-1">
+            <div className="text-2xl font-bold text-primary mb-1">
               {averageRating.toFixed(1)}★
             </div>
-            <p className="text-sm text-[#16250F]/70">Average Rating</p>
+            <p className="text-sm text-primary/70">Average Rating</p>
           </div>
         )}
 
         {/* Notes */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[#16250F]">
+          <label className="text-sm font-medium text-primary">
             Notes (optional)
           </label>
           <Textarea
@@ -206,7 +206,7 @@ export function PostMealRating({
         </Button>
 
         {!allRated && (
-          <p className="text-xs text-center text-[#16250F]/60">
+          <p className="text-xs text-center text-primary/60">
             Please rate for all family members
           </p>
         )}

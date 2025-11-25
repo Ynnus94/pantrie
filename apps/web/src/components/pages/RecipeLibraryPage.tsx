@@ -103,8 +103,8 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
     <div className="p-8 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-[#1a1a1a] mb-2">Recipes</h1>
-        <p className="text-lg text-[#4a4a4a]">
+        <h1 className="text-4xl font-bold text-primary mb-2">Recipes</h1>
+        <p className="text-lg text-secondary">
           Your curated collection of favorite recipes. Import from URLs or save from meal history.
         </p>
       </div>
@@ -118,7 +118,7 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
       {/* Recipe Grid */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-[#1a1a1a]">
+          <h2 className="text-xl font-semibold text-primary">
             Your Recipes ({recipes.length})
           </h2>
           {recipes.length > 0 && (
@@ -184,13 +184,13 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
         {/* Search */}
         {recipes.length > 0 && (
           <div className="relative mb-6">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#737373]" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted" />
             <input
               type="text"
               placeholder="Search recipes by name or cuisine..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm text-[#1a1a1a] placeholder:text-[#737373]"
+              className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm text-primary placeholder:text-muted"
             />
           </div>
         )}
@@ -202,16 +202,16 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
               <div className="p-4 bg-gradient-to-br from-honey to-honey-dark rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
                 <Book className="h-10 w-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-[#1a1a1a] mb-3">
+              <h3 className="text-2xl font-bold text-primary mb-3">
                 {searchQuery ? 'No recipes match your search' : 'No recipes yet!'}
               </h3>
-              <p className="text-[#4a4a4a] mb-6 max-w-md mx-auto">
+              <p className="text-secondary mb-6 max-w-md mx-auto">
                 {searchQuery 
                   ? 'Try adjusting your search terms' 
                   : 'Import your first recipe by pasting a URL above'}
               </p>
               {!searchQuery && (
-                <p className="text-sm text-[#737373]">
+                <p className="text-sm text-muted">
                   Try recipes from AllRecipes, NYTimes Cooking, or any food blog
                 </p>
               )}
@@ -250,11 +250,11 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                 </div>
                 <div className="p-5">
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-[#1a1a1a]">{title}</h3>
+                    <h3 className="text-lg font-semibold text-primary">{title}</h3>
                     {rating && rating > 0 && (
                       <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 text-[#C19A6B] fill-[#C19A6B]" />
-                        <span className="text-sm font-medium text-[#1a1a1a]">{rating}</span>
+                        <span className="text-sm font-medium text-primary">{rating}</span>
                       </div>
                     )}
                   </div>
@@ -263,14 +263,14 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                       {cuisine}
                     </Badge>
                     {cookTime > 0 && (
-                      <div className="flex items-center gap-1 text-xs text-[#737373]">
+                      <div className="flex items-center gap-1 text-xs text-muted">
                         <Clock className="h-3 w-3" />
                         {cookTime} min
                       </div>
                     )}
                   </div>
-                  <p className="text-sm text-[#4a4a4a] mb-4 line-clamp-2">{recipe.description || 'No description available'}</p>
-                  <div className="flex items-center gap-2 text-xs text-[#737373] mb-4">
+                  <p className="text-sm text-secondary mb-4 line-clamp-2">{recipe.description || 'No description available'}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted mb-4">
                     <Utensils className="h-3 w-3" />
                     {recipe.ingredients?.length || 0} ingredients
                   </div>
@@ -288,7 +288,7 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="glass-button h-9 w-9 rounded-lg flex items-center justify-center">
-                          <MoreVertical className="h-4 w-4 text-[#1a1a1a]" />
+                          <MoreVertical className="h-4 w-4 text-primary" />
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">

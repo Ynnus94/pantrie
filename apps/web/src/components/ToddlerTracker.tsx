@@ -89,13 +89,13 @@ export function ToddlerTracker() {
         <CardHeader className="relative p-6 sm:p-8 z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div className="space-y-2">
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#16250F] flex items-center gap-3">
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary flex items-center gap-3">
                 <div className="p-2.5 bg-[#16250F] rounded-xl shadow-lg">
                   <Baby className="h-5 w-5 sm:h-6 sm:w-6 text-[#F5F1E8]" />
                 </div>
                 Little Foodie Journey
               </CardTitle>
-              <CardDescription className="text-sm sm:text-base text-[#16250F]/70 max-w-2xl">
+              <CardDescription className="text-sm sm:text-base text-primary/70 max-w-2xl">
                 Track your daughter's food exploration and build great eating habits
               </CardDescription>
             </div>
@@ -136,8 +136,8 @@ export function ToddlerTracker() {
           <CardContent className="pt-6 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[#16250F]/70 mb-1">Foods Loved</p>
-                <p className="text-3xl font-bold text-[#16250F]">{lovedCount}</p>
+                <p className="text-sm font-medium text-primary/70 mb-1">Foods Loved</p>
+                <p className="text-3xl font-bold text-primary">{lovedCount}</p>
               </div>
               <div className="p-3 bg-green-50 rounded-xl">
                 <Heart className="h-6 w-6 text-green-600 fill-green-600" />
@@ -150,8 +150,8 @@ export function ToddlerTracker() {
           <CardContent className="pt-6 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[#16250F]/70 mb-1">Foods Tried</p>
-                <p className="text-3xl font-bold text-[#16250F]">{triedCount}</p>
+                <p className="text-sm font-medium text-primary/70 mb-1">Foods Tried</p>
+                <p className="text-3xl font-bold text-primary">{triedCount}</p>
               </div>
               <div className="p-3 bg-yellow-50 rounded-xl">
                 <Meh className="h-6 w-6 text-yellow-600" />
@@ -164,8 +164,8 @@ export function ToddlerTracker() {
           <CardContent className="pt-6 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[#16250F]/70 mb-1">Foods Refused</p>
-                <p className="text-3xl font-bold text-[#16250F]">{refusedCount}</p>
+                <p className="text-sm font-medium text-primary/70 mb-1">Foods Refused</p>
+                <p className="text-3xl font-bold text-primary">{refusedCount}</p>
               </div>
               <div className="p-3 bg-red-50 rounded-xl">
                 <X className="h-6 w-6 text-red-600" />
@@ -192,7 +192,7 @@ export function ToddlerTracker() {
       {/* Food History */}
       <Card className="border border-[#16250F]/10 shadow-xl bg-white">
         <CardHeader className="p-6 sm:p-8">
-          <CardTitle className="text-2xl sm:text-3xl font-bold text-[#16250F]">Recent Food Adventures</CardTitle>
+          <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Recent Food Adventures</CardTitle>
           <CardDescription className="text-base mt-2">
             Track your little one's culinary journey
           </CardDescription>
@@ -209,8 +209,8 @@ export function ToddlerTracker() {
               <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center animate-pulse">
                 <Baby className="h-10 w-10 text-[#F5F1E8]" />
               </div>
-              <h3 className="text-2xl font-bold text-[#16250F] mb-3">No food adventures yet</h3>
-              <p className="text-[#16250F]/70 mb-6 max-w-md mx-auto">Start tracking your little one's food journey!</p>
+              <h3 className="text-2xl font-bold text-primary mb-3">No food adventures yet</h3>
+              <p className="text-primary/70 mb-6 max-w-md mx-auto">Start tracking your little one's food journey!</p>
               <Button 
                 onClick={() => setShowAddForm(true)}
                 className="bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold"

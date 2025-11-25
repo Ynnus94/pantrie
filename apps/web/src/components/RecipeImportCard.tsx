@@ -112,7 +112,7 @@ export function RecipeImportCard({ onManualEntry, onRecipeImported }: RecipeImpo
 
   return (
     <GlassCard hover={false} className="border-2 border-dashed border-honey/30 bg-gradient-to-br from-honey/10 to-transparent">
-      <div className="flex items-center gap-2 text-lg font-semibold text-[#1a1a1a] mb-4">
+      <div className="flex items-center gap-2 text-lg font-semibold text-primary mb-4">
         <div className="p-2 bg-[rgba(212,165,116,0.2)] rounded-xl">
           <Link2 className="h-5 w-5 text-[#C19A6B]" />
         </div>
@@ -127,7 +127,7 @@ export function RecipeImportCard({ onManualEntry, onRecipeImported }: RecipeImpo
             onChange={(e) => setUrl(e.target.value)}
             onKeyPress={handleKeyPress}
             disabled={isImporting}
-            className="glass-input flex-1 px-4 py-2.5 rounded-xl text-sm text-[#1a1a1a] placeholder:text-[#737373]"
+            className="glass-input flex-1 px-4 py-2.5 rounded-xl text-sm text-primary placeholder:text-muted"
           />
           <Button 
             onClick={handleImport} 
@@ -151,13 +151,13 @@ export function RecipeImportCard({ onManualEntry, onRecipeImported }: RecipeImpo
           </Alert>
         )}
         
-        <div className="flex items-center justify-between text-sm text-[#737373]">
+        <div className="flex items-center justify-between text-sm text-muted">
           <span>Supports: AllRecipes, NYTimes, Bon Appétit, and most food blogs</span>
           {onManualEntry && (
             <Button 
               variant="ghost" 
               size="sm" 
-              className="gap-2 text-[#737373] hover:text-[#C19A6B]"
+              className="gap-2 text-muted hover:text-[#C19A6B]"
               onClick={onManualEntry}
             >
               <Plus className="h-4 w-4" />

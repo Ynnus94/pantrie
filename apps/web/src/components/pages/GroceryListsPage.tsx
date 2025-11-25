@@ -247,11 +247,11 @@ export function GroceryListsPage() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[#1a1a1a] flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-primary flex items-center gap-3">
             <ShoppingCart className="h-8 w-8 text-[#C19A6B]" />
             Grocery List
           </h1>
-          <p className="text-[#4a4a4a]">
+          <p className="text-secondary">
             {uncheckedCount} items remaining • {checkedCount} checked
           </p>
         </div>
@@ -327,10 +327,10 @@ export function GroceryListsPage() {
                 <div className="p-4 bg-[rgba(212,165,116,0.2)] rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                   <ShoppingCart className="h-10 w-10 text-[#C19A6B]-dark" />
                 </div>
-                <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">
+                <h3 className="text-xl font-bold text-primary mb-2">
                   Your grocery list is empty
                 </h3>
-                <p className="text-[#4a4a4a] mb-6 max-w-md mx-auto">
+                <p className="text-secondary mb-6 max-w-md mx-auto">
                   {currentMealPlan && currentMealPlan.meals.length > 0 
                     ? 'Sync with your meal plan to auto-generate your shopping list'
                     : 'Add items manually or generate a meal plan first'}
@@ -370,7 +370,7 @@ export function GroceryListsPage() {
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">{CATEGORY_ICONS[category]}</span>
-                    <h3 className="font-semibold text-[#1a1a1a]">
+                    <h3 className="font-semibold text-primary">
                       {category}
                     </h3>
                     <Badge variant="outline" className="text-xs">
@@ -378,9 +378,9 @@ export function GroceryListsPage() {
                     </Badge>
                   </div>
                   {isCollapsed ? (
-                    <ChevronDown className="h-5 w-5 text-[#737373]" />
+                    <ChevronDown className="h-5 w-5 text-muted" />
                   ) : (
-                    <ChevronUp className="h-5 w-5 text-[#737373]" />
+                    <ChevronUp className="h-5 w-5 text-muted" />
                   )}
                 </button>
 
@@ -409,7 +409,7 @@ export function GroceryListsPage() {
         {/* Stats Sidebar */}
         <div className="space-y-4">
           <GlassCard hover={false} className="sticky top-20">
-            <h3 className="font-semibold text-[#1a1a1a] mb-4 flex items-center gap-2">
+            <h3 className="font-semibold text-primary mb-4 flex items-center gap-2">
               <ShoppingCart className="h-5 w-5 text-[#C19A6B]" />
               Shopping Progress
             </h3>
@@ -417,8 +417,8 @@ export function GroceryListsPage() {
             {/* Progress Bar */}
             <div className="mb-6">
               <div className="flex items-center justify-between text-sm mb-2">
-                <span className="text-[#4a4a4a]">Progress</span>
-                <span className="font-semibold text-[#1a1a1a]">{progressPercent}%</span>
+                <span className="text-secondary">Progress</span>
+                <span className="font-semibold text-primary">{progressPercent}%</span>
               </div>
               <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden">
                 <div 
@@ -431,20 +431,20 @@ export function GroceryListsPage() {
             {/* Stats */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-[#4a4a4a]">Total Items</span>
-                <span className="font-semibold text-[#1a1a1a]">{totalItems}</span>
+                <span className="text-secondary">Total Items</span>
+                <span className="font-semibold text-primary">{totalItems}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#4a4a4a]">Remaining</span>
-                <span className="font-semibold text-[#1a1a1a]">{uncheckedCount}</span>
+                <span className="text-secondary">Remaining</span>
+                <span className="font-semibold text-primary">{uncheckedCount}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-green-600">Checked</span>
                 <span className="font-semibold text-green-600">{checkedCount}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#4a4a4a]">Categories</span>
-                <span className="font-semibold text-[#1a1a1a]">{Object.keys(groupedItems).length}</span>
+                <span className="text-secondary">Categories</span>
+                <span className="font-semibold text-primary">{Object.keys(groupedItems).length}</span>
               </div>
             </div>
 
@@ -484,10 +484,10 @@ export function GroceryListsPage() {
                   <AlertCircle className="h-4 w-4 text-[#C19A6B]-dark" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-[#1a1a1a]">
+                  <p className="text-sm font-medium text-primary">
                     Meal Plan Connected
                   </p>
-                  <p className="text-xs text-[#4a4a4a] mt-1">
+                  <p className="text-xs text-secondary mt-1">
                     {currentMealPlan.meals.length} meals this week
                   </p>
                   <Button 
@@ -599,12 +599,12 @@ function GroceryItemRow({
       {/* Item Info */}
       <div className="flex-1 min-w-0">
         <p className={`font-medium text-sm truncate ${
-          item.is_checked ? 'line-through text-[#737373]' : 'text-[#1a1a1a]'
+          item.is_checked ? 'line-through text-muted' : 'text-primary'
         }`}>
           {item.item_name}
         </p>
         {(item.quantity || item.unit) && (
-          <p className="text-xs text-[#737373]">
+          <p className="text-xs text-muted">
             {item.quantity} {item.unit}
           </p>
         )}
@@ -674,7 +674,7 @@ function AddItemForm({
   return (
     <GlassCard hover={false} className="animate-fade-in">
       <form onSubmit={handleSubmit}>
-        <h3 className="font-semibold text-[#1a1a1a] mb-4 flex items-center gap-2">
+        <h3 className="font-semibold text-primary mb-4 flex items-center gap-2">
           <Plus className="h-4 w-4" />
           Add New Item
         </h3>

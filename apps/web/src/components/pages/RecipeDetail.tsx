@@ -98,7 +98,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-[#16250F]" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     )
   }
@@ -108,9 +108,9 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
       <div className="p-8">
         <Card className="border border-[#16250F]/10">
           <CardContent className="text-center py-12">
-            <ChefHat className="h-16 w-16 mx-auto text-[#16250F]/30 mb-4" />
-            <h3 className="text-xl font-semibold text-[#16250F] mb-2">Recipe not found</h3>
-            <p className="text-[#16250F]/70 mb-6">This recipe may have been deleted or doesn't exist.</p>
+            <ChefHat className="h-16 w-16 mx-auto text-primary/30 mb-4" />
+            <h3 className="text-xl font-semibold text-primary mb-2">Recipe not found</h3>
+            <p className="text-primary/70 mb-6">This recipe may have been deleted or doesn't exist.</p>
             <Button 
               variant="outline" 
               onClick={() => onNavigate('recipes')}
@@ -143,9 +143,9 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex-1 min-w-0">
-          <h1 className="text-4xl font-bold text-[#1a1a1a] mb-2">{recipe.title}</h1>
+          <h1 className="text-4xl font-bold text-primary mb-2">{recipe.title}</h1>
           {recipe.description && (
-            <p className="text-lg text-[#16250F]/70">{recipe.description}</p>
+            <p className="text-lg text-primary/70">{recipe.description}</p>
           )}
         </div>
         <div className="flex gap-2 flex-shrink-0">
@@ -202,15 +202,15 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
         {/* Stats Card */}
         <Card className="border border-[#16250F]/10 shadow-xl bg-gradient-to-br from-white to-[#F5F1E8]/30">
           <CardHeader>
-            <CardTitle className="text-lg text-[#16250F]">Recipe Info</CardTitle>
+            <CardTitle className="text-lg text-primary">Recipe Info</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {recipe.total_time && (
               <div className="flex items-center gap-3">
                 <Clock className="h-5 w-5 text-[#FF9500]" />
                 <div>
-                  <p className="text-sm font-medium text-[#16250F]">Total Time</p>
-                  <p className="text-sm text-[#16250F]/70">{recipe.total_time} minutes</p>
+                  <p className="text-sm font-medium text-primary">Total Time</p>
+                  <p className="text-sm text-primary/70">{recipe.total_time} minutes</p>
                 </div>
               </div>
             )}
@@ -219,8 +219,8 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
               <div className="flex items-center gap-3">
                 <Users className="h-5 w-5 text-[#FF9500]" />
                 <div>
-                  <p className="text-sm font-medium text-[#16250F]">Servings</p>
-                  <p className="text-sm text-[#16250F]/70">{recipe.servings} people</p>
+                  <p className="text-sm font-medium text-primary">Servings</p>
+                  <p className="text-sm text-primary/70">{recipe.servings} people</p>
                 </div>
               </div>
             )}
@@ -229,8 +229,8 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
               <div className="flex items-center gap-3">
                 <Flame className="h-5 w-5 text-[#FF9500]" />
                 <div>
-                  <p className="text-sm font-medium text-[#16250F]">Difficulty</p>
-                  <p className="text-sm text-[#16250F]/70 capitalize">{recipe.difficulty}</p>
+                  <p className="text-sm font-medium text-primary">Difficulty</p>
+                  <p className="text-sm text-primary/70 capitalize">{recipe.difficulty}</p>
                 </div>
               </div>
             )}
@@ -239,8 +239,8 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
               <div className="flex items-center gap-3">
                 <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
                 <div>
-                  <p className="text-sm font-medium text-[#16250F]">Rating</p>
-                  <p className="text-sm text-[#16250F]/70">{recipe.average_rating}★</p>
+                  <p className="text-sm font-medium text-primary">Rating</p>
+                  <p className="text-sm text-primary/70">{recipe.average_rating}★</p>
                 </div>
               </div>
             )}
@@ -249,8 +249,8 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
               <div className="flex items-center gap-3">
                 <Calendar className="h-5 w-5 text-[#FF9500]" />
                 <div>
-                  <p className="text-sm font-medium text-[#16250F]">Times Made</p>
-                  <p className="text-sm text-[#16250F]/70">{recipe.times_made} times</p>
+                  <p className="text-sm font-medium text-primary">Times Made</p>
+                  <p className="text-sm text-primary/70">{recipe.times_made} times</p>
                 </div>
               </div>
             )}
@@ -289,7 +289,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
           </Badge>
         )}
         {tags.map((tag: string) => (
-          <Badge key={tag} variant="secondary" className="bg-[#F5F1E8] text-[#16250F]">
+          <Badge key={tag} variant="secondary" className="bg-[#F5F1E8] text-primary">
             {tag}
           </Badge>
         ))}
@@ -301,8 +301,8 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
         <Card className="border border-[#16250F]/10 shadow-xl bg-gradient-to-br from-white to-[#F5F1E8]/20">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-[#16250F]">Ingredients</CardTitle>
-              <span className="text-sm text-[#16250F]/60">
+              <CardTitle className="text-primary">Ingredients</CardTitle>
+              <span className="text-sm text-primary/60">
                 {ingredients.length} items
               </span>
             </div>
@@ -322,8 +322,8 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
                     htmlFor={`ingredient-${index}`}
                     className={`text-sm cursor-pointer transition-all ${
                       ingredientsChecked[index] 
-                        ? 'line-through text-[#16250F]/40' 
-                        : 'text-[#16250F]'
+                        ? 'line-through text-primary/40' 
+                        : 'text-primary'
                     }`}
                   >
                     {ingredient}
@@ -345,8 +345,8 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
         <Card className="border border-[#16250F]/10 shadow-xl bg-gradient-to-br from-white to-[#F5F1E8]/20">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-[#16250F]">Instructions</CardTitle>
-              <span className="text-sm text-[#16250F]/60">
+              <CardTitle className="text-primary">Instructions</CardTitle>
+              <span className="text-sm text-primary/60">
                 {instructions.length} steps
               </span>
             </div>
@@ -358,7 +358,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
                   <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#FF9500] text-white flex items-center justify-center text-sm font-bold shadow-md">
                     {index + 1}
                   </span>
-                  <p className="text-sm pt-1 text-[#16250F]">{instruction}</p>
+                  <p className="text-sm pt-1 text-primary">{instruction}</p>
                 </li>
               ))}
             </ol>
@@ -370,7 +370,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
       {recipe.source_url && (
         <Card className="border border-[#16250F]/10 bg-[#F5F1E8]/30">
           <CardContent className="pt-6">
-            <p className="text-sm text-[#16250F]/70">
+            <p className="text-sm text-primary/70">
               📌 Originally from:{' '}
               <a 
                 href={recipe.source_url}

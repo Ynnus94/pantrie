@@ -62,13 +62,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
           // Primary (Muted Gold)
           'text-white border-none hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(212,165,116,0.35)]': variant === 'default' || variant === 'honey',
           // Glass
-          'text-[#1a1a1a] border border-[rgba(0,0,0,0.08)] hover:bg-white/75 hover:-translate-y-0.5 hover:border-[rgba(0,0,0,0.12)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]': variant === 'glass',
+          'text-primary border border-[rgba(0,0,0,0.08)] hover:bg-white/75 hover:-translate-y-0.5 hover:border-[rgba(0,0,0,0.12)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]': variant === 'glass',
           // Outline
-          'text-[#1a1a1a] border border-[rgba(0,0,0,0.12)] hover:bg-white/65 hover:-translate-y-0.5': variant === 'outline',
+          'text-primary border border-[rgba(0,0,0,0.12)] hover:bg-white/65 hover:-translate-y-0.5': variant === 'outline',
           // Ghost
-          'text-[#1a1a1a] hover:bg-white/50': variant === 'ghost',
+          'text-primary hover:bg-white/50': variant === 'ghost',
           // Secondary
-          'text-[#1a1a1a] border border-[rgba(0,0,0,0.08)] hover:bg-white/75': variant === 'secondary',
+          'text-primary border border-[rgba(0,0,0,0.08)] hover:bg-white/75': variant === 'secondary',
           // Destructive
           'text-white border-none hover:bg-red-600': variant === 'destructive',
           // Sizes

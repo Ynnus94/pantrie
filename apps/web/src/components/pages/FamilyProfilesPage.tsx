@@ -11,8 +11,8 @@ export function FamilyProfilesPage() {
   return (
     <div className="p-8 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-[#16250F] mb-2">Family Profiles</h1>
-        <p className="text-[#16250F]/70">
+        <h1 className="text-3xl font-bold text-primary mb-2">Family Profiles</h1>
+        <p className="text-primary/70">
           Track food exploration and build great eating habits for your family
         </p>
       </div>
@@ -23,8 +23,8 @@ export function FamilyProfilesPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Family Members</p>
-                <p className="text-2xl font-bold text-[#16250F]">3</p>
+                <p className="text-sm text-primary/70 mb-1">Family Members</p>
+                <p className="text-2xl font-bold text-primary">3</p>
               </div>
               <Users className="h-8 w-8 text-[#FF9500]" />
             </div>
@@ -35,8 +35,8 @@ export function FamilyProfilesPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Foods Tracked</p>
-                <p className="text-2xl font-bold text-[#16250F]">-</p>
+                <p className="text-sm text-primary/70 mb-1">Foods Tracked</p>
+                <p className="text-2xl font-bold text-primary">-</p>
               </div>
               <Baby className="h-8 w-8 text-blue-600" />
             </div>
@@ -47,8 +47,8 @@ export function FamilyProfilesPage() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-[#16250F]/70 mb-1">Favorite Foods</p>
-                <p className="text-2xl font-bold text-[#16250F]">-</p>
+                <p className="text-sm text-primary/70 mb-1">Favorite Foods</p>
+                <p className="text-2xl font-bold text-primary">-</p>
               </div>
               <Heart className="h-8 w-8 text-red-600 fill-red-600" />
             </div>
@@ -80,7 +80,7 @@ export function FamilyProfilesPage() {
         <TabsContent value="profiles" className="mt-6">
           <Card className="border border-[#16250F]/10">
             <CardHeader>
-              <CardTitle className="text-[#16250F]">Family Members</CardTitle>
+              <CardTitle className="text-primary">Family Members</CardTitle>
               <CardDescription>
                 Manage profiles for each family member
               </CardDescription>
@@ -90,8 +90,8 @@ export function FamilyProfilesPage() {
                 <div className="p-4 border border-[#16250F]/10 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold text-[#16250F]">Sunny</h3>
-                      <p className="text-sm text-[#16250F]/70">Adult • Primary user</p>
+                      <h3 className="font-semibold text-primary">Sunny</h3>
+                      <p className="text-sm text-primary/70">Adult • Primary user</p>
                     </div>
                     <Button variant="outline" size="sm" className="border-[#16250F]/20">
                       Edit
@@ -101,8 +101,8 @@ export function FamilyProfilesPage() {
                 <div className="p-4 border border-[#16250F]/10 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold text-[#16250F]">Audrey</h3>
-                      <p className="text-sm text-[#16250F]/70">Adult</p>
+                      <h3 className="font-semibold text-primary">Audrey</h3>
+                      <p className="text-sm text-primary/70">Adult</p>
                     </div>
                     <Button variant="outline" size="sm" className="border-[#16250F]/20">
                       Edit
@@ -112,9 +112,9 @@ export function FamilyProfilesPage() {
                 <div className="p-4 border border-[#16250F]/10 rounded-lg bg-blue-50/50">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold text-[#16250F]">Daughter</h3>
-                      <p className="text-sm text-[#16250F]/70">Age 2 • Food explorer</p>
-                      <p className="text-xs text-[#16250F]/60 mt-1">Favorites: salmon, chicken, pasta</p>
+                      <h3 className="font-semibold text-primary">Daughter</h3>
+                      <p className="text-sm text-primary/70">Age 2 • Food explorer</p>
+                      <p className="text-xs text-primary/60 mt-1">Favorites: salmon, chicken, pasta</p>
                     </div>
                     <Button variant="outline" size="sm" className="border-[#16250F]/20">
                       Edit

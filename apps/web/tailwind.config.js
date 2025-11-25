@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
+  darkMode: ["class", '[data-theme="dark"]'],
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,11 +8,12 @@ export default {
   theme: {
     extend: {
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--radius, 1rem)",
+        md: "calc(var(--radius, 1rem) - 2px)",
+        sm: "calc(var(--radius, 1rem) - 4px)",
       },
       colors: {
+        // Theme-aware colors via CSS variables
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -24,61 +25,61 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "var(--text-primary)",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "var(--text-secondary)",
           foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
+          DEFAULT: "var(--text-muted)",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          light: '#D4A574',
-          DEFAULT: '#C19A6B',
-          dark: '#A67C52',
+          light: 'var(--accent-primary)',
+          DEFAULT: 'var(--accent-hover)',
+          dark: 'var(--accent-active)',
           foreground: "hsl(var(--accent-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        border: "var(--border-subtle)",
+        input: "var(--border-subtle)",
+        ring: "var(--accent-primary)",
         
-        // Glass colors for Tailwind utilities
+        // Glass colors
         glass: {
-          light: 'rgba(255, 255, 255, 0.6)',
-          DEFAULT: 'rgba(255, 255, 255, 0.7)',
-          strong: 'rgba(255, 255, 255, 0.8)',
+          light: 'var(--bg-glass-light)',
+          DEFAULT: 'var(--bg-glass)',
+          strong: 'var(--bg-glass-strong)',
         },
         
-        // Muted gold accent (replaces honey)
+        // Legacy honey colors - maps to accent
         honey: {
-          light: '#D4A574',
-          DEFAULT: '#C19A6B',
-          dark: '#A67C52',
+          light: 'var(--accent-primary)',
+          DEFAULT: 'var(--accent-hover)',
+          dark: 'var(--accent-active)',
         },
         
-        // Warm text colors (dark for light bg)
+        // Text colors
         'warm-text': {
-          primary: '#1a1a1a',
-          secondary: '#4a4a4a',
-          muted: '#737373',
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          muted: 'var(--text-muted)',
         },
       },
       boxShadow: {
-        'glass': '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
-        'glass-hover': '0 12px 48px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1)',
-        'glass-lg': '0 16px 64px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1)',
-        'accent': '0 4px 16px rgba(212, 165, 116, 0.25)',
-        'accent-hover': '0 6px 24px rgba(212, 165, 116, 0.35)',
+        'glass': 'var(--shadow-glass)',
+        'glass-hover': 'var(--shadow-hover)',
+        'glass-lg': 'var(--shadow-lg)',
+        'accent': 'var(--shadow-accent)',
+        'accent-hover': 'var(--shadow-accent-hover)',
       },
       backgroundImage: {
-        'minimal-gradient': 'linear-gradient(135deg, #fafafa 0%, #f5f5f5 25%, #f0f0f0 50%, #ebebeb 75%, #e8e8e8 100%)',
+        'minimal-gradient': 'linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%)',
       },
       backdropBlur: {
         xs: '2px',

@@ -88,7 +88,7 @@ export function GlassCardTitle({
   return (
     <h3 
       className={cn(
-        'text-xl font-semibold text-[#1a1a1a] tracking-tight',
+        'text-xl font-semibold text-primary tracking-tight',
         className
       )}
       {...props}
@@ -106,7 +106,7 @@ export function GlassCardDescription({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p 
-      className={cn('text-sm text-[#4a4a4a]', className)}
+      className={cn('text-sm text-secondary', className)}
       {...props}
     >
       {children}

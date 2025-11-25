@@ -253,8 +253,8 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
     return (
       <div className="p-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2">This Week's Meals</h1>
-          <p className="text-[#4a4a4a]">
+          <h1 className="text-3xl font-bold text-primary mb-2">This Week's Meals</h1>
+          <p className="text-secondary">
             {new Date().toLocaleDateString('en-US', { 
               month: 'long',
               day: 'numeric',
@@ -268,8 +268,8 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
             <div className="p-6 bg-gradient-to-br from-honey to-honey-dark rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center shadow-lg animate-float">
               <Calendar className="h-12 w-12 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-[#1a1a1a] mb-3">Ready to plan your week?</h3>
-            <p className="text-[#4a4a4a] mb-8 max-w-md mx-auto">
+            <h3 className="text-2xl font-bold text-primary mb-3">Ready to plan your week?</h3>
+            <p className="text-secondary mb-8 max-w-md mx-auto">
               Generate a personalized weekly meal plan based on your family's preferences, schedule, and budget.
             </p>
             
@@ -283,14 +283,14 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                 Generate Meal Plan
               </Button>
               
-              <p className="text-xs text-[#737373]">
+              <p className="text-xs text-muted">
                 Takes about 30 seconds • Based on your family profiles
               </p>
             </div>
             
             {/* Alternative actions */}
             <div className="mt-8 pt-8 border-t border-white/20">
-              <p className="text-sm text-[#737373] mb-3">Or add meals manually</p>
+              <p className="text-sm text-muted mb-3">Or add meals manually</p>
               <div className="flex gap-2 justify-center flex-wrap">
                 <Button 
                   variant="glass" 
@@ -336,8 +336,8 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
       {/* ============ HEADER ACTION BAR ============ */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2">This Week's Meals</h1>
-          <p className="text-[#4a4a4a]">
+          <h1 className="text-3xl font-bold text-primary mb-2">This Week's Meals</h1>
+          <p className="text-secondary">
             Week of {new Date(currentMealPlan.weekStarting).toLocaleDateString('en-US', {
               month: 'long',
               day: 'numeric',
@@ -528,7 +528,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                         }`}>
                           <ChefHat className="h-5 w-5" />
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">
+                        <h3 className="text-xl sm:text-2xl font-bold text-primary">
                           {getDayName(index)}: {meal.name}
                         </h3>
                       </div>
@@ -537,7 +537,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <button className="glass-button h-8 w-8 rounded-lg flex items-center justify-center shrink-0">
-                            <MoreVertical className="h-4 w-4 text-[#1a1a1a]" />
+                            <MoreVertical className="h-4 w-4 text-primary" />
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
@@ -570,9 +570,9 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                       </DropdownMenu>
                     </div>
                     
-                    <p className="text-[#4a4a4a] mb-4 leading-relaxed">{meal.description}</p>
+                    <p className="text-secondary mb-4 leading-relaxed">{meal.description}</p>
                     
-                    <div className="flex items-center gap-6 text-sm text-[#737373] mb-4">
+                    <div className="flex items-center gap-6 text-sm text-muted mb-4">
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-[#C19A6B]" />
                         <span className="font-medium">{meal.cookTime} min</span>
@@ -642,10 +642,10 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
               <GlassCard key={`empty-${dayIndex}`} hover={false} className="border-2 border-dashed border-white/50">
                 <div className="py-6 text-center">
                   <div className="p-4 bg-white/50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <Calendar className="h-8 w-8 text-[#737373]" />
+                    <Calendar className="h-8 w-8 text-muted" />
                   </div>
-                  <h3 className="text-lg font-semibold text-[#1a1a1a] mb-1">{getDayName(dayIndex)}</h3>
-                  <p className="text-sm text-[#737373] mb-4">No meal planned</p>
+                  <h3 className="text-lg font-semibold text-primary mb-1">{getDayName(dayIndex)}</h3>
+                  <p className="text-sm text-muted mb-4">No meal planned</p>
                   <div className="flex gap-2 justify-center">
                     <Button 
                       variant="glass"

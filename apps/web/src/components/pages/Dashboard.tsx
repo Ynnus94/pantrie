@@ -15,8 +15,8 @@ export function Dashboard({ onNavigate }: DashboardProps) {
     <div className="p-8 space-y-6">
       {/* Welcome Header */}
       <div className="animate-fade-in">
-        <h1 className="text-3xl font-bold text-[#1a1a1a]">Welcome back, Sunny! 👋</h1>
-        <p className="text-[#4a4a4a]">
+        <h1 className="text-3xl font-bold text-primary">Welcome back, Sunny! 👋</h1>
+        <p className="text-secondary">
           Here's what's happening with your family's meals
         </p>
       </div>
@@ -30,18 +30,18 @@ export function Dashboard({ onNavigate }: DashboardProps) {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[#737373]">This Week</p>
-              <p className="text-2xl font-bold text-[#1a1a1a]">$178 spent</p>
-              <p className="text-xs text-green-700 font-medium">Under budget by $22</p>
+              <p className="text-sm text-muted">This Week</p>
+              <p className="text-2xl font-bold text-primary">$178 spent</p>
+              <p className="text-xs text-[var(--success-text)] font-medium">Under budget by $22</p>
             </div>
             <div 
               className="p-3 rounded-xl"
               style={{
-                background: 'rgba(34, 197, 94, 0.15)',
-                border: '1px solid rgba(34, 197, 94, 0.25)'
+                background: 'var(--success-bg)',
+                border: '1px solid var(--success-border)'
               }}
             >
-              <DollarSign className="h-6 w-6 text-green-700" />
+              <DollarSign className="h-6 w-6 text-[var(--success-text)]" />
             </div>
           </div>
         </GlassCard>
@@ -53,26 +53,20 @@ export function Dashboard({ onNavigate }: DashboardProps) {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[#737373]">Meals Planned</p>
-              <p className="text-2xl font-bold text-[#1a1a1a]">6 of 7</p>
-              <div className="mt-2 h-2 bg-black/5 rounded-full overflow-hidden">
+              <p className="text-sm text-muted">Meals Planned</p>
+              <p className="text-2xl font-bold text-primary">6 of 7</p>
+              <div className="mt-2 h-2 bg-[var(--border-subtle)] rounded-full overflow-hidden">
                 <div 
                   className="h-full rounded-full" 
                   style={{ 
                     width: '85%',
-                    background: 'linear-gradient(90deg, #D4A574, #C19A6B)'
+                    background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-hover))'
                   }} 
                 />
               </div>
             </div>
-            <div 
-              className="p-3 rounded-xl"
-              style={{
-                background: 'rgba(212, 165, 116, 0.15)',
-                border: '1px solid rgba(212, 165, 116, 0.25)'
-              }}
-            >
-              <Calendar className="h-6 w-6 text-[#A67C52]" />
+            <div className="p-3 rounded-xl glass-badge-accent">
+              <Calendar className="h-6 w-6 text-accent" />
             </div>
           </div>
         </GlassCard>
@@ -84,18 +78,18 @@ export function Dashboard({ onNavigate }: DashboardProps) {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[#737373]">Grocery Items</p>
-              <p className="text-2xl font-bold text-[#1a1a1a]">14 to buy</p>
-              <p className="text-xs text-[#737373]">Ready for shopping</p>
+              <p className="text-sm text-muted">Grocery Items</p>
+              <p className="text-2xl font-bold text-primary">14 to buy</p>
+              <p className="text-xs text-muted">Ready for shopping</p>
             </div>
             <div 
               className="p-3 rounded-xl"
               style={{
-                background: 'rgba(59, 130, 246, 0.15)',
-                border: '1px solid rgba(59, 130, 246, 0.25)'
+                background: 'var(--info-bg)',
+                border: '1px solid var(--info-border)'
               }}
             >
-              <ShoppingCart className="h-6 w-6 text-blue-700" />
+              <ShoppingCart className="h-6 w-6 text-[var(--info-text)]" />
             </div>
           </div>
         </GlassCard>
@@ -106,10 +100,10 @@ export function Dashboard({ onNavigate }: DashboardProps) {
         {/* This Week's Meals Preview */}
         <GlassCard hover={false} className="animate-fade-in stagger-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-[#1a1a1a]">📅 This Week's Meals</h3>
+            <h3 className="text-lg font-semibold text-primary">📅 This Week's Meals</h3>
             <Badge 
               variant="outline" 
-              className="border-[rgba(212,165,116,0.3)] bg-[rgba(212,165,116,0.1)] text-[#A67C52]"
+              className="border-[var(--accent-primary)]/30 bg-[var(--accent-primary)]/10 text-accent"
             >
               Week of Nov 25
             </Badge>
@@ -153,7 +147,7 @@ export function Dashboard({ onNavigate }: DashboardProps) {
         {/* Grocery List Preview */}
         <GlassCard hover={false} className="animate-fade-in stagger-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-[#1a1a1a]">🛒 Grocery List</h3>
+            <h3 className="text-lg font-semibold text-primary">🛒 Grocery List</h3>
             <Button 
               size="sm"
               onClick={() => onNavigate('grocery')}
@@ -168,10 +162,10 @@ export function Dashboard({ onNavigate }: DashboardProps) {
             <GroceryPreviewItem name="Broccoli" price="$4" />
             <GroceryPreviewItem name="Bell peppers" price="$5" />
             
-            <div className="pt-3 border-t border-[rgba(0,0,0,0.08)]">
+            <div className="pt-3 border-t border-[var(--border-subtle)]">
               <div className="flex justify-between text-sm">
-                <span className="font-medium text-[#4a4a4a]">Estimated Total</span>
-                <span className="font-bold text-[#1a1a1a]">$178</span>
+                <span className="font-medium text-secondary">Estimated Total</span>
+                <span className="font-bold text-primary">$178</span>
               </div>
             </div>
 
@@ -192,21 +186,16 @@ export function Dashboard({ onNavigate }: DashboardProps) {
           intensity="strong"
           className="lg:col-span-2 animate-fade-in stagger-6"
         >
-          <h3 className="flex items-center gap-2 text-lg font-semibold text-[#1a1a1a] mb-4">
-            <Sparkles className="h-5 w-5 text-[#C19A6B]" />
+          <h3 className="flex items-center gap-2 text-lg font-semibold text-primary mb-4">
+            <Sparkles className="h-5 w-5 text-accent" />
             <span>AI Suggestions</span>
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div 
-              className="p-4 rounded-xl border border-[rgba(0,0,0,0.08)]"
-              style={{
-                background: 'rgba(255, 255, 255, 0.5)',
-              }}
-            >
-              <p className="text-sm font-medium mb-2 text-[#1a1a1a]">
+            <div className="glass-card-light">
+              <p className="text-sm font-medium mb-2 text-primary">
                 "Everyone loved Korean chicken bowl last week!"
               </p>
-              <p className="text-sm text-[#4a4a4a] mb-3">
+              <p className="text-sm text-secondary mb-3">
                 Try a Korean-themed week? I can suggest 3 Korean meals with mild versions for Audrey.
               </p>
               <Button 
@@ -218,16 +207,11 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               </Button>
             </div>
 
-            <div 
-              className="p-4 rounded-xl border border-[rgba(0,0,0,0.08)]"
-              style={{
-                background: 'rgba(255, 255, 255, 0.5)',
-              }}
-            >
-              <p className="text-sm font-medium mb-2 text-[#1a1a1a]">
+            <div className="glass-card-light">
+              <p className="text-sm font-medium mb-2 text-primary">
                 "You're under budget by $22 this week"
               </p>
-              <p className="text-sm text-[#4a4a4a] mb-3">
+              <p className="text-sm text-secondary mb-3">
                 Consider upgrading to premium salmon or trying a special steak night?
               </p>
               <Button 
@@ -245,8 +229,8 @@ export function Dashboard({ onNavigate }: DashboardProps) {
 
       {/* Quick Insights */}
       <GlassCard hover={false} className="animate-fade-in stagger-7">
-        <h3 className="flex items-center gap-2 text-lg font-semibold text-[#1a1a1a] mb-4">
-          <TrendingUp className="h-5 w-5 text-[#C19A6B]" />
+        <h3 className="flex items-center gap-2 text-lg font-semibold text-primary mb-4">
+          <TrendingUp className="h-5 w-5 text-accent" />
           Quick Insights
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -288,28 +272,18 @@ export function Dashboard({ onNavigate }: DashboardProps) {
 // Helper Components
 function MealPreviewItem({ day, meal, completed, isAdventure }: any) {
   return (
-    <div 
-      className="flex items-center gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer border border-transparent hover:border-[rgba(0,0,0,0.08)] hover:bg-white/50"
-      style={{
-        background: 'rgba(255, 255, 255, 0.4)',
-      }}
-    >
-      <div className="text-xs font-bold text-[#737373] w-10">{day}</div>
+    <div className="flex items-center gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer glass-card-light border border-transparent hover:border-[var(--border-subtle)]">
+      <div className="text-xs font-bold text-muted w-10">{day}</div>
       <div className="flex-1">
-        <p className="font-medium text-sm text-[#1a1a1a]">{meal}</p>
+        <p className="font-medium text-sm text-primary">{meal}</p>
       </div>
       {completed && (
-        <Badge 
-          variant="outline" 
-          className="text-xs border-green-300 text-green-700 bg-green-50/50"
-        >
+        <Badge className="text-xs badge-success">
           ✓
         </Badge>
       )}
       {isAdventure && (
-        <Badge 
-          className="text-xs bg-[rgba(212,165,116,0.15)] text-[#A67C52] border border-[rgba(212,165,116,0.3)]"
-        >
+        <Badge className="text-xs glass-badge-accent">
           🌟
         </Badge>
       )}
@@ -322,27 +296,22 @@ function GroceryPreviewItem({ name, price }: any) {
     <div className="flex items-center gap-3">
       <input 
         type="checkbox" 
-        className="rounded border-[rgba(0,0,0,0.15)] bg-white/60 focus:ring-[#D4A574] focus:ring-offset-0"
+        className="rounded border-[var(--border-medium)] bg-[var(--bg-glass-light)] focus:ring-[var(--accent-primary)] focus:ring-offset-0"
       />
       <div className="flex-1">
-        <p className="font-medium text-sm text-[#1a1a1a]">{name}</p>
+        <p className="font-medium text-sm text-primary">{name}</p>
       </div>
-      <span className="text-sm font-medium text-[#4a4a4a]">{price}</span>
+      <span className="text-sm font-medium text-secondary">{price}</span>
     </div>
   )
 }
 
 function InsightCard({ label, value, stat }: any) {
   return (
-    <div 
-      className="p-4 rounded-xl border border-[rgba(0,0,0,0.08)]"
-      style={{
-        background: 'rgba(255, 255, 255, 0.5)',
-      }}
-    >
-      <p className="text-xs text-[#737373] mb-1">{label}</p>
-      <p className="font-medium text-sm text-[#1a1a1a]">{value}</p>
-      <p className="text-sm text-[#C19A6B] font-medium mt-1">{stat}</p>
+    <div className="glass-card-light">
+      <p className="text-xs text-muted mb-1">{label}</p>
+      <p className="font-medium text-sm text-primary">{value}</p>
+      <p className="text-sm text-accent font-medium mt-1">{stat}</p>
     </div>
   )
 }

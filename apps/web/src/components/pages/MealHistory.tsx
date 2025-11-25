@@ -51,8 +51,8 @@ export function MealHistory({ onNavigate }: MealHistoryProps) {
     <div className="p-8 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-[#16250F] mb-2">Meal History</h1>
-        <p className="text-[#16250F]/70">
+        <h1 className="text-3xl font-bold text-primary mb-2">Meal History</h1>
+        <p className="text-primary/70">
           Your complete family meal diary
         </p>
       </div>
@@ -62,7 +62,7 @@ export function MealHistory({ onNavigate }: MealHistoryProps) {
         <CardContent className="pt-6">
           <div className="flex gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#16250F]/50" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary/50" />
               <Input 
                 placeholder="Search meals..." 
                 className="pl-10 border-[#16250F]/10 focus-visible:ring-[#FF9500]"
@@ -87,15 +87,15 @@ export function MealHistory({ onNavigate }: MealHistoryProps) {
             <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
               <Calendar className="h-10 w-10 text-[#F5F1E8]" />
             </div>
-            <h3 className="text-xl font-semibold text-[#16250F] mb-2">No meal history yet</h3>
-            <p className="text-[#16250F]/70">
+            <h3 className="text-xl font-semibold text-primary mb-2">No meal history yet</h3>
+            <p className="text-primary/70">
               Start cooking meals and they'll appear here automatically!
             </p>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-[#16250F]">This Week (Nov 25-31)</h2>
+          <h2 className="text-xl font-semibold text-primary">This Week (Nov 25-31)</h2>
           
           {mealHistory.map((meal) => (
             <Card key={meal.id} className="hover:shadow-lg transition-shadow border border-[#16250F]/10 bg-gradient-to-br from-white to-[#F5F1E8]/20">
@@ -104,7 +104,7 @@ export function MealHistory({ onNavigate }: MealHistoryProps) {
                   {/* Left side - Meal info */}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-sm font-medium text-[#16250F]/70">
+                      <span className="text-sm font-medium text-primary/70">
                         {new Date(meal.date).toLocaleDateString('en-US', { 
                           weekday: 'short',
                           month: 'short',
@@ -119,11 +119,11 @@ export function MealHistory({ onNavigate }: MealHistoryProps) {
                       )}
                     </div>
                     
-                    <h3 className="text-xl font-semibold text-[#16250F] mb-2">
+                    <h3 className="text-xl font-semibold text-primary mb-2">
                       {meal.mealName}
                     </h3>
                     
-                    <div className="flex items-center gap-4 text-sm text-[#16250F]/70 mb-3">
+                    <div className="flex items-center gap-4 text-sm text-primary/70 mb-3">
                       <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 fill-[#FF9500] text-[#FF9500]" />
                     <span className="font-medium">{meal.average_rating || meal.averageRating}</span>
@@ -132,7 +132,7 @@ export function MealHistory({ onNavigate }: MealHistoryProps) {
                     </div>
                     
                     {meal.notes && (
-                      <p className="text-sm text-[#16250F]/70 italic">
+                      <p className="text-sm text-primary/70 italic">
                         "{meal.notes}"
                       </p>
                     )}
@@ -170,27 +170,27 @@ export function MealHistory({ onNavigate }: MealHistoryProps) {
       {/* Stats Card */}
       <Card className="bg-gradient-to-br from-[#FF9500]/10 to-white border-[#FF9500]/30 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-lg text-[#16250F]">📊 Your Stats</CardTitle>
+          <CardTitle className="text-lg text-primary">📊 Your Stats</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <div className="text-2xl font-bold text-[#16250F]">
+              <div className="text-2xl font-bold text-primary">
                 {mealHistory.length}
               </div>
-              <div className="text-xs text-[#16250F]/70">Meals Cooked</div>
+              <div className="text-xs text-primary/70">Meals Cooked</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[#16250F]">
+              <div className="text-2xl font-bold text-primary">
                 {mealHistory.filter(m => m.inLibrary).length}
               </div>
-              <div className="text-xs text-[#16250F]/70">Saved Favorites</div>
+              <div className="text-xs text-primary/70">Saved Favorites</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[#16250F]">
+              <div className="text-2xl font-bold text-primary">
                 {(mealHistory.reduce((sum, m) => sum + m.averageRating, 0) / mealHistory.length).toFixed(1)}★
               </div>
-              <div className="text-xs text-[#16250F]/70">Avg Rating</div>
+              <div className="text-xs text-primary/70">Avg Rating</div>
             </div>
           </div>
         </CardContent>
