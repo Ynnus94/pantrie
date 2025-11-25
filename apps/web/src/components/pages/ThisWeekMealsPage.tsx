@@ -409,7 +409,14 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
       </div>
 
       {/* ============ WEEK SUMMARY ============ */}
-      <GlassCard hover={false} className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-neutral-700">
+      <div 
+        className="rounded-2xl p-6"
+        style={{
+          background: 'linear-gradient(135deg, #1f1f1f 0%, #171717 50%, #0f0f0f 100%)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+        }}
+      >
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex-1">
             <h2 className="text-2xl font-bold text-white mb-2">
@@ -445,7 +452,13 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl px-5 py-3 border border-neutral-600">
+            <div 
+              className="text-center rounded-xl px-5 py-3"
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.15)'
+              }}
+            >
               <div className="text-sm text-neutral-400 mb-1">Estimated Cost</div>
               <div className="text-2xl font-bold text-white">
                 ${currentMealPlan.weekSummary?.totalEstimatedCost?.toFixed(2) || '0.00'}
@@ -462,7 +475,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
             </Button>
           </div>
         </div>
-      </GlassCard>
+      </div>
 
       {/* ============ MEALS GRID ============ */}
       <div className="space-y-4">
