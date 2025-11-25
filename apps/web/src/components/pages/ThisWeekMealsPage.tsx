@@ -409,20 +409,20 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
       </div>
 
       {/* ============ WEEK SUMMARY ============ */}
-      <GlassCard hover={false} className="bg-gradient-to-br from-honey/90 to-honey-dark/90 text-white border-honey/30">
+      <GlassCard hover={false} className="bg-gradient-to-br from-neutral-800 to-neutral-900 border-neutral-700">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex-1">
             <h2 className="text-2xl font-bold text-white mb-2">
               Week Summary
             </h2>
-            <p className="text-white/80 mb-4">
+            <p className="text-neutral-300 mb-4">
               {currentMealPlan.weekSummary?.cuisines?.join(', ') || 'Variety of cuisines'}
             </p>
             
             {/* Progress */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/90">Progress</span>
+                <span className="text-neutral-400">Progress</span>
                 <span className="text-white font-medium">{cookedCount}/{totalMeals} meals cooked</span>
               </div>
               <div className="flex gap-1.5">
@@ -434,8 +434,8 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                       key={i}
                       className={`h-2.5 flex-1 rounded-full transition-colors ${
                         isCooked 
-                          ? 'bg-green-400' 
-                          : 'bg-white/20'
+                          ? 'bg-green-500' 
+                          : 'bg-neutral-600'
                       }`}
                     />
                   )
@@ -445,16 +445,16 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl px-5 py-3 border border-[var(--border-subtle)]">
-              <div className="text-sm text-white/90 mb-1">Estimated Cost</div>
+            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl px-5 py-3 border border-neutral-600">
+              <div className="text-sm text-neutral-400 mb-1">Estimated Cost</div>
               <div className="text-2xl font-bold text-white">
                 ${currentMealPlan.weekSummary?.totalEstimatedCost?.toFixed(2) || '0.00'}
               </div>
-              <div className="text-xs text-white/70">CAD</div>
+              <div className="text-xs text-neutral-500">CAD</div>
             </div>
             
             <Button 
-              className="bg-white text-[#A67C52] hover:bg-white/90 gap-2 font-semibold"
+              className="gap-2 font-semibold"
               onClick={() => onNavigate && onNavigate('grocery')}
             >
               <Utensils className="h-4 w-4" />
