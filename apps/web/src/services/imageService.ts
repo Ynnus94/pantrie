@@ -97,3 +97,40 @@ export async function fetchImagesForMeals(meals: Meal[]): Promise<Meal[]> {
   return mealsWithImages
 }
 
+// Search for multiple images (for image refresh modal)
+export async function searchMultipleFoodImages(mealName: string, page: number = 1): Promise<string[]> {
+  try {
+    const searchQuery = cleanSearchQuery(mealName)
+    
+    console.log(`🔍 Searching Unsplash for: "${searchQuery}" (page ${page})`)
+    
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchQuery)}&per_page=6&page=${page}&orientation=landscape`,
+      {
+        headers: {
+          'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
+        }
+      }
+    )
+
+    if (!response.ok) {
+      console.error(`Unsplash API error: ${response.status}`)
+      return []
+    }
+
+    const data = await response.json()
+    
+    if (data.results && data.results.length > 0) {
+      const imageUrls = data.results.map((r: any) => r.urls.regular)
+      console.log(`✅ Found ${imageUrls.length} images`)
+      return imageUrls
+    }
+
+    console.log(`⚠️ No images found for "${mealName}"`)
+    return []
+  } catch (error) {
+    console.error('Error fetching images from Unsplash:', error)
+    return []
+  }
+}
+

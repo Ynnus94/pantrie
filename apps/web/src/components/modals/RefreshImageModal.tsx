@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Button } from '../ui/button'
 import { Loader2, RefreshCw, Upload, Check } from 'lucide-react'
 import { toast } from 'sonner'
+import { searchMultipleFoodImages } from '../../services/imageService'
 
 interface RefreshImageModalProps {
   meal: any
@@ -20,22 +21,11 @@ export function RefreshImageModal({
   const [loading, setLoading] = useState(false)
   const [images, setImages] = useState<string[]>([])
   const [page, setPage] = useState(1)
+  const [error, setError] = useState<string | null>(null)
 
   const mealName = meal?.name || meal?.mealName || ''
 
-  // Clean meal name for search
-  const getSearchTerm = (name: string): string => {
-    if (!name) return 'dinner'
-    // Remove "with..." and everything after
-    let clean = name.toLowerCase()
-      .split(' with ')[0]
-      .split(' and ')[0]
-      .split(',')[0]
-      .trim()
-    return clean || 'dinner'
-  }
-
-  // Fetch images on open
+  // Auto-fetch on modal open
   useEffect(() => {
     if (isOpen && mealName) {
       fetchImages(1)
@@ -44,25 +34,26 @@ export function RefreshImageModal({
     if (!isOpen) {
       setImages([])
       setPage(1)
+      setError(null)
     }
   }, [isOpen, mealName])
 
   const fetchImages = async (pageNum: number) => {
     setLoading(true)
+    setError(null)
     
     try {
-      const searchTerm = getSearchTerm(mealName)
-      const newImages = await getUniqueImages(searchTerm, pageNum)
+      const newImages = await searchMultipleFoodImages(mealName, pageNum)
       
-      if (pageNum === 1) {
-        setImages(newImages)
+      if (newImages.length > 0) {
+        setImages(newImages) // REPLACE, not append
+        setPage(pageNum)
       } else {
-        setImages(prev => [...prev, ...newImages])
+        setError('No images found. Try uploading your own.')
       }
-      setPage(pageNum)
-    } catch (error) {
-      console.error('Failed to fetch images:', error)
-      toast.error('Failed to load images')
+    } catch (err) {
+      console.error('Failed to fetch images:', err)
+      setError('Failed to load images. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -116,19 +107,26 @@ export function RefreshImageModal({
           <p className="text-sm text-secondary font-medium">{mealName}</p>
 
           {/* Loading state */}
-          {loading && images.length === 0 && (
+          {loading && (
             <div className="flex flex-col items-center justify-center py-12 gap-2">
               <Loader2 className="h-6 w-6 animate-spin text-[var(--accent-primary)]" />
               <p className="text-sm text-muted">Finding images...</p>
             </div>
           )}
 
-          {/* Image grid */}
-          {images.length > 0 && (
+          {/* Error state */}
+          {error && !loading && (
+            <div className="text-center py-8">
+              <p className="text-sm text-muted">{error}</p>
+            </div>
+          )}
+
+          {/* Image grid - always show exactly 6 */}
+          {!loading && images.length > 0 && (
             <div className="grid grid-cols-3 gap-2">
-              {images.map((imageUrl, index) => (
+              {images.slice(0, 6).map((imageUrl, index) => (
                 <button
-                  key={`${imageUrl}-${index}`}
+                  key={`${page}-${index}`}
                   onClick={() => handleSelectImage(imageUrl)}
                   className="aspect-video rounded-xl overflow-hidden border-2 border-transparent hover:border-[var(--accent-primary)] transition-all group relative"
                 >
@@ -183,38 +181,4 @@ export function RefreshImageModal({
       </DialogContent>
     </Dialog>
   )
-}
-
-// Fetch unique images using varied search terms
-async function getUniqueImages(baseTerm: string, page: number): Promise<string[]> {
-  // Use different variations for each image to ensure uniqueness
-  const variations = [
-    baseTerm,
-    `${baseTerm} dish`,
-    `${baseTerm} plate`,
-    `${baseTerm} homemade`,
-    `${baseTerm} restaurant`,
-    `${baseTerm} delicious`,
-  ]
-  
-  // For page 2+, use different terms
-  const pageVariations = [
-    `${baseTerm} meal`,
-    `${baseTerm} dinner`,
-    `${baseTerm} lunch`,
-    `${baseTerm} cuisine`,
-    `${baseTerm} recipe`,
-    `${baseTerm} cooked`,
-  ]
-  
-  const termsToUse = page === 1 ? variations : pageVariations
-  
-  // Generate URLs with unique timestamps to bust cache
-  const timestamp = Date.now()
-  const images = termsToUse.map((term, index) => {
-    // Use Unsplash Source API with unique sig for each image
-    return `https://source.unsplash.com/600x400/?${encodeURIComponent(term + ' food')}&sig=${timestamp + index * 1000 + page * 10000}`
-  })
-  
-  return images
 }
