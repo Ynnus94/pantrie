@@ -294,10 +294,7 @@ function MealPreviewItem({ day, meal, completed, isAdventure }: any) {
 function GroceryPreviewItem({ name, price }: any) {
   return (
     <div className="flex items-center gap-3">
-      <input 
-        type="checkbox" 
-        className="rounded border-[var(--border-medium)] bg-[var(--bg-glass-light)] focus:ring-[var(--accent-primary)] focus:ring-offset-0"
-      />
+      <input type="checkbox" />
       <div className="flex-1">
         <p className="font-medium text-sm text-primary">{name}</p>
       </div>
