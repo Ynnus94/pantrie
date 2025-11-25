@@ -9,6 +9,8 @@ import { saveMealPlanToDatabase } from '../../lib/mealPlansApi'
 import { generateGroceryListFromMealPlan } from '../../lib/groceryListApi'
 import { fetchImagesForMeals } from '../../services/imageService'
 import { useMealPlan } from '../../context/MealPlanContext'
+import { useSettings } from '../../context/SettingsContext'
+import { getWeekStart, getDayName, getShortDayName } from '../../lib/weekUtils'
 import { Sparkles, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '../../lib/utils'
@@ -19,19 +21,6 @@ interface MealPlanGeneratorModalProps {
   onSuccess?: () => void
 }
 
-const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-const FULL_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
-// Get next Monday's date
-function getNextMonday(): Date {
-  const today = new Date()
-  const dayOfWeek = today.getDay()
-  const diff = dayOfWeek === 0 ? 1 : (dayOfWeek === 1 ? 0 : 8 - dayOfWeek)
-  const monday = new Date(today)
-  monday.setDate(today.getDate() + diff)
-  return monday
-}
-
 export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanGeneratorModalProps) {
   const [generating, setGenerating] = useState(false)
   const [progress, setProgress] = useState('')
@@ -40,13 +29,16 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
   const [mealCount, setMealCount] = useState(7)
   const [familySize, setFamilySize] = useState(3)
   const [budget, setBudget] = useState(200)
-  const [quickMealDays, setQuickMealDays] = useState<number[]>([0, 2, 4]) // Mon, Wed, Fri
+  const [quickMealDays, setQuickMealDays] = useState<number[]>([0, 2, 4]) // First 3 days of week by default
   const [toddlerFriendly, setToddlerFriendly] = useState(true)
   const [adventureMeal, setAdventureMeal] = useState(true)
   const [specialRequests, setSpecialRequests] = useState('')
   
   const { setCurrentMealPlan } = useMealPlan()
-  const weekStart = getNextMonday()
+  const { weekStartDay } = useSettings()
+  
+  // Calculate week start based on user's preference
+  const weekStart = getWeekStart(new Date(), weekStartDay)
   const weekStartString = weekStart.toISOString().split('T')[0]
 
   const toggleQuickDay = (dayIndex: number) => {
@@ -59,7 +51,7 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
 
   // Build AI prompt
   const buildPrompt = () => {
-    const quickDayNames = quickMealDays.map(i => FULL_DAYS[i]).join(', ')
+    const quickDayNames = quickMealDays.map(i => getDayName(i, weekStartDay)).join(', ')
     
     let prompt = `Generate ${mealCount} dinner recipes for ${familySize} people.
 
@@ -114,7 +106,7 @@ SPECIAL REQUESTS: ${specialRequests}
         meals: plan.meals.slice(0, mealCount).map((meal: any, index: number) => ({
           id: `${Date.now()}-${index}`,
           day: index.toString(),
-          dayOfWeek: FULL_DAYS[index],
+          dayOfWeek: getDayName(index, weekStartDay),
           name: meal.name,
           description: meal.description,
           cookTime: meal.cookTime,
@@ -238,7 +230,7 @@ SPECIAL REQUESTS: ${specialRequests}
               ⚡ Quick meals (≤30min) on:
             </label>
             <div className="flex gap-1.5">
-              {DAYS.map((day, i) => (
+              {Array.from({ length: 7 }, (_, i) => (
                 <button
                   key={i}
                   onClick={() => toggleQuickDay(i)}
@@ -250,7 +242,7 @@ SPECIAL REQUESTS: ${specialRequests}
                   )}
                   disabled={generating}
                 >
-                  {day}
+                  {getShortDayName(i, weekStartDay).charAt(0)}
                 </button>
               ))}
             </div>

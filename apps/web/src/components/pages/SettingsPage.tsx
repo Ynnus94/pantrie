@@ -3,10 +3,20 @@ import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { GlassCard } from '../ui/GlassCard'
 import { useTheme } from '../../context/ThemeContext'
-import { Settings, User, DollarSign, MapPin, Bell, Moon, Sun } from 'lucide-react'
+import { useSettings } from '../../context/SettingsContext'
+import { WEEK_START_OPTIONS } from '../../lib/weekUtils'
+import { Settings, User, DollarSign, MapPin, Bell, Moon, Sun, Calendar } from 'lucide-react'
+import { toast } from 'sonner'
 
 export function SettingsPage() {
   const { theme, toggleTheme } = useTheme()
+  const { weekStartDay, setWeekStartDay } = useSettings()
+
+  const handleWeekStartChange = (day: number) => {
+    setWeekStartDay(day)
+    const dayName = WEEK_START_OPTIONS.find(d => d.value === day)?.label
+    toast.success(`Week now starts on ${dayName}`)
+  }
 
   return (
     <div className="p-8 space-y-6">
@@ -48,6 +58,37 @@ export function SettingsPage() {
           <Button>
             Save Changes
           </Button>
+        </div>
+      </GlassCard>
+
+      {/* Meal Planning */}
+      <GlassCard hover={false}>
+        <div className="flex items-center gap-2 mb-2">
+          <Calendar className="h-5 w-5 text-[var(--accent-primary)]" />
+          <h3 className="text-lg font-semibold text-primary">Meal Planning</h3>
+        </div>
+        <p className="text-sm text-muted mb-6">
+          Customize your meal planning preferences
+        </p>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-glass-light)]">
+            <div>
+              <p className="font-medium text-primary">Week Starts On</p>
+              <p className="text-sm text-muted">Choose the day you typically do grocery shopping</p>
+            </div>
+            <select
+              value={weekStartDay}
+              onChange={(e) => handleWeekStartChange(Number(e.target.value))}
+              className="px-4 py-2 rounded-xl glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-sm min-w-[140px]"
+            >
+              {WEEK_START_OPTIONS.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </GlassCard>
 

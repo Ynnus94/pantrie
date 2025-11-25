@@ -19,6 +19,8 @@ import { MealPlanGeneratorModal } from '../modals/MealPlanGeneratorModal'
 import { RefreshImageModal } from '../modals/RefreshImageModal'
 import { getMealPlans } from '../../lib/api'
 import { useMealPlan } from '../../context/MealPlanContext'
+import { useSettings } from '../../context/SettingsContext'
+import { getWeekStart, getOrderedDayNames, formatWeekRange, toISODateString } from '../../lib/weekUtils'
 import { 
   Calendar, Clock, Utensils, ChefHat, Zap, Loader2, Sparkles, Star, Flame,
   MoreVertical, Eye, RefreshCw, Check, Trash2, MessageSquare, BookOpen,
@@ -26,27 +28,10 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 
-// All 7 days of the week
-const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
 // Helper function to get meal image URL
 function getMealImageUrl(mealName: string, cuisine?: string): string {
   const searchTerm = encodeURIComponent(`${mealName} ${cuisine || 'food'}`)
   return `https://source.unsplash.com/600x400/?${searchTerm},food,dish`
-}
-
-function getDayName(index: number) {
-  return DAYS_OF_WEEK[index]
-}
-
-function getCurrentWeekStart(): string {
-  const today = new Date()
-  const dayOfWeek = today.getDay()
-  const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek // If Sunday, go back 6 days; otherwise go to Monday
-  const monday = new Date(today)
-  monday.setDate(today.getDate() + diff)
-  monday.setHours(0, 0, 0, 0)
-  return monday.toISOString().split('T')[0]
 }
 
 interface ThisWeekMealsPageProps {
@@ -55,7 +40,16 @@ interface ThisWeekMealsPageProps {
 
 export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
   const { currentMealPlan, setCurrentMealPlan, clearMealPlan } = useMealPlan()
+  const { weekStartDay } = useSettings()
   const [loading, setLoading] = useState(false)
+  
+  // Get ordered days based on user's week start preference
+  const DAYS_OF_WEEK = getOrderedDayNames(weekStartDay)
+  const weekStart = getWeekStart(new Date(), weekStartDay)
+  const weekRangeDisplay = formatWeekRange(new Date(), weekStartDay)
+  
+  const getDayName = (index: number) => DAYS_OF_WEEK[index]
+  const getCurrentWeekStart = () => toISODateString(weekStart)
   const [showRating, setShowRating] = useState(false)
   const [ratingMeal, setRatingMeal] = useState<any>(null)
   const [replacingMeal, setReplacingMeal] = useState<any>(null)

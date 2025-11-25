@@ -13,6 +13,7 @@ import { SettingsPage } from './components/pages/SettingsPage'
 import { Toaster } from './components/ui/sonner'
 import { MealPlanProvider } from './context/MealPlanContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { SettingsProvider } from './context/SettingsContext'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard')
@@ -93,12 +94,14 @@ function App() {
 
   return (
     <ThemeProvider>
-      <MealPlanProvider>
-        <MainLayout currentPage={currentPage} onNavigate={handleNavigate}>
-          {renderPage()}
-        </MainLayout>
-        <Toaster position="top-right" richColors />
-      </MealPlanProvider>
+      <SettingsProvider>
+        <MealPlanProvider>
+          <MainLayout currentPage={currentPage} onNavigate={handleNavigate}>
+            {renderPage()}
+          </MainLayout>
+          <Toaster position="top-right" richColors />
+        </MealPlanProvider>
+      </SettingsProvider>
     </ThemeProvider>
   )
 }

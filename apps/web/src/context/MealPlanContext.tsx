@@ -37,12 +37,14 @@ interface MealPlanContextType {
   setCurrentMealPlan: (plan: MealPlan) => void
   clearMealPlan: () => void
   getMealForDay: (day: string) => Meal | undefined
+  weekStartDay: number // 0=Sunday, 1=Monday, etc.
+  setWeekStartDay: (day: number) => void
 }
 
 const MealPlanContext = createContext<MealPlanContextType | undefined>(undefined)
 
 export function MealPlanProvider({ children }: { children: ReactNode }) {
-  // Initialize from localStorage
+  // Initialize meal plan from localStorage
   const [currentMealPlan, setCurrentMealPlan] = useState<MealPlan | null>(() => {
     try {
       const saved = localStorage.getItem('currentMealPlan')
@@ -53,7 +55,17 @@ export function MealPlanProvider({ children }: { children: ReactNode }) {
     }
   })
 
-  // Save to localStorage whenever plan changes
+  // Initialize week start day from localStorage (default to Saturday = 6)
+  const [weekStartDay, setWeekStartDayState] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('weekStartDay')
+      return saved ? parseInt(saved, 10) : 6 // Default to Saturday
+    } catch (error) {
+      return 6 // Default to Saturday
+    }
+  })
+
+  // Save meal plan to localStorage whenever it changes
   const updateMealPlan = (plan: MealPlan | null) => {
     setCurrentMealPlan(plan)
     if (plan) {
@@ -64,6 +76,16 @@ export function MealPlanProvider({ children }: { children: ReactNode }) {
       }
     } else {
       localStorage.removeItem('currentMealPlan')
+    }
+  }
+
+  // Save week start day to localStorage
+  const setWeekStartDay = (day: number) => {
+    setWeekStartDayState(day)
+    try {
+      localStorage.setItem('weekStartDay', day.toString())
+    } catch (error) {
+      console.error('Error saving week start day:', error)
     }
   }
 
@@ -81,7 +103,9 @@ export function MealPlanProvider({ children }: { children: ReactNode }) {
         currentMealPlan,
         setCurrentMealPlan: updateMealPlan,
         clearMealPlan,
-        getMealForDay
+        getMealForDay,
+        weekStartDay,
+        setWeekStartDay
       }}
     >
       {children}
@@ -96,4 +120,3 @@ export function useMealPlan() {
   }
   return context
 }
-
