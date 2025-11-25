@@ -173,13 +173,9 @@
    LOGO THEMING
    ============================================ */
 
-/* Logo adapts to theme */
+/* Logo - consistent across themes */
 .logo-theme {
-  transition: filter 0.3s ease;
-}
-
-:root[data-theme="dark"] .logo-theme {
-  filter: brightness(0) invert(1);
+  /* Logo uses fixed colors - no theme changes */
 }
 
 /* ============================================
