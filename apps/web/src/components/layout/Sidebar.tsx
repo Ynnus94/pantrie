@@ -3,6 +3,7 @@ import {
   Book, TrendingUp, Settings, Zap, Link2, Star, History
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { useTheme } from '../../context/ThemeContext'
 
 interface SidebarProps {
   currentPage: string
@@ -10,6 +11,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
+  const { theme } = useTheme()
   const mainNavItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
     { id: 'family', icon: Users, label: 'Family' },
@@ -33,9 +35,9 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
       <div className="p-6 border-b border-[var(--border-subtle)]">
         <div className="flex items-center justify-center">
           <img 
-            src="/pantrie_logo.svg" 
+            src={theme === 'dark' ? '/pantrie_logo_dark.svg' : '/pantrie_logo.svg'} 
             alt="Pantrie" 
-            className="h-10 w-auto logo-theme" 
+            className="h-10 w-auto" 
           />
         </div>
       </div>
