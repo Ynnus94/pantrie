@@ -196,7 +196,7 @@ SPECIAL REQUESTS: ${specialRequests}
                 <select 
                   value={mealCount}
                   onChange={(e) => setMealCount(Number(e.target.value))}
-                  className="w-full h-9 px-2 rounded-lg glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-sm"
+                  className="w-full h-9 px-3 rounded-xl glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-sm"
                   disabled={generating}
                 >
                   <option value={5}>5</option>
@@ -208,7 +208,7 @@ SPECIAL REQUESTS: ${specialRequests}
                 <select 
                   value={familySize}
                   onChange={(e) => setFamilySize(Number(e.target.value))}
-                  className="w-full h-9 px-2 rounded-lg glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-sm"
+                  className="w-full h-9 px-3 rounded-xl glass-input bg-[var(--bg-glass)] border border-[var(--border-subtle)] text-sm"
                   disabled={generating}
                 >
                   {[1, 2, 3, 4, 5, 6].map(n => (
@@ -219,12 +219,12 @@ SPECIAL REQUESTS: ${specialRequests}
               <div>
                 <label className="text-xs text-muted mb-1 block">Budget</label>
                 <div className="relative">
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-sm text-muted">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted">$</span>
                   <Input
                     type="number"
                     value={budget}
                     onChange={(e) => setBudget(Number(e.target.value))}
-                    className="glass-input h-9 pl-6 text-sm"
+                    className="glass-input h-9 pl-7 text-sm rounded-xl"
                     disabled={generating}
                   />
                 </div>
@@ -243,7 +243,7 @@ SPECIAL REQUESTS: ${specialRequests}
                   key={i}
                   onClick={() => toggleQuickDay(i)}
                   className={cn(
-                    'flex-1 py-2.5 rounded-lg text-sm font-medium transition-all',
+                    'flex-1 py-2.5 rounded-xl text-sm font-medium transition-all',
                     quickMealDays.includes(i)
                       ? 'bg-[var(--accent-primary)] text-white'
                       : 'glass-button hover:bg-[var(--accent-primary)]/10'
@@ -292,14 +292,14 @@ SPECIAL REQUESTS: ${specialRequests}
               value={specialRequests}
               onChange={(e) => setSpecialRequests(e.target.value)}
               placeholder="e.g., 'Tuesday vegetarian' or 'No seafood this week'"
-              className="glass-input h-20 resize-none text-sm"
+              className="glass-input h-20 resize-none text-sm rounded-xl"
               disabled={generating}
             />
           </div>
 
           {/* Progress */}
           {generating && (
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20">
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20">
               <Loader2 className="h-4 w-4 text-[var(--accent-primary)] animate-spin" />
               <span className="text-sm text-primary">{progress}</span>
             </div>
