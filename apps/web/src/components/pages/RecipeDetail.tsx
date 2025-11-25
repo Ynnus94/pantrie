@@ -315,7 +315,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
                     type="checkbox" 
                     checked={ingredientsChecked[index] || false}
                     onChange={() => toggleIngredient(index)}
-                    className="mt-1 cursor-pointer accent-[#FF9500]"
+                    className="mt-0.5"
                     id={`ingredient-${index}`}
                   />
                   <label 

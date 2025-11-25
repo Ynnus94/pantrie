@@ -123,7 +123,7 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
       <DialogContent className="max-w-2xl glass-card-static border-white/40">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3 text-2xl font-bold text-primary">
-            <div className="p-2 bg-[#D4A574] rounded-xl">
+            <div className="p-2 bg-[var(--accent-primary)] rounded-xl">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
             Generate Weekly Meal Plan

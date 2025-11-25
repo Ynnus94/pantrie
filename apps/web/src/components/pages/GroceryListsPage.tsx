@@ -581,7 +581,7 @@ function GroceryItemRow({
   return (
     <div 
       className={`flex items-center gap-3 p-2 rounded-lg transition-all group ${
-        item.is_checked ? 'opacity-50' : 'hover:bg-white/20'
+        item.is_checked ? 'opacity-60' : 'hover:bg-[var(--bg-glass-light)]'
       }`}
     >
       {/* Checkbox */}
@@ -589,8 +589,8 @@ function GroceryItemRow({
         onClick={onToggle}
         className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
           item.is_checked 
-            ? 'bg-[#D4A574] border-[#D4A574]' 
-            : 'border-[#737373] hover:border-[#D4A574]'
+            ? 'bg-[var(--accent-primary)] border-[var(--accent-primary)]' 
+            : 'border-[var(--border-strong)] hover:border-[var(--accent-primary)]'
         }`}
       >
         {item.is_checked && <Check className="h-3 w-3 text-white" />}

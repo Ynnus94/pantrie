@@ -123,7 +123,7 @@ export function SettingsPage() {
               <p className="font-medium text-primary">Meal Plan Reminders</p>
               <p className="text-sm text-primary/70">Get notified when it's time to plan meals</p>
             </div>
-            <input type="checkbox" defaultChecked className="rounded" />
+            <input type="checkbox" defaultChecked />
           </div>
           <Separator />
           <div className="flex items-center justify-between">
@@ -131,7 +131,7 @@ export function SettingsPage() {
               <p className="font-medium text-primary">Grocery List Updates</p>
               <p className="text-sm text-primary/70">Notifications when grocery lists are ready</p>
             </div>
-            <input type="checkbox" defaultChecked className="rounded" />
+            <input type="checkbox" defaultChecked />
           </div>
           <Separator />
           <div className="flex items-center justify-between">
@@ -139,7 +139,7 @@ export function SettingsPage() {
               <p className="font-medium text-primary">AI Suggestions</p>
               <p className="text-sm text-primary/70">Weekly meal suggestions based on your preferences</p>
             </div>
-            <input type="checkbox" defaultChecked className="rounded" />
+            <input type="checkbox" defaultChecked />
           </div>
         </CardContent>
       </Card>
