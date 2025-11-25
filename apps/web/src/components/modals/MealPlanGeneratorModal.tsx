@@ -9,7 +9,7 @@ import { saveMealPlanToDatabase } from '../../lib/mealPlansApi'
 import { generateGroceryListFromMealPlan } from '../../lib/groceryListApi'
 import { fetchImagesForMeals } from '../../services/imageService'
 import { useMealPlan } from '../../context/MealPlanContext'
-import { Sparkles, Loader2, Calendar, Users, DollarSign, Utensils, Clock, ShoppingCart } from 'lucide-react'
+import { Sparkles, Loader2, Calendar, Users, DollarSign, Utensils, Clock } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface MealPlanGeneratorModalProps {
@@ -120,9 +120,9 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl glass-card-static border-white/40">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-3 text-2xl font-bold text-primary">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-bold">
             <div className="p-2 bg-[var(--accent-primary)] rounded-xl">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
@@ -132,9 +132,9 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
 
         <div className="space-y-6 py-4">
           {/* Week Info */}
-          <GlassCard hover={false} className="bg-[rgba(212,165,116,0.1)] border-[rgba(212,165,116,0.2)]">
+          <GlassCard hover={false} className="week-summary-card">
             <div className="flex items-center gap-3">
-              <Calendar className="h-5 w-5 text-[#A67C52]" />
+              <Calendar className="h-5 w-5 text-[var(--accent-primary)]" />
               <div>
                 <p className="font-semibold text-primary">
                   Week of {new Date(weekStartDate).toLocaleDateString('en-US', {
@@ -151,7 +151,7 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
           {/* Family Preferences Summary */}
           <div>
             <h3 className="font-semibold text-primary mb-3 flex items-center gap-2">
-              <Users className="h-4 w-4" />
+              <Users className="h-4 w-4 text-[var(--accent-primary)]" />
               Based on your family
             </h3>
             <GlassCard hover={false}>
@@ -165,19 +165,19 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
                   <span>Toddler-friendly options</span>
                 </div>
                 <div className="flex items-center gap-2 text-secondary">
-                  <Clock className="h-4 w-4" />
+                  <Clock className="h-4 w-4 text-muted" />
                   <span>Quick meals on office days</span>
                 </div>
                 <div className="flex items-center gap-2 text-secondary">
-                  <Sparkles className="h-4 w-4" />
+                  <Sparkles className="h-4 w-4 text-muted" />
                   <span>1 adventure meal</span>
                 </div>
                 <div className="flex items-center gap-2 text-secondary">
-                  <DollarSign className="h-4 w-4" />
+                  <DollarSign className="h-4 w-4 text-muted" />
                   <span>~$200 weekly budget</span>
                 </div>
                 <div className="flex items-center gap-2 text-secondary">
-                  <Utensils className="h-4 w-4" />
+                  <Utensils className="h-4 w-4 text-muted" />
                   <span>Diverse cuisines</span>
                 </div>
               </div>
@@ -204,9 +204,9 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
 
           {/* Progress indicator */}
           {generating && (
-            <GlassCard hover={false} className="bg-[rgba(212,165,116,0.05)] border-[rgba(212,165,116,0.2)]">
+            <GlassCard hover={false} className="bg-[var(--accent-primary)]/10 border-[var(--accent-primary)]/20">
               <div className="flex items-center gap-3">
-                <Loader2 className="h-5 w-5 text-[#D4A574] animate-spin" />
+                <Loader2 className="h-5 w-5 text-[var(--accent-primary)] animate-spin" />
                 <div>
                   <p className="font-medium text-primary">{progress}</p>
                   <p className="text-sm text-secondary">This usually takes 20-30 seconds</p>
@@ -247,4 +247,3 @@ export function MealPlanGeneratorModal({ isOpen, onClose, onSuccess }: MealPlanG
     </Dialog>
   )
 }
-
