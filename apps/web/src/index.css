@@ -221,6 +221,16 @@
   color: var(--text-primary);
 }
 
+/* Week Summary Card - Accent featured card */
+.week-summary-card {
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 2px solid var(--accent-primary);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--accent-primary);
+  color: var(--text-primary);
+}
+
 /* Glass Card - Strong (modals/overlays) */
 .glass-card-strong {
   background: var(--bg-glass-strong);

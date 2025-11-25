@@ -409,28 +409,21 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
       </div>
 
       {/* ============ WEEK SUMMARY ============ */}
-      <div 
-        className="rounded-2xl p-6"
-        style={{
-          background: 'linear-gradient(135deg, #1f1f1f 0%, #171717 50%, #0f0f0f 100%)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
-        }}
-      >
+      <div className="week-summary-card rounded-2xl p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-white mb-2">
+            <h2 className="text-2xl font-bold text-primary mb-2">
               Week Summary
             </h2>
-            <p className="text-neutral-300 mb-4">
+            <p className="text-secondary mb-4">
               {currentMealPlan.weekSummary?.cuisines?.join(', ') || 'Variety of cuisines'}
             </p>
             
             {/* Progress */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-neutral-400">Progress</span>
-                <span className="text-white font-medium">{cookedCount}/{totalMeals} meals cooked</span>
+                <span className="text-muted">Progress</span>
+                <span className="text-primary font-medium">{cookedCount}/{totalMeals} meals cooked</span>
               </div>
               <div className="flex gap-1.5">
                 {DAYS_OF_WEEK.slice(0, totalMeals).map((_, i) => {
@@ -442,7 +435,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
                       className={`h-2.5 flex-1 rounded-full transition-colors ${
                         isCooked 
                           ? 'bg-green-500' 
-                          : 'bg-neutral-600'
+                          : 'bg-[var(--border-medium)]'
                       }`}
                     />
                   )
@@ -452,18 +445,12 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
           </div>
           
           <div className="flex items-center gap-4">
-            <div 
-              className="text-center rounded-xl px-5 py-3"
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.15)'
-              }}
-            >
-              <div className="text-sm text-neutral-400 mb-1">Estimated Cost</div>
-              <div className="text-2xl font-bold text-white">
+            <div className="text-center rounded-xl px-5 py-3 bg-[var(--bg-glass-light)] border border-[var(--border-subtle)]">
+              <div className="text-sm text-muted mb-1">Estimated Cost</div>
+              <div className="text-2xl font-bold text-primary">
                 ${currentMealPlan.weekSummary?.totalEstimatedCost?.toFixed(2) || '0.00'}
               </div>
-              <div className="text-xs text-neutral-500">CAD</div>
+              <div className="text-xs text-muted">CAD</div>
             </div>
             
             <Button 
