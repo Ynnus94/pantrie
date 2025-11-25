@@ -467,7 +467,7 @@ export function MealPlanGenerator() {
                         <span className="text-2xl">👶</span>
                         Toddler Modification
                       </h4>
-                      <p className="text-sm text-gray-700 leading-relaxed bg-amber-50 p-3 rounded-lg border border-amber-200">
+                      <p className="text-sm text-gray-700 leading-relaxed bg-[rgba(212,165,116,0.1)] p-3 rounded-lg border border-[rgba(212,165,116,0.25)]">
                         {meal.toddlerModification}
                       </p>
                     </div>

@@ -1,270 +1,730 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
-import { Skeleton } from '../ui/skeleton'
-import { getMealPlans } from '../../lib/api'
-import { ShoppingCart, DollarSign, CheckCircle2, Circle, Loader2, Calendar } from 'lucide-react'
+import { Input } from '../ui/input'
+import { GlassCard } from '../ui/GlassCard'
+import { useMealPlan } from '../../context/MealPlanContext'
+import { 
+  getGroceryList, 
+  addGroceryItem, 
+  updateGroceryItem, 
+  deleteGroceryItem, 
+  toggleGroceryItem,
+  clearCheckedItems,
+  clearAllItems,
+  generateGroceryListFromMealPlan,
+  CATEGORY_ICONS,
+  CATEGORY_ORDER
+} from '../../lib/groceryListApi'
+import type { GroceryItem } from '../../lib/groceryListApi'
+import { 
+  ShoppingCart, Plus, Trash2, Edit2, Check, X, Download, 
+  RefreshCw, Loader2, ChevronDown, ChevronUp, AlertCircle
+} from 'lucide-react'
 import { toast } from 'sonner'
 
-function getCurrentWeekStart(): string {
-  const today = new Date()
-  const dayOfWeek = today.getDay()
-  const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
-  const monday = new Date(today)
-  monday.setDate(today.getDate() + diff)
-  monday.setHours(0, 0, 0, 0)
-  return monday.toISOString().split('T')[0]
-}
+// Category select options
+const CATEGORIES = [
+  'Produce',
+  'Meat', 
+  'Dairy',
+  'Bakery',
+  'Pantry',
+  'Frozen',
+  'Beverages',
+  'Snacks',
+  'Other'
+]
 
 export function GroceryListsPage() {
-  const [currentPlan, setCurrentPlan] = useState<any>(null)
+  const { currentMealPlan } = useMealPlan()
+  const [items, setItems] = useState<GroceryItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set())
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [editingItem, setEditingItem] = useState<string | null>(null)
+  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set())
+  const [syncing, setSyncing] = useState(false)
 
+  // Load grocery list
   useEffect(() => {
-    fetchCurrentWeekPlan()
+    loadGroceryList()
   }, [])
 
-  const fetchCurrentWeekPlan = async () => {
+  const loadGroceryList = async () => {
     setLoading(true)
     try {
-      const plans = await getMealPlans()
-      const weekStart = getCurrentWeekStart()
-      
-      const plan = plans.find((p: any) => {
-        const planDate = new Date(p.week_starting)
-        const currentDate = new Date(weekStart)
-        return planDate.toISOString().split('T')[0] === currentDate.toISOString().split('T')[0]
-      })
-      
-      setCurrentPlan(plan || null)
-    } catch (error: any) {
-      console.error('Failed to fetch meal plan:', error)
+      const data = await getGroceryList(1)
+      setItems(data)
+    } catch (error) {
+      console.error('Failed to load grocery list:', error)
       toast.error('Failed to load grocery list')
     } finally {
       setLoading(false)
     }
   }
 
-  const toggleItem = (item: string) => {
-    const newChecked = new Set(checkedItems)
-    if (newChecked.has(item)) {
-      newChecked.delete(item)
-    } else {
-      newChecked.add(item)
-    }
-    setCheckedItems(newChecked)
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { 
-      month: 'long', 
-      day: 'numeric',
-      year: 'numeric'
-    })
-  }
-
-  // Group grocery items by category
-  const categorizeItems = (items: any[]) => {
-    const categories: Record<string, any[]> = {
-      'Protein': [],
-      'Produce': [],
-      'Dairy': [],
-      'Pantry': [],
-      'Other': []
+  // Sync with meal plan
+  const handleSyncWithMealPlan = async () => {
+    if (!currentMealPlan || !currentMealPlan.meals.length) {
+      toast.error('No meal plan to sync with')
+      return
     }
 
-    items?.forEach((item: any) => {
-      const itemName = (item.item || item).toLowerCase()
-      if (itemName.includes('chicken') || itemName.includes('beef') || itemName.includes('pork') || 
-          itemName.includes('salmon') || itemName.includes('fish') || itemName.includes('meat')) {
-        categories['Protein'].push(item)
-      } else if (itemName.includes('broccoli') || itemName.includes('pepper') || itemName.includes('onion') ||
-                 itemName.includes('garlic') || itemName.includes('tomato') || itemName.includes('lettuce') ||
-                 itemName.includes('carrot') || itemName.includes('vegetable') || itemName.includes('fruit')) {
-        categories['Produce'].push(item)
-      } else if (itemName.includes('cheese') || itemName.includes('milk') || itemName.includes('yogurt') ||
-                 itemName.includes('butter') || itemName.includes('cream')) {
-        categories['Dairy'].push(item)
-      } else if (itemName.includes('rice') || itemName.includes('pasta') || itemName.includes('flour') ||
-                 itemName.includes('oil') || itemName.includes('sauce') || itemName.includes('spice')) {
-        categories['Pantry'].push(item)
-      } else {
-        categories['Other'].push(item)
+    setSyncing(true)
+    try {
+      await generateGroceryListFromMealPlan(currentMealPlan, 1)
+      await loadGroceryList()
+      toast.success('Grocery list synced with meal plan!', {
+        description: `${currentMealPlan.meals.length} meals processed`
+      })
+    } catch (error) {
+      console.error('Failed to sync:', error)
+      toast.error('Failed to sync with meal plan')
+    } finally {
+      setSyncing(false)
+    }
+  }
+
+  // Toggle item checked
+  const handleToggleItem = async (item: GroceryItem) => {
+    try {
+      await toggleGroceryItem(item.id, item.is_checked)
+      setItems(items.map(i => 
+        i.id === item.id ? { ...i, is_checked: !i.is_checked } : i
+      ))
+    } catch (error) {
+      toast.error('Failed to update item')
+    }
+  }
+
+  // Delete item
+  const handleDeleteItem = async (id: string) => {
+    try {
+      await deleteGroceryItem(id)
+      setItems(items.filter(i => i.id !== id))
+      toast.success('Item removed')
+    } catch (error) {
+      toast.error('Failed to delete item')
+    }
+  }
+
+  // Clear checked items
+  const handleClearChecked = async () => {
+    const checkedCount = items.filter(i => i.is_checked).length
+    if (checkedCount === 0) return
+    
+    if (!confirm(`Remove ${checkedCount} checked items?`)) return
+
+    try {
+      await clearCheckedItems(1)
+      setItems(items.filter(i => !i.is_checked))
+      toast.success(`${checkedCount} items cleared`)
+    } catch (error) {
+      toast.error('Failed to clear items')
+    }
+  }
+
+  // Clear all items
+  const handleClearAll = async () => {
+    if (!confirm('Remove all items from your grocery list?')) return
+
+    try {
+      await clearAllItems(1)
+      setItems([])
+      toast.success('Grocery list cleared')
+    } catch (error) {
+      toast.error('Failed to clear list')
+    }
+  }
+
+  // Add item
+  const handleAddItem = async (itemData: Partial<GroceryItem>) => {
+    try {
+      const newItem = await addGroceryItem({
+        family_id: 1,
+        item_name: itemData.item_name!,
+        quantity: itemData.quantity,
+        unit: itemData.unit,
+        category: itemData.category || 'Other',
+        is_checked: false,
+        source_type: 'manual'
+      })
+      if (newItem) {
+        setItems([...items, newItem])
+        setShowAddForm(false)
+        toast.success('Item added')
       }
+    } catch (error) {
+      toast.error('Failed to add item')
+    }
+  }
+
+  // Update item
+  const handleUpdateItem = async (id: string, updates: Partial<GroceryItem>) => {
+    try {
+      const updated = await updateGroceryItem(id, updates)
+      if (updated) {
+        setItems(items.map(i => i.id === id ? updated : i))
+        setEditingItem(null)
+        toast.success('Item updated')
+      }
+    } catch (error) {
+      toast.error('Failed to update item')
+    }
+  }
+
+  // Toggle category collapse
+  const toggleCategory = (category: string) => {
+    const newCollapsed = new Set(collapsedCategories)
+    if (newCollapsed.has(category)) {
+      newCollapsed.delete(category)
+    } else {
+      newCollapsed.add(category)
+    }
+    setCollapsedCategories(newCollapsed)
+  }
+
+  // Export to text
+  const handleExport = () => {
+    const text = CATEGORY_ORDER
+      .map(category => {
+        const categoryItems = items.filter(i => i.category === category && !i.is_checked)
+        if (categoryItems.length === 0) return null
+        return `${CATEGORY_ICONS[category]} ${category}:\n${categoryItems.map(i => 
+          `  ${i.is_checked ? '✓' : '○'} ${i.quantity ? `${i.quantity} ${i.unit || ''} ` : ''}${i.item_name}`
+        ).join('\n')}`
+      })
+      .filter(Boolean)
+      .join('\n\n')
+
+    navigator.clipboard.writeText(text)
+    toast.success('Copied to clipboard!', {
+      description: 'Paste anywhere to share your list'
     })
-
-    return Object.entries(categories).filter(([_, items]) => items.length > 0)
   }
 
+  // Group items by category
+  const groupedItems = CATEGORY_ORDER.reduce((acc, category) => {
+    const categoryItems = items.filter(i => i.category === category)
+    if (categoryItems.length > 0) {
+      acc[category] = categoryItems
+    }
+    return acc
+  }, {} as Record<string, GroceryItem[]>)
+
+  // Stats
+  const totalItems = items.length
+  const checkedCount = items.filter(i => i.is_checked).length
+  const uncheckedCount = totalItems - checkedCount
+  const progressPercent = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0
+
+  // Loading state
   if (loading) {
-    return (
-      <div className="p-8 space-y-6">
-        <Skeleton className="h-10 w-64 mb-2" />
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-4">
-            {[1, 2, 3].map((i) => (
-              <Card key={i}>
-                <CardContent className="pt-6">
-                  <Skeleton className="h-6 w-32 mb-4" />
-                  <Skeleton className="h-20 w-full" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <Card>
-            <CardContent className="pt-6">
-              <Skeleton className="h-32 w-full" />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    )
-  }
-
-  if (!currentPlan || !currentPlan.grocery_list || currentPlan.grocery_list.length === 0) {
     return (
       <div className="p-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-[#16250F] mb-2">Grocery Lists</h1>
-          <p className="text-[#16250F]/70">
-            Week of {formatDate(getCurrentWeekStart())}
-          </p>
+          <div className="h-10 w-48 bg-white/50 rounded-lg animate-pulse mb-2" />
+          <div className="h-6 w-64 bg-white/30 rounded-lg animate-pulse" />
         </div>
-        
-        <Card className="border border-[#16250F]/10">
-          <CardContent className="pt-12 pb-12 text-center">
-            <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-              <ShoppingCart className="h-10 w-10 text-[#F5F1E8]" />
-            </div>
-            <h3 className="text-2xl font-bold text-[#16250F] mb-3">No grocery list for this week</h3>
-            <p className="text-[#16250F]/70 mb-6 max-w-md mx-auto">
-              Generate a meal plan to create your grocery list!
-            </p>
-            <Button 
-              onClick={() => window.location.hash = 'planning'}
-              className="bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold"
-            >
-              Generate Meal Plan
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            {[1, 2, 3].map(i => (
+              <GlassCard key={i} hover={false}>
+                <div className="h-32 animate-pulse bg-white/30 rounded-lg" />
+              </GlassCard>
+            ))}
+          </div>
+          <GlassCard hover={false}>
+            <div className="h-48 animate-pulse bg-white/30 rounded-lg" />
+          </GlassCard>
+        </div>
       </div>
     )
   }
 
-  const categorized = categorizeItems(currentPlan.grocery_list)
-  const totalItems = currentPlan.grocery_list.length
-  const checkedCount = checkedItems.size
-  const totalCost = currentPlan.week_summary?.totalEstimatedCost || 0
-
   return (
     <div className="p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[#16250F] mb-2">Grocery List</h1>
-          <p className="text-[#16250F]/70">
-            Week of {formatDate(currentPlan.week_starting)}
+          <h1 className="text-3xl font-bold text-[#1a1a1a] flex items-center gap-3">
+            <ShoppingCart className="h-8 w-8 text-[#C19A6B]" />
+            Grocery List
+          </h1>
+          <p className="text-[#4a4a4a]">
+            {uncheckedCount} items remaining • {checkedCount} checked
           </p>
         </div>
-        <Badge variant="outline" className="border-[#16250F]/30 text-lg px-4 py-2">
-          {checkedCount} / {totalItems} items
-        </Badge>
+        
+        <div className="flex flex-wrap gap-2">
+          <Button 
+            variant="glass" 
+            size="sm"
+            onClick={() => setShowAddForm(true)}
+            className="gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Add Item
+          </Button>
+          
+          {currentMealPlan && currentMealPlan.meals.length > 0 && (
+            <Button 
+              variant="glass" 
+              size="sm"
+              onClick={handleSyncWithMealPlan}
+              disabled={syncing}
+              className="gap-2"
+            >
+              {syncing ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCw className="h-4 w-4" />
+              )}
+              Sync with Meals
+            </Button>
+          )}
+          
+          <Button 
+            variant="glass" 
+            size="sm"
+            onClick={handleExport}
+            disabled={items.length === 0}
+            className="gap-2"
+          >
+            <Download className="h-4 w-4" />
+            Export
+          </Button>
+          
+          {checkedCount > 0 && (
+            <Button 
+              variant="glass" 
+              size="sm"
+              onClick={handleClearChecked}
+              className="gap-2 text-red-600 hover:text-red-700"
+            >
+              <Trash2 className="h-4 w-4" />
+              Clear Checked ({checkedCount})
+            </Button>
+          )}
+        </div>
       </div>
 
+      {/* Add Item Form */}
+      {showAddForm && (
+        <AddItemForm
+          onAdd={handleAddItem}
+          onCancel={() => setShowAddForm(false)}
+        />
+      )}
+
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Grocery Items */}
+        {/* Main List */}
         <div className="lg:col-span-2 space-y-4">
-          {categorized.map(([category, items]) => (
-            <Card key={category} className="border border-[#16250F]/10">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg text-[#16250F] flex items-center gap-2">
-                  {category === 'Protein' && '🥩'}
-                  {category === 'Produce' && '🥬'}
-                  {category === 'Dairy' && '🥛'}
-                  {category === 'Pantry' && '🥫'}
-                  {category === 'Other' && '📦'}
-                  {category} • {items.length} items
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {items.map((item: any, index: number) => {
-                  const itemName = item.item || item
-                  const isChecked = checkedItems.has(itemName)
-                  return (
-                    <div
-                      key={index}
-                      className="flex items-center gap-3 p-3 hover:bg-[#F5F1E8]/50 rounded-lg transition-colors cursor-pointer"
-                      onClick={() => toggleItem(itemName)}
+          {/* Empty State */}
+          {items.length === 0 && (
+            <GlassCard hover={false} className="border-2 border-dashed border-white/50">
+              <div className="py-12 text-center">
+                <div className="p-4 bg-[rgba(212,165,116,0.2)] rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                  <ShoppingCart className="h-10 w-10 text-[#C19A6B]-dark" />
+                </div>
+                <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">
+                  Your grocery list is empty
+                </h3>
+                <p className="text-[#4a4a4a] mb-6 max-w-md mx-auto">
+                  {currentMealPlan && currentMealPlan.meals.length > 0 
+                    ? 'Sync with your meal plan to auto-generate your shopping list'
+                    : 'Add items manually or generate a meal plan first'}
+                </p>
+                <div className="flex gap-2 justify-center">
+                  <Button onClick={() => setShowAddForm(true)} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Add First Item
+                  </Button>
+                  {currentMealPlan && currentMealPlan.meals.length > 0 && (
+                    <Button 
+                      variant="glass" 
+                      onClick={handleSyncWithMealPlan}
+                      disabled={syncing}
+                      className="gap-2"
                     >
-                      {isChecked ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-600" />
-                      ) : (
-                        <Circle className="h-5 w-5 text-[#16250F]/30" />
-                      )}
-                      <div className="flex-1">
-                        <p className={`font-medium text-sm ${isChecked ? 'line-through text-[#16250F]/50' : 'text-[#16250F]'}`}>
-                          {itemName}
-                        </p>
-                        {item.quantity && (
-                          <p className="text-xs text-[#16250F]/60">{item.quantity}</p>
-                        )}
-                      </div>
-                    </div>
-                  )
-                })}
-              </CardContent>
-            </Card>
-          ))}
+                      <RefreshCw className="h-4 w-4" />
+                      Sync with Meals
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </GlassCard>
+          )}
+
+          {/* Grouped Items */}
+          {Object.entries(groupedItems).map(([category, categoryItems]) => {
+            const isCollapsed = collapsedCategories.has(category)
+            const categoryChecked = categoryItems.filter(i => i.is_checked).length
+            
+            return (
+              <GlassCard key={category} hover={false}>
+                {/* Category Header */}
+                <button
+                  onClick={() => toggleCategory(category)}
+                  className="w-full flex items-center justify-between p-1 hover:bg-white/20 rounded-lg transition-colors -m-1"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">{CATEGORY_ICONS[category]}</span>
+                    <h3 className="font-semibold text-[#1a1a1a]">
+                      {category}
+                    </h3>
+                    <Badge variant="outline" className="text-xs">
+                      {categoryItems.length - categoryChecked} / {categoryItems.length}
+                    </Badge>
+                  </div>
+                  {isCollapsed ? (
+                    <ChevronDown className="h-5 w-5 text-[#737373]" />
+                  ) : (
+                    <ChevronUp className="h-5 w-5 text-[#737373]" />
+                  )}
+                </button>
+
+                {/* Items */}
+                {!isCollapsed && (
+                  <div className="mt-3 space-y-1">
+                    {categoryItems.map(item => (
+                      <GroceryItemRow
+                        key={item.id}
+                        item={item}
+                        isEditing={editingItem === item.id}
+                        onToggle={() => handleToggleItem(item)}
+                        onDelete={() => handleDeleteItem(item.id)}
+                        onEdit={() => setEditingItem(item.id)}
+                        onSave={(updates) => handleUpdateItem(item.id, updates)}
+                        onCancel={() => setEditingItem(null)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </GlassCard>
+            )
+          })}
         </div>
 
         {/* Stats Sidebar */}
-        <Card className="border border-[#16250F]/10 h-fit sticky top-20">
-          <CardHeader>
-            <CardTitle className="text-[#16250F] flex items-center gap-2">
-              <ShoppingCart className="h-5 w-5" />
-              Shopping Stats
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <p className="text-sm text-[#16250F]/70 mb-1">Items</p>
-              <p className="text-2xl font-bold text-[#16250F]">{totalItems} total</p>
-              <p className="text-sm text-green-600 mt-1">{checkedCount} checked</p>
-            </div>
-            <div>
-              <p className="text-sm text-[#16250F]/70 mb-1">Estimated Total</p>
-              <p className="text-2xl font-bold text-[#16250F]">${totalCost.toFixed(2)}</p>
-              <p className="text-xs text-[#16250F]/60">CAD</p>
-            </div>
-            <div className="pt-4 border-t border-[#16250F]/10">
-              <p className="text-sm text-[#16250F]/70 mb-2">Progress</p>
-              <div className="w-full bg-[#16250F]/10 rounded-full h-2">
+        <div className="space-y-4">
+          <GlassCard hover={false} className="sticky top-20">
+            <h3 className="font-semibold text-[#1a1a1a] mb-4 flex items-center gap-2">
+              <ShoppingCart className="h-5 w-5 text-[#C19A6B]" />
+              Shopping Progress
+            </h3>
+            
+            {/* Progress Bar */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between text-sm mb-2">
+                <span className="text-[#4a4a4a]">Progress</span>
+                <span className="font-semibold text-[#1a1a1a]">{progressPercent}%</span>
+              </div>
+              <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden">
                 <div 
-                  className="bg-[#FF9500] h-2 rounded-full transition-all"
-                  style={{ width: `${(checkedCount / totalItems) * 100}%` }}
+                  className="h-full bg-gradient-to-r from-honey to-honey-dark transition-all duration-500"
+                  style={{ width: `${progressPercent}%` }}
                 />
               </div>
-              <p className="text-xs text-[#16250F]/60 mt-1">
-                {Math.round((checkedCount / totalItems) * 100)}% complete
-              </p>
             </div>
-            <Button 
-              className="w-full bg-[#FF9500] hover:bg-[#FF8500] text-white font-semibold"
-              onClick={() => {
-                // Mark all as checked
-                const allItems = currentPlan.grocery_list.map((item: any) => item.item || item)
-                setCheckedItems(new Set(allItems))
-              }}
-            >
-              Check All Items
-            </Button>
-          </CardContent>
-        </Card>
+
+            {/* Stats */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[#4a4a4a]">Total Items</span>
+                <span className="font-semibold text-[#1a1a1a]">{totalItems}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#4a4a4a]">Remaining</span>
+                <span className="font-semibold text-[#1a1a1a]">{uncheckedCount}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-green-600">Checked</span>
+                <span className="font-semibold text-green-600">{checkedCount}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#4a4a4a]">Categories</span>
+                <span className="font-semibold text-[#1a1a1a]">{Object.keys(groupedItems).length}</span>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="mt-6 pt-4 border-t border-white/20 space-y-2">
+              {items.length > 0 && (
+                <>
+                  <Button 
+                    variant="glass"
+                    className="w-full justify-start gap-2"
+                    onClick={() => {
+                      // Check all unchecked items
+                      items.filter(i => !i.is_checked).forEach(i => handleToggleItem(i))
+                    }}
+                  >
+                    <Check className="h-4 w-4" />
+                    Check All Items
+                  </Button>
+                  <Button 
+                    variant="glass"
+                    className="w-full justify-start gap-2 text-red-600 hover:text-red-700"
+                    onClick={handleClearAll}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Clear All
+                  </Button>
+                </>
+              )}
+            </div>
+          </GlassCard>
+
+          {/* Meal Plan Connection */}
+          {currentMealPlan && currentMealPlan.meals.length > 0 && (
+            <GlassCard hover={false} className="bg-[rgba(212,165,116,0.05)] border-[rgba(212,165,116,0.2)]">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-[rgba(212,165,116,0.2)] rounded-lg">
+                  <AlertCircle className="h-4 w-4 text-[#C19A6B]-dark" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-[#1a1a1a]">
+                    Meal Plan Connected
+                  </p>
+                  <p className="text-xs text-[#4a4a4a] mt-1">
+                    {currentMealPlan.meals.length} meals this week
+                  </p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="mt-2 h-7 text-xs text-[#C19A6B]-dark hover:text-[#C19A6B]"
+                    onClick={handleSyncWithMealPlan}
+                    disabled={syncing}
+                  >
+                    {syncing ? 'Syncing...' : 'Re-sync ingredients'}
+                  </Button>
+                </div>
+              </div>
+            </GlassCard>
+          )}
+        </div>
       </div>
     </div>
   )
 }
 
+// Grocery Item Row Component
+function GroceryItemRow({ 
+  item, 
+  isEditing, 
+  onToggle, 
+  onDelete, 
+  onEdit, 
+  onSave, 
+  onCancel 
+}: {
+  item: GroceryItem
+  isEditing: boolean
+  onToggle: () => void
+  onDelete: () => void
+  onEdit: () => void
+  onSave: (updates: Partial<GroceryItem>) => void
+  onCancel: () => void
+}) {
+  const [editName, setEditName] = useState(item.item_name)
+  const [editQty, setEditQty] = useState(item.quantity?.toString() || '')
+  const [editUnit, setEditUnit] = useState(item.unit || '')
+
+  if (isEditing) {
+    return (
+      <div className="flex items-center gap-2 p-2 bg-white/30 rounded-lg">
+        <Input
+          value={editName}
+          onChange={(e) => setEditName(e.target.value)}
+          className="flex-1 h-8 glass-input"
+          placeholder="Item name"
+          autoFocus
+        />
+        <Input
+          type="number"
+          value={editQty}
+          onChange={(e) => setEditQty(e.target.value)}
+          className="w-16 h-8 glass-input"
+          placeholder="Qty"
+        />
+        <Input
+          value={editUnit}
+          onChange={(e) => setEditUnit(e.target.value)}
+          className="w-16 h-8 glass-input"
+          placeholder="Unit"
+        />
+        <Button 
+          size="sm" 
+          variant="ghost" 
+          className="h-8 w-8 p-0"
+          onClick={() => onSave({
+            item_name: editName,
+            quantity: editQty ? parseFloat(editQty) : undefined,
+            unit: editUnit || undefined
+          })}
+        >
+          <Check className="h-4 w-4 text-green-600" />
+        </Button>
+        <Button 
+          size="sm" 
+          variant="ghost" 
+          className="h-8 w-8 p-0"
+          onClick={onCancel}
+        >
+          <X className="h-4 w-4 text-red-600" />
+        </Button>
+      </div>
+    )
+  }
+
+  return (
+    <div 
+      className={`flex items-center gap-3 p-2 rounded-lg transition-all group ${
+        item.is_checked ? 'opacity-50' : 'hover:bg-white/20'
+      }`}
+    >
+      {/* Checkbox */}
+      <button
+        onClick={onToggle}
+        className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors flex-shrink-0 ${
+          item.is_checked 
+            ? 'bg-[#D4A574] border-[#D4A574]' 
+            : 'border-[#737373] hover:border-[#D4A574]'
+        }`}
+      >
+        {item.is_checked && <Check className="h-3 w-3 text-white" />}
+      </button>
+
+      {/* Item Info */}
+      <div className="flex-1 min-w-0">
+        <p className={`font-medium text-sm truncate ${
+          item.is_checked ? 'line-through text-[#737373]' : 'text-[#1a1a1a]'
+        }`}>
+          {item.item_name}
+        </p>
+        {(item.quantity || item.unit) && (
+          <p className="text-xs text-[#737373]">
+            {item.quantity} {item.unit}
+          </p>
+        )}
+      </div>
+
+      {/* Source Badge */}
+      {item.source_type === 'meal-plan' && (
+        <Badge variant="outline" className="text-xs opacity-50">
+          From meals
+        </Badge>
+      )}
+
+      {/* Actions */}
+      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Button 
+          size="sm" 
+          variant="ghost" 
+          className="h-7 w-7 p-0"
+          onClick={onEdit}
+        >
+          <Edit2 className="h-3 w-3" />
+        </Button>
+        <Button 
+          size="sm" 
+          variant="ghost" 
+          className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
+          onClick={onDelete}
+        >
+          <Trash2 className="h-3 w-3" />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+// Add Item Form Component
+function AddItemForm({ 
+  onAdd, 
+  onCancel 
+}: { 
+  onAdd: (item: Partial<GroceryItem>) => void
+  onCancel: () => void 
+}) {
+  const [itemName, setItemName] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const [unit, setUnit] = useState('')
+  const [category, setCategory] = useState('Other')
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!itemName.trim()) return
+
+    onAdd({
+      item_name: itemName.trim(),
+      quantity: quantity ? parseFloat(quantity) : undefined,
+      unit: unit || undefined,
+      category
+    })
+
+    // Reset form
+    setItemName('')
+    setQuantity('')
+    setUnit('')
+    setCategory('Other')
+  }
+
+  return (
+    <GlassCard hover={false} className="animate-fade-in">
+      <form onSubmit={handleSubmit}>
+        <h3 className="font-semibold text-[#1a1a1a] mb-4 flex items-center gap-2">
+          <Plus className="h-4 w-4" />
+          Add New Item
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+          <Input
+            placeholder="Item name *"
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+            className="md:col-span-2 glass-input"
+            required
+            autoFocus
+          />
+          <Input
+            type="number"
+            placeholder="Quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="glass-input"
+            step="0.1"
+          />
+          <Input
+            placeholder="Unit (oz, lbs...)"
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
+            className="glass-input"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="glass-input px-3 py-2 rounded-xl text-sm"
+          >
+            {CATEGORIES.map(cat => (
+              <option key={cat} value={cat}>
+                {CATEGORY_ICONS[cat]} {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <div className="flex gap-2 mt-4">
+          <Button type="submit" className="gap-2">
+            <Plus className="h-4 w-4" />
+            Add Item
+          </Button>
+          <Button type="button" variant="ghost" onClick={onCancel}>
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </GlassCard>
+  )
+}

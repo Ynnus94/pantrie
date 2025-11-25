@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { Input } from '../ui/input'
+import { GlassCard } from '../ui/GlassCard'
 import { getRecipes, deleteRecipe } from '../../lib/recipesApi'
 import { RecipePlaceholder } from '../RecipePlaceholder'
 import { Book, Search, Plus, Clock, Utensils, Star, Loader2, MoreVertical, Eye, Pencil, Calendar, Share2, Trash2 } from 'lucide-react'
@@ -102,8 +103,8 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
     <div className="p-8 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-[#16250F] mb-2">Recipes</h1>
-        <p className="text-lg text-[#16250F]/70 font-serif">
+        <h1 className="text-4xl font-bold text-[#1a1a1a] mb-2">Recipes</h1>
+        <p className="text-lg text-[#4a4a4a] font-serif">
           Your curated collection of favorite recipes. Import from URLs or save from meal history.
         </p>
       </div>
@@ -117,13 +118,13 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
       {/* Recipe Grid */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-[#16250F]">
+          <h2 className="text-xl font-semibold text-[#1a1a1a]">
             Your Recipes ({recipes.length})
           </h2>
           {recipes.length > 0 && (
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="border-[#16250F]/20 hover:border-[#FF9500]">Filter</Button>
-              <Button variant="outline" size="sm" className="border-[#16250F]/20 hover:border-[#FF9500]">Sort</Button>
+              <Button variant="glass" size="sm">Filter</Button>
+              <Button variant="glass" size="sm">Sort</Button>
             </div>
           )}
         </div>
@@ -183,38 +184,39 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
         {/* Search */}
         {recipes.length > 0 && (
           <div className="relative mb-6">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#16250F]/40" />
-            <Input
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#737373]" />
+            <input
+              type="text"
               placeholder="Search recipes by name or cuisine..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 border-[#16250F]/10 focus-visible:ring-[#FF9500]"
+              className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm text-[#1a1a1a] placeholder:text-[#737373]"
             />
           </div>
         )}
 
         {/* Empty State */}
         {filteredRecipes.length === 0 ? (
-          <Card className="border border-[#16250F]/10 shadow-xl bg-gradient-to-br from-white to-[#F5F1E8]/30">
-            <CardContent className="pt-12 pb-12 text-center">
-              <div className="p-4 bg-[#16250F] rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-                <Book className="h-10 w-10 text-[#F5F1E8]" />
+          <GlassCard hover={false}>
+            <div className="py-8 text-center">
+              <div className="p-4 bg-gradient-to-br from-honey to-honey-dark rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                <Book className="h-10 w-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-[#16250F] mb-3">
+              <h3 className="text-2xl font-bold text-[#1a1a1a] mb-3">
                 {searchQuery ? 'No recipes match your search' : 'No recipes yet!'}
               </h3>
-              <p className="text-[#16250F]/70 mb-6 max-w-md mx-auto">
+              <p className="text-[#4a4a4a] mb-6 max-w-md mx-auto">
                 {searchQuery 
                   ? 'Try adjusting your search terms' 
                   : 'Import your first recipe by pasting a URL above'}
               </p>
               {!searchQuery && (
-                <p className="text-sm text-[#16250F]/60">
+                <p className="text-sm text-[#737373]">
                   Try recipes from AllRecipes, NYTimes Cooking, or any food blog
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </GlassCard>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRecipes.map((recipe) => {
@@ -224,20 +226,17 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
             const cuisine = recipe.cuisine || (recipe.tags && recipe.tags[0]) || 'Other'
             const imageUrl = recipe.image_url || recipe.imageUrl
             
-            // Use Unsplash food photo as placeholder if no image
-            const displayImage = imageUrl || `https://source.unsplash.com/600x400/?${encodeURIComponent(cuisine)},food,dish,recipe`
-            
             return (
-              <Card key={recipe.id} className="border border-[#16250F]/10 shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-white to-[#F5F1E8]/20">
+              <GlassCard key={recipe.id} padding="none" className="overflow-hidden">
                 <div 
-                  className="h-48 overflow-hidden rounded-t-lg bg-[#F5F1E8] relative cursor-pointer group"
+                  className="h-48 overflow-hidden bg-pantry-dark relative cursor-pointer group"
                   onClick={() => handleViewRecipe(recipe.id)}
                 >
                   {imageUrl ? (
                     <img 
                       src={imageUrl} 
                       alt={title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none'
                       }}
@@ -249,38 +248,37 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                     />
                   )}
                 </div>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg text-[#16250F] font-serif">{title}</CardTitle>
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-lg font-semibold text-[#1a1a1a] font-serif">{title}</h3>
                     {rating && rating > 0 && (
                       <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                        <span className="text-sm font-medium">{rating}</span>
+                        <Star className="h-4 w-4 text-[#C19A6B] fill-[#C19A6B]" />
+                        <span className="text-sm font-medium text-[#1a1a1a]">{rating}</span>
                       </div>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 mt-2">
-                    <Badge variant="outline" className="border-[#16250F]/30 text-xs bg-[#F5F1E8]/50">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="outline" className="border-[rgba(212,165,116,0.3)] text-xs bg-[rgba(212,165,116,0.1)] text-[#A67C52]">
                       {cuisine}
                     </Badge>
                     {cookTime > 0 && (
-                      <div className="flex items-center gap-1 text-xs text-[#16250F]/60">
+                      <div className="flex items-center gap-1 text-xs text-[#737373]">
                         <Clock className="h-3 w-3" />
                         {cookTime} min
                       </div>
                     )}
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-[#16250F]/70 mb-4 line-clamp-2">{recipe.description || 'No description available'}</p>
-                  <div className="flex items-center gap-2 text-xs text-[#16250F]/60 mb-4">
+                  <p className="text-sm text-[#4a4a4a] mb-4 line-clamp-2">{recipe.description || 'No description available'}</p>
+                  <div className="flex items-center gap-2 text-xs text-[#737373] mb-4">
                     <Utensils className="h-3 w-3" />
                     {recipe.ingredients?.length || 0} ingredients
                   </div>
                   <div className="flex gap-2">
                     <Button 
-                      variant="outline" 
-                      className="flex-1 border-[#16250F]/20 hover:border-[#FF9500] hover:text-[#FF9500]"
+                      variant="glass" 
+                      size="sm"
+                      className="flex-1"
                       onClick={() => handleViewRecipe(recipe.id)}
                     >
                       View Recipe
@@ -289,9 +287,9 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                     {/* Management menu */}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="icon" className="border-[#16250F]/20">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
+                        <button className="glass-button h-9 w-9 rounded-lg flex items-center justify-center">
+                          <MoreVertical className="h-4 w-4 text-[#1a1a1a]" />
+                        </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => handleViewRecipe(recipe.id)}>
@@ -321,8 +319,8 @@ export function RecipeLibraryPage({ onNavigate }: RecipeLibraryPageProps = {}) {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </GlassCard>
             )
           })}
         </div>

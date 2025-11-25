@@ -1,7 +1,7 @@
 import { cn } from '../../lib/utils'
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'success' | 'warning' | 'danger' | 'outline'
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'outline' | 'accent'
 }
 
 export function Badge({ className, variant = 'default', ...props }: BadgeProps) {
@@ -10,11 +10,12 @@ export function Badge({ className, variant = 'default', ...props }: BadgeProps) 
       className={cn(
         'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
         {
-          'bg-gray-100 text-gray-800': variant === 'default',
-          'bg-green-100 text-green-800': variant === 'success',
-          'bg-yellow-100 text-yellow-800': variant === 'warning',
-          'bg-red-100 text-red-800': variant === 'danger',
-          'border border-[#16250F]/20 bg-transparent text-[#16250F]': variant === 'outline',
+          'bg-[rgba(0,0,0,0.06)] text-[#1a1a1a]': variant === 'default',
+          'bg-[rgba(34,197,94,0.15)] text-[#166534] border border-[rgba(34,197,94,0.25)]': variant === 'success',
+          'bg-[rgba(251,191,36,0.15)] text-[#92400e] border border-[rgba(251,191,36,0.25)]': variant === 'warning',
+          'bg-[rgba(239,68,68,0.15)] text-[#b91c1c] border border-[rgba(239,68,68,0.25)]': variant === 'danger',
+          'border border-[rgba(0,0,0,0.12)] bg-transparent text-[#4a4a4a]': variant === 'outline',
+          'bg-[rgba(212,165,116,0.15)] text-[#A67C52] border border-[rgba(212,165,116,0.25)]': variant === 'accent',
         },
         className
       )}
@@ -22,4 +23,3 @@ export function Badge({ className, variant = 'default', ...props }: BadgeProps) 
     />
   )
 }
-
