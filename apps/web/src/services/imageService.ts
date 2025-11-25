@@ -6,40 +6,19 @@ interface Meal {
   [key: string]: any
 }
 
-// Priority food keywords - these should be extracted first
-const FOOD_KEYWORDS = [
-  // Dishes
-  'pizza', 'pasta', 'lasagna', 'risotto', 'gnocchi', 'ravioli',
-  'tacos', 'burrito', 'burritos', 'quesadilla', 'quesadillas', 'enchiladas', 'nachos', 'fajitas',
-  'burger', 'burgers', 'sandwich', 'sandwiches', 'wrap', 'wraps',
-  'salad', 'soup', 'stew', 'chili', 'casserole',
-  'curry', 'curries', 'tikka masala', 'korma', 'vindaloo',
-  'stir fry', 'stir-fry', 'fried rice', 'lo mein', 'chow mein', 'pad thai',
-  'sushi', 'ramen', 'pho', 'bibimbap', 'bulgogi', 'teriyaki',
-  'gyros', 'shawarma', 'falafel', 'hummus',
-  'paella', 'tapas', 'ceviche',
-  // Proteins
-  'chicken', 'beef', 'steak', 'pork', 'lamb', 'turkey',
-  'salmon', 'fish', 'shrimp', 'prawns', 'lobster', 'crab', 'scallops', 'tuna',
-  'tofu', 'tempeh',
-  // Bowl types
-  'bowl', 'bowls', 'grain bowl', 'buddha bowl', 'poke bowl',
-  // Breakfast
-  'pancakes', 'waffles', 'omelette', 'frittata',
-  // Baked
-  'pie', 'quiche', 'roast', 'meatballs', 'meatloaf'
-]
-
 /**
- * Clean and extract the key food item from a meal name
- * "Quick Beef and Bean Quesadillas" → "quesadillas"
+ * Extract the key food from a meal name using priority tiers
+ * TIER 1: Dish types (pasta, pizza, tacos) - ALWAYS prioritize
+ * TIER 2: Proteins (salmon, chicken, beef) - Only if no dish type
+ * NEVER: Ingredients (mushroom, spinach, garlic)
  */
-function cleanSearchQuery(mealName: string): string {
-  // Lowercase for matching
-  let cleaned = mealName.toLowerCase()
-  
-  // Remove common modifiers
-  cleaned = cleaned
+function extractKeyFood(mealName: string): string {
+  // Clean descriptors
+  const cleaned = mealName
+    .toLowerCase()
+    .replace(/creamy\s*/gi, '')
+    .replace(/crispy\s*/gi, '')
+    .replace(/spicy\s*/gi, '')
     .replace(/quick\s*/gi, '')
     .replace(/easy\s*/gi, '')
     .replace(/simple\s*/gi, '')
@@ -48,51 +27,98 @@ function cleanSearchQuery(mealName: string): string {
     .replace(/best\s*/gi, '')
     .replace(/ultimate\s*/gi, '')
     .replace(/perfect\s*/gi, '')
-    .replace(/creamy\s*/gi, '')
-    .replace(/crispy\s*/gi, '')
-    .replace(/spicy\s*/gi, '')
     .replace(/honey\s*/gi, '')
     .replace(/garlic\s*/gi, '')
     .replace(/lemon\s*/gi, '')
-  
-  // Remove text after these words (usually sides/toppings)
-  cleaned = cleaned
-    .replace(/\s+with\s+.*/gi, '')
-    .replace(/\s+and\s+.*/gi, '')
-    .replace(/\s+in\s+.*/gi, '')
-    .replace(/\s+on\s+.*/gi, '')
-    .replace(/\s+over\s+.*/gi, '')
-    .replace(/\s+served\s+.*/gi, '')
-  
-  // Remove text in parentheses
-  cleaned = cleaned.replace(/\([^)]*\)/g, '')
-  
-  // Trim
-  cleaned = cleaned.trim()
-  
-  // Find if meal name contains a known food keyword
-  for (const keyword of FOOD_KEYWORDS) {
-    if (cleaned.includes(keyword)) {
-      console.log(`🎯 Found keyword: "${keyword}" in "${mealName}"`)
-      return keyword + ' food'
+    .replace(/herb\s*/gi, '')
+    .replace(/herbed\s*/gi, '')
+    .replace(/glazed\s*/gi, '')
+    .replace(/roasted\s*/gi, '')
+    .replace(/grilled\s*/gi, '')
+    .replace(/baked\s*/gi, '')
+    .replace(/fried\s*/gi, '')
+    .replace(/\s*with\s+.*/gi, '')
+    .replace(/\s*in\s+.*/gi, '')
+    .replace(/\s*and\s+.*/gi, '')
+    .replace(/\s*on\s+.*/gi, '')
+    .replace(/\s*over\s+.*/gi, '')
+    .replace(/\([^)]*\)/g, '')
+    .trim()
+
+  console.log('🧹 Cleaned meal name:', cleaned)
+
+  // TIER 1: Dish Types (HIGHEST PRIORITY - always check these first!)
+  const dishTypes = [
+    // Italian
+    'pasta', 'spaghetti', 'linguine', 'fettuccine', 'penne', 'rigatoni', 'carbonara',
+    'lasagna', 'ravioli', 'gnocchi', 'risotto', 'pizza', 'alfredo', 'primavera',
+    // Mexican
+    'tacos', 'taco', 'burrito', 'burritos', 'quesadillas', 'quesadilla', 
+    'enchiladas', 'fajitas', 'nachos', 'tostadas', 'chilaquiles',
+    // Asian
+    'stir fry', 'stir-fry', 'stirfry', 'fried rice', 'pad thai', 'ramen', 'pho',
+    'curry', 'curries', 'tikka masala', 'korma', 'vindaloo', 'biryani',
+    'noodles', 'lo mein', 'chow mein', 'dumplings', 'gyoza',
+    'sushi', 'teriyaki', 'bibimbap', 'bulgogi', 'katsu',
+    // American/Western
+    'burger', 'burgers', 'sandwich', 'sandwiches', 'wrap', 'wraps',
+    'hot dog', 'wings', 'ribs', 'bbq', 'meatloaf', 'meatballs',
+    // General dish types
+    'bowl', 'bowls', 'grain bowl', 'buddha bowl', 'poke bowl', 'rice bowl',
+    'salad', 'soup', 'stew', 'chili', 'casserole', 'pot pie',
+    'omelet', 'omelette', 'frittata', 'quiche', 'shakshuka',
+    'pancakes', 'waffles', 'french toast',
+    // Mediterranean/Middle Eastern
+    'gyros', 'shawarma', 'falafel', 'kebab', 'kabob', 'hummus',
+    'paella', 'tapas', 'ceviche', 'moussaka',
+    // Roasts & Bakes
+    'roast', 'pie', 'wellington'
+  ]
+
+  // Check for dish types FIRST - this is the key fix!
+  for (const dish of dishTypes) {
+    if (cleaned.includes(dish)) {
+      console.log('✅ TIER 1 - Dish type found:', dish)
+      return dish
     }
   }
-  
-  // Fallback: take the last 1-2 meaningful words (usually the dish name)
+
+  // TIER 2: Proteins (only if NO dish type was found)
+  const proteins = [
+    // Seafood
+    'salmon', 'tuna', 'cod', 'tilapia', 'halibut', 'trout', 'fish',
+    'shrimp', 'prawns', 'lobster', 'crab', 'scallops', 'mussels', 'clams',
+    // Poultry
+    'chicken', 'turkey', 'duck',
+    // Red meat
+    'beef', 'steak', 'pork', 'lamb', 'veal',
+    // Plant-based
+    'tofu', 'tempeh', 'seitan'
+  ]
+
+  for (const protein of proteins) {
+    if (cleaned.includes(protein)) {
+      console.log('✅ TIER 2 - Protein found:', protein)
+      return protein
+    }
+  }
+
+  // TIER 3: Generic fallback - take last 1-2 words (usually the dish name)
   const words = cleaned.split(/\s+/).filter(w => w.length > 2)
   if (words.length >= 2) {
-    const result = words.slice(-2).join(' ')
-    console.log(`📝 Using last words: "${result}" from "${mealName}"`)
-    return result + ' food dish'
+    const fallback = words.slice(-2).join(' ')
+    console.log('⚠️ TIER 3 - Fallback to last words:', fallback)
+    return fallback
   }
   
   if (words.length === 1) {
-    console.log(`📝 Using single word: "${words[0]}" from "${mealName}"`)
-    return words[0] + ' food'
+    console.log('⚠️ TIER 3 - Fallback to single word:', words[0])
+    return words[0]
   }
-  
+
   // Ultimate fallback
-  return mealName.split(' ')[0] + ' food'
+  console.log('⚠️ Using original name as fallback')
+  return mealName.split(' ')[0]
 }
 
 export async function searchFoodImage(mealName: string): Promise<string | null> {
@@ -102,8 +128,9 @@ export async function searchFoodImage(mealName: string): Promise<string | null> 
       return null
     }
     
-    const searchQuery = cleanSearchQuery(mealName)
-    console.log(`🔍 Searching Unsplash for: "${searchQuery}"`)
+    const keyFood = extractKeyFood(mealName)
+    const searchQuery = keyFood + ' food'
+    console.log('🔍 Final search query:', searchQuery)
     
     const response = await fetch(
       `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchQuery)}&per_page=1&orientation=landscape`,
@@ -161,8 +188,9 @@ export async function searchMultipleFoodImages(mealName: string, page: number = 
       return []
     }
     
-    const searchQuery = cleanSearchQuery(mealName)
-    console.log(`🔍 Searching Unsplash for: "${searchQuery}" (page ${page})`)
+    const keyFood = extractKeyFood(mealName)
+    const searchQuery = keyFood + ' food'
+    console.log(`🔍 Final search query: "${searchQuery}" (page ${page})`)
     
     const response = await fetch(
       `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchQuery)}&per_page=6&page=${page}&orientation=landscape`,
