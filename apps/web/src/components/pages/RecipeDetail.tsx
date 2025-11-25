@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Button } from '../ui/button'
-import { Badge } from '../ui/badge'
 import { GlassCard } from '../ui/GlassCard'
 import { RecipePlaceholder } from '../RecipePlaceholder'
 import { getRecipeById, deleteRecipe } from '../../lib/recipesApi'
@@ -311,7 +310,7 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
                 </div>
               )}
 
-              <div className="pt-4 space-y-2 border-t border-[var(--border-subtle)]">
+              <div className="pt-4 border-t border-[var(--border-subtle)]">
                 {/* Add to Week Dropdown */}
                 <AddToWeekDropdown 
                   recipe={{
@@ -325,17 +324,6 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
                   }}
                   quickDays={[1, 3]} // Mon, Wed - customize based on user settings
                 />
-                
-                {/* Cooking Mode Button (secondary) */}
-                <Button 
-                  variant="glass" 
-                  className="w-full gap-2"
-                  onClick={() => setShowCookingMode(true)}
-                  disabled={instructions.length === 0}
-                >
-                  <ChefHat className="h-4 w-4" />
-                  Cooking Mode
-                </Button>
               </div>
             </div>
           </GlassCard>
@@ -349,20 +337,6 @@ export function RecipeDetail({ recipeId, onNavigate }: RecipeDetailProps) {
             />
           )}
         </div>
-      </div>
-
-      {/* Source Type Badges */}
-      <div className="flex flex-wrap gap-2">
-        {recipe.source_type === 'url-import' && (
-          <Badge variant="secondary" className="bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border-[var(--accent-primary)]/20">
-            📥 Imported
-          </Badge>
-        )}
-        {recipe.source_type === 'meal-history' && (
-          <Badge className="bg-green-500/10 text-green-600 border-green-500/20">
-            ⭐ From Meal Plan
-          </Badge>
-        )}
       </div>
 
       {/* Cooking Mode Modal */}

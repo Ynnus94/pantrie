@@ -257,33 +257,51 @@ export function CookingMode({ recipe, isOpen, onClose, onComplete }: CookingMode
                       }`}>
                         {formatTime(timerSeconds)}
                       </div>
-                      <div className="flex justify-center gap-3">
-                        <Button
-                          onClick={toggleTimer}
-                          variant="glass"
-                          size="lg"
-                          className="gap-2"
-                        >
-                          {timerRunning ? (
-                            <>
-                              <Pause className="h-5 w-5" />
-                              Pause
-                            </>
-                          ) : (
-                            <>
-                              <Play className="h-5 w-5" />
-                              {timerSeconds === 0 ? 'Done!' : 'Resume'}
-                            </>
-                          )}
-                        </Button>
-                        <Button
-                          onClick={resetTimer}
-                          variant="glass"
-                          size="lg"
-                        >
-                          <RotateCcw className="h-5 w-5" />
-                        </Button>
-                      </div>
+                      
+                      {/* Timer Complete State */}
+                      {timerSeconds === 0 ? (
+                        <div className="flex justify-center gap-3">
+                          <Button
+                            onClick={resetTimer}
+                            variant="glass"
+                            size="lg"
+                            className="gap-2"
+                          >
+                            <RotateCcw className="h-5 w-5" />
+                            Restart Timer
+                          </Button>
+                        </div>
+                      ) : (
+                        /* Timer Running/Paused State */
+                        <div className="flex justify-center gap-3">
+                          <Button
+                            onClick={toggleTimer}
+                            variant="glass"
+                            size="lg"
+                            className="gap-2"
+                          >
+                            {timerRunning ? (
+                              <>
+                                <Pause className="h-5 w-5" />
+                                Pause
+                              </>
+                            ) : (
+                              <>
+                                <Play className="h-5 w-5" />
+                                Resume
+                              </>
+                            )}
+                          </Button>
+                          <Button
+                            onClick={resetTimer}
+                            variant="glass"
+                            size="lg"
+                            title="Reset timer"
+                          >
+                            <RotateCcw className="h-5 w-5" />
+                          </Button>
+                        </div>
+                      )}
                     </>
                   ) : detectedTime ? (
                     <>
@@ -301,43 +319,30 @@ export function CookingMode({ recipe, isOpen, onClose, onComplete }: CookingMode
                 </div>
               </GlassCard>
             )}
-
-            {/* Step Navigation Dots */}
-            <div className="flex justify-center gap-2 flex-wrap">
-              {steps.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToStep(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentStep
-                      ? 'bg-[var(--accent-primary)] scale-125'
-                      : completedSteps.has(index)
-                        ? 'bg-green-500'
-                        : 'bg-[var(--border-subtle)] hover:bg-[var(--accent-primary)]/50'
-                  }`}
-                  title={`Go to step ${index + 1}`}
-                />
-              ))}
-            </div>
           </div>
         </div>
         
-        {/* Progress Bar */}
+        {/* Progress Bar - Clickable */}
         <div className="flex-shrink-0 px-4 md:px-8 py-3 border-t border-[var(--border-subtle)] bg-[var(--bg-glass)]">
           <div className="flex gap-1">
             {Array.from({ length: totalSteps }).map((_, index) => (
-              <div
+              <button
                 key={index}
-                className={`h-2 flex-1 rounded-full transition-all ${
+                onClick={() => goToStep(index)}
+                className={`h-3 flex-1 rounded-full transition-all hover:opacity-80 ${
                   completedSteps.has(index)
                     ? 'bg-green-500'
                     : index === currentStep
                       ? 'bg-[var(--accent-primary)]'
-                      : 'bg-[var(--border-subtle)]'
+                      : 'bg-[var(--border-subtle)] hover:bg-[var(--accent-primary)]/50'
                 }`}
+                title={`Go to step ${index + 1}`}
               />
             ))}
           </div>
+          <p className="text-xs text-muted text-center mt-2">
+            Click any segment to jump to that step
+          </p>
         </div>
         
         {/* Navigation - Fixed Bottom */}
