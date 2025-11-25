@@ -407,8 +407,8 @@ export function GroceryListsPage() {
         </div>
 
         {/* Stats Sidebar */}
-        <div className="space-y-4">
-          <GlassCard hover={false} className="sticky top-20">
+        <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          <GlassCard hover={false}>
             <h3 className="font-semibold text-primary mb-4 flex items-center gap-2">
               <ShoppingCart className="h-5 w-5 text-[#C19A6B]" />
               Shopping Progress
