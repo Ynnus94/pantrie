@@ -223,7 +223,7 @@ export function GroceryListsPage() {
     return (
       <div className="p-8">
         <div className="mb-6">
-          <div className="h-10 w-48 bg-white/50 rounded-lg animate-pulse mb-2" />
+          <div className="h-10 w-48 bg-[var(--bg-glass-light)] rounded-lg animate-pulse mb-2" />
           <div className="h-6 w-64 bg-white/30 rounded-lg animate-pulse" />
         </div>
         <div className="grid lg:grid-cols-3 gap-6">
@@ -322,7 +322,7 @@ export function GroceryListsPage() {
         <div className="lg:col-span-2 space-y-4">
           {/* Empty State */}
           {items.length === 0 && (
-            <GlassCard hover={false} className="border-2 border-dashed border-white/50">
+            <GlassCard hover={false} className="border-2 border-dashed border-[var(--border-glass)]">
               <div className="py-12 text-center">
                 <div className="p-4 bg-[rgba(212,165,116,0.2)] rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                   <ShoppingCart className="h-10 w-10 text-[#C19A6B]-dark" />
@@ -449,7 +449,7 @@ export function GroceryListsPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="mt-6 pt-4 border-t border-white/20 space-y-2">
+            <div className="mt-6 pt-4 border-t border-[var(--border-subtle)] space-y-2">
               {items.length > 0 && (
                 <>
                   <Button 

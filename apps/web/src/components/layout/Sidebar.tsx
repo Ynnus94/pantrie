@@ -35,7 +35,7 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
           <img 
             src="/pantrie_logo.svg" 
             alt="Pantrie" 
-            className="h-10 w-auto" 
+            className="h-10 w-auto logo-theme" 
           />
         </div>
       </div>

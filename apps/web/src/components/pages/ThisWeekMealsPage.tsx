@@ -263,7 +263,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
           </p>
         </div>
         
-        <GlassCard hover={false} className="border-2 border-dashed border-white/50 max-w-2xl mx-auto">
+        <GlassCard hover={false} className="border-2 border-dashed border-[var(--border-glass)] max-w-2xl mx-auto">
           <div className="py-12 text-center">
             <div className="p-6 bg-gradient-to-br from-honey to-honey-dark rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center shadow-lg animate-float">
               <Calendar className="h-12 w-12 text-white" />
@@ -289,7 +289,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
             </div>
             
             {/* Alternative actions */}
-            <div className="mt-8 pt-8 border-t border-white/20">
+            <div className="mt-8 pt-8 border-t border-[var(--border-subtle)]">
               <p className="text-sm text-muted mb-3">Or add meals manually</p>
               <div className="flex gap-2 justify-center flex-wrap">
                 <Button 
@@ -420,7 +420,7 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl px-5 py-3 border border-white/20">
+            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl px-5 py-3 border border-[var(--border-subtle)]">
               <div className="text-sm text-white/90 mb-1">Estimated Cost</div>
               <div className="text-2xl font-bold text-white">
                 ${currentMealPlan.weekSummary?.totalEstimatedCost?.toFixed(2) || '0.00'}
@@ -639,9 +639,9 @@ export function ThisWeekMealsPage({ onNavigate }: ThisWeekMealsPageProps = {}) {
           Array.from({ length: 7 - currentMealPlan.meals.length }).map((_, i) => {
             const dayIndex = currentMealPlan.meals.length + i
             return (
-              <GlassCard key={`empty-${dayIndex}`} hover={false} className="border-2 border-dashed border-white/50">
+              <GlassCard key={`empty-${dayIndex}`} hover={false} className="border-2 border-dashed border-[var(--border-glass)]">
                 <div className="py-6 text-center">
-                  <div className="p-4 bg-white/50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <div className="p-4 bg-[var(--bg-glass-light)] rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                     <Calendar className="h-8 w-8 text-muted" />
                   </div>
                   <h3 className="text-lg font-semibold text-primary mb-1">{getDayName(dayIndex)}</h3>

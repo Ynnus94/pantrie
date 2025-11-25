@@ -24,38 +24,23 @@ export function GlassCard({
     lg: 'p-8',
   }
 
-  // Apple-standard intensity styles (higher opacity for minimal bg)
-  const intensityStyles: Record<string, React.CSSProperties> = {
-    light: {
-      background: 'rgba(255, 255, 255, 0.6)',
-      backdropFilter: 'blur(16px) saturate(140%)',
-      WebkitBackdropFilter: 'blur(16px) saturate(140%)',
-    },
-    medium: {
-      background: 'rgba(255, 255, 255, 0.7)',
-      backdropFilter: 'blur(20px) saturate(150%)',
-      WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-    },
-    strong: {
-      background: 'rgba(255, 255, 255, 0.8)',
-      backdropFilter: 'blur(24px) saturate(160%)',
-      WebkitBackdropFilter: 'blur(24px) saturate(160%)',
-    },
+  // Map intensity to CSS class
+  const intensityClasses = {
+    light: 'glass-card-light',
+    medium: 'glass-card-base',
+    strong: 'glass-card-strong',
   }
 
   const baseClasses = cn(
-    'rounded-2xl border border-white/50',
-    'shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]',
-    'transition-all duration-300 ease-out',
+    intensityClasses[intensity],
     paddingClasses[padding],
-    hover && 'hover:bg-white/80 hover:-translate-y-1 hover:shadow-[0_12px_48px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,1)]',
+    hover && 'glass-card-hover',
     className
   )
 
   return (
     <div 
       className={baseClasses}
-      style={intensityStyles[intensity]}
       {...props}
     >
       {children}
